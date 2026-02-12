@@ -1,37 +1,107 @@
 package org.bobcatrobotics.Util.Tunables;
 
-import org.littletonrobotics.junction.Logger;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
- * TunableBoolean
- *
- * <p>Runtime-tunable boolean backed by NetworkTables.
- * Useful for feature flags, enable switches, and behavior gating.
+ * TunableDouble allows live tuning of numeric values through NetworkTables
+ * (AdvantageScope, Shuffleboard, Glass) with minimal loop overhead.
  */
-public final class TunableBoolean extends TunableBase<Boolean> {
+public final class TunableBoolean {
 
-  /**
-   * Creates a new TunableBoolean.
-   *
-   * @param key NetworkTables key (e.g. "Vision/Enabled")
-   * @param defaultValue Default value
-   */
-  public TunableBoolean(String key, boolean defaultValue) {
-    super(key, defaultValue);
-  }
+    /** Toggle this to false for competition */
+    private static boolean tuningEnabled = true;
 
-  @Override
-  protected Boolean read(Boolean fallback) {
-    return entry.getBoolean(fallback);
-  }
+    private final String key;
+    private final boolean defaultValue;
 
-  @Override
-  protected void write(Boolean value) {
-    entry.setBoolean(value);
-  }
+    private final NetworkTableEntry entry;
 
-  @Override
-  protected void logValue(Boolean value) {
-    Logger.recordOutput("Tunable/" + key + "/Value", value);
-  }
+    // Cached values to prevent unnecessary NT access
+    private boolean lastValue;
+    private boolean cachedValue;
+
+    /**
+     * Create a tunable double under the "/Tuning" table.
+     *
+     * @param name          NetworkTables key name
+     * @param defaultValue default value if NT is not present
+     */
+    public TunableBoolean(String name, boolean defaultValue) {
+        this("Shuffleboard", name, defaultValue);
+    }
+
+    /**
+     * Create a tunable double under a custom table.
+     *
+     * @param tableName     NetworkTables table name
+     * @param name          key name
+     * @param defaultValue default value
+     */
+    public TunableBoolean(String tableName, String name, boolean defaultValue) {
+        this.key = tableName + "/" + name;
+        this.defaultValue = defaultValue;
+
+        NetworkTable table = NetworkTableInstance.getDefault().getTable(tableName);
+        this.entry = table.getEntry(name);
+
+        // Initialize NT only once
+        entry.setDefaultBoolean(defaultValue);
+
+        this.cachedValue = defaultValue;
+        this.lastValue = defaultValue;
+    }
+
+    /**
+     * Get the current value.
+     * Safe to call every loop.
+     */
+    public boolean get() {
+        if (!tuningEnabled) {
+            return defaultValue;
+        }
+
+        cachedValue = entry.getBoolean(defaultValue);
+        return cachedValue;
+    }
+
+    /**
+     * Returns true if the value changed since the last check.
+     * Useful for updating PID controllers only when needed.
+     */
+    public boolean hasChanged() {
+        boolean current = get();
+        if (current != lastValue) {
+            lastValue = current;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Get the value and update the cached change state.
+     * Slightly faster than calling get() + hasChanged().
+     */
+    public boolean getAndUpdate() {
+        boolean current = get();
+        lastValue = current;
+        return current;
+    }
+
+    /**
+     * Reset the value back to its default.
+     */
+    public void reset() {
+        entry.setBoolean(defaultValue);
+        cachedValue = defaultValue;
+        lastValue = defaultValue;
+    }
+
+    /**
+     * Enable or disable tuning globally.
+     */
+    public static void setTuningEnabled(boolean enabled) {
+        tuningEnabled = enabled;
+    }
 }
