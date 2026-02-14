@@ -43,5 +43,14 @@ public final class Constants {
         public static double idleRollerSpeed = 0;
         public static double forwardRollerSpeed = 1.0;
         public static double reverseRollerSpeed = -1.0;
+
+        public static final class LauncherConstants {
+            public static final double LAUNCHER_MOTOR_CURRENT_LIMIT = 40.0;
+            public static final double INDEXER_MOTOR_CURRENT_LIMIT  = 20.0;
+            public static final double INDEXER_INTAKING_PERCENT     = 0.5;
+            public static final double INTAKE_INTAKING_PERCENT      = 0.7;
+            public static final double INDEXER_LAUNCHING_PERCENT    = 0.8;
+            public static final double LAUNCHING_LAUNCHER_PERCENT   = 1.0;
+        }
     }
 }
