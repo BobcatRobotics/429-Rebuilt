@@ -46,4 +46,17 @@ public final class Constants {
         public static final double intakeHopperSpeed = 1.0;
         public static final double outtakeHopperSpeed = -1.0;
     }
+
+    public static final class ClimbConstatns {
+    // Motor controller IDs for Climb motor
+    public static final int CLIMBER_MOTOR_ID = 7;
+
+    // Current limit for climb motor
+    public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 40;
+    public static final int CLIMBER_MOTOR_STATOR_LIMIT = 60;
+    // Percentage to power the motor both up and down
+    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.4;
+    public static final double CLIMBER_MOTOR_UP_PERCENT = 0.4;
+  }
+
 }

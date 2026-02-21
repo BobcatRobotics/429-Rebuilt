@@ -23,8 +23,12 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 // import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystem.Fuel.Fuel;
+import frc.robot.Constants.FuelConstants;
+import frc.robot.subsystem.Fuel.*;;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,28 +41,33 @@ public class RobotContainer {
   
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController operator = new CommandXboxController(1);
 
   // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser;
+  //private final LoggedDashboardChooser<Command> autoChooser;
+  private final Fuel fuel;
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     switch (Constants.currentMode) {
       case REAL:
+      fuel = new Fuel();
         // Real robot, instantiate hardware IO implementations
         break;
       case SIM:
+      fuel = new Fuel();
         // Sim robot, instantiate physics sim IO implementations
         break;
       default:
+      fuel = new Fuel();
         // Replayed robot, disable IO implementations
         break;
     }
 
 
     // Set up auto routines
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+    //autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up SysId routines
 
@@ -74,6 +83,19 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    operator.rightBumper().whileTrue(Commands.run(() -> {
+            fuel.setIntakeLauncherRoller(FuelConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setFeederRoller(FuelConstants.FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT);
+        }, fuel)/*.withTimeout(FuelConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
+            fuel.setIntakeLauncherRoller(FuelConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setFeederRoller(FuelConstants.FEEDER_LAUNCHING_PERCENT);
+        }, fuel))*/).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+
+        operator.a().whileTrue(Commands.run(() -> {
+            fuel.setIntakeLauncherRoller(FuelConstants.INTAKE_EJECT_PERCENT);
+            fuel.setFeederRoller(FuelConstants.FEEDER_LAUNCHING_PERCENT);
+        }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+
     // Default command, normal field-relative drive
   }
 
@@ -82,9 +104,9 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    return autoChooser.get();
-  }
+  //public Command getAutonomousCommand() {
+    //return autoChooser.get();
+  //}
 
 
   public void teleopPeriodic() {

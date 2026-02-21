@@ -23,8 +23,11 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 // import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.ClimbConstatns;
+import frc.robot.subsystem.climber.*;;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -40,6 +43,8 @@ public class RobotContainer {
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
+  private final CommandXboxController operator = new CommandXboxController(1);
+  private final Climber climber;
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -47,13 +52,16 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
+        climber = new Climber();
         break;
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
+        climber = new Climber();
         break;
 
       default:
         // Replayed robot, disable IO implementations
+        climber = new Climber();
         break;
     }
 
@@ -74,6 +82,13 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    operator.povUp().whileTrue(Commands.run(() -> {
+            climber.setClimber(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
+        }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
+        operator.povDown().whileTrue(Commands.run(() -> {
+            climber.setClimber(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
+        }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
     // Default command, normal field-relative drive
     

@@ -1,37 +1,26 @@
 package frc.robot.subsystem.climber;
 
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.SparkMax;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfigurator;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_CURRENT_LIMIT;
+import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_ID;
+import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_NEGATIVE_ROTATIONS;
+import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_POSITIVE_ROTATIONS;
+import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_STATOR_LIMIT;
+
+import com.thethriftybot.devices.ThriftyNova;
+import com.thethriftybot.devices.ThriftyNova.CurrentType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
-  private final TalonFX climberMotor;
-
-  /** Creates a new CANBallSubsystem. */
+  private final ThriftyNova climberMotor;
+ @SuppressWarnings("resource")
   public Climber() {
-
-    // create brushed motors for each of the motors on the launcher mechanism
-    climberMotor = new TalonFX(1);
-
-     var climbconfig = new TalonFXConfiguration();
-      climbconfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-      climbconfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-      climbconfig.CurrentLimits.StatorCurrentLimit = 40;
-      climbconfig.CurrentLimits.StatorCurrentLimitEnable = true;
-
-    // create the configuration for the climb moter, set a current limit and apply
-    // the config to the controller
-    climberMotor.getConfigurator().apply(climbconfig);
+    climberMotor = new ThriftyNova(CLIMBER_MOTOR_ID)
+        .setBrakeMode(true)
+        .setInversion(false)
+        .setSoftLimits(CLIMBER_MOTOR_NEGATIVE_ROTATIONS, CLIMBER_MOTOR_POSITIVE_ROTATIONS)
+        .setMaxCurrent(CurrentType.STATOR, CLIMBER_MOTOR_STATOR_LIMIT)
+        .setMaxCurrent(CurrentType.SUPPLY, CLIMBER_MOTOR_CURRENT_LIMIT);
   }
 
   // A method to set the percentage of the climber

@@ -1,0 +1,97 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.subsystem.Fuel;
+
+import static frc.robot.Constants.IntakeConstants.FEEDER_MOTOR_ID;
+import static frc.robot.Constants.IntakeConstants.SHOOTER_INTAKE_MOTOR_ID;
+import static frc.robot.Constants.IntakeConstants.SHOOTER_MOTOR_ID;
+
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+public class Fuel extends SubsystemBase {
+  private final TalonFX shooterMotor;
+  private final TalonFX shooterIntakeMotor;
+  private final TalonFX feedMotor;
+
+  /** Creates a new CANBallSubsystem. */
+  public Fuel() {
+    // create brushed motors for each of the motors on the launcher mechanism
+    shooterIntakeMotor = new TalonFX(SHOOTER_INTAKE_MOTOR_ID);
+    feedMotor = new TalonFX(FEEDER_MOTOR_ID);
+    shooterMotor = new TalonFX(SHOOTER_MOTOR_ID);
+
+
+    // create the configuration for the feeder roller, set a current limit and apply
+    // the config to the controller
+
+    var feederConfigure = new TalonFXConfiguration();
+      feederConfigure.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+      feederConfigure.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      feederConfigure.CurrentLimits.StatorCurrentLimit = 40;
+      feederConfigure.CurrentLimits.StatorCurrentLimitEnable = true;
+
+    var shooterConfigure = new TalonFXConfiguration();
+      shooterConfigure.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+      shooterConfigure.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      shooterConfigure.CurrentLimits.StatorCurrentLimit = 40;
+      shooterConfigure.CurrentLimits.StatorCurrentLimitEnable = true;
+
+    var shooterIntakeConfigure = new TalonFXConfiguration();
+      shooterIntakeConfigure.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+      shooterIntakeConfigure.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+      shooterIntakeConfigure.CurrentLimits.StatorCurrentLimit = 40;
+      shooterIntakeConfigure.CurrentLimits.StatorCurrentLimitEnable = true;
+
+    /*SparkMaxConfig feederConfig = new SparkMaxConfig();
+    feederConfig.smartCurrentLimit(INDEXER_MOTOR_CURRENT_LIMIT);
+    Indexer.configure(feederConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);*/
+
+    // create the configuration for the launcher roller, set a current limit, set
+    // the motor to inverted so that positive values are used for both intaking and
+    // launching, and apply the config to the controller
+    shooterIntakeMotor.getConfigurator().apply(shooterIntakeConfigure);
+    feedMotor.getConfigurator().apply(feederConfigure);
+    shooterMotor.getConfigurator().apply(shooterConfigure);
+
+    // put default values for various fuel operations onto the dashboard
+    // all commands using this subsystem pull values from the dashbaord to allow
+    // you to tune the values easily, and then replace the values in Constants.java
+    // with your new values. For more information, see the Software Guide.
+    SmartDashboard.putNumber("Intaking feeder roller value", 0.8);
+    SmartDashboard.putNumber("Intaking intake roller value", 0.6);
+    SmartDashboard.putNumber("Launching feeder roller value", 0.6);
+    SmartDashboard.putNumber("Launching launcher roller value", 0.85);
+    //SmartDashboard.putNumber("Spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE);
+  }
+
+  // A method to set the voltage of the intake roller
+  public void setIntakeLauncherRoller(double power) {
+    shooterIntakeMotor.set(power); // positive for shooting
+    shooterMotor.set(power);
+  }
+
+  // A method to set the voltage of the intake roller
+  public void setFeederRoller(double power) {
+    feedMotor.set(power); // positive for shooting
+  }
+
+  // A method to stop the rollers
+  public void stop() {
+    feedMotor.set(0);
+    shooterIntakeMotor.set(0);
+    shooterMotor.set(0);
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
+}
