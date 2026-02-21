@@ -7,6 +7,8 @@ package frc.robot.subsystem.Fuel;
 import static frc.robot.Constants.FuelConstants.FEEDER_MOTOR_ID;
 import static frc.robot.Constants.FuelConstants.SHOOTER_INTAKE_MOTOR_ID;
 import static frc.robot.Constants.FuelConstants.SHOOTER_MOTOR_ID;
+import static frc.robot.Constants.FuelConstants.FEEDER_MOTOR_CURRENT_LIMIT;
+import static frc.robot.Constants.FuelConstants.SHOOTER_MOTOR_CURRENT_LIMIT;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -28,31 +30,26 @@ public class Fuel extends SubsystemBase {
     feedMotor = new TalonFX(FEEDER_MOTOR_ID);
     shooterMotor = new TalonFX(SHOOTER_MOTOR_ID);
 
-
     // create the configuration for the feeder roller, set a current limit and apply
     // the config to the controller
 
     var feederConfigure = new TalonFXConfiguration();
       feederConfigure.MotorOutput.NeutralMode = NeutralModeValue.Coast;
       feederConfigure.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-      feederConfigure.CurrentLimits.StatorCurrentLimit = 40;
+      feederConfigure.CurrentLimits.StatorCurrentLimit = FEEDER_MOTOR_CURRENT_LIMIT;
       feederConfigure.CurrentLimits.StatorCurrentLimitEnable = true;
 
     var shooterConfigure = new TalonFXConfiguration();
       shooterConfigure.MotorOutput.NeutralMode = NeutralModeValue.Coast;
       shooterConfigure.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-      shooterConfigure.CurrentLimits.StatorCurrentLimit = 40;
+      shooterConfigure.CurrentLimits.StatorCurrentLimit = SHOOTER_MOTOR_CURRENT_LIMIT;
       shooterConfigure.CurrentLimits.StatorCurrentLimitEnable = true;
 
     var shooterIntakeConfigure = new TalonFXConfiguration();
       shooterIntakeConfigure.MotorOutput.NeutralMode = NeutralModeValue.Coast;
       shooterIntakeConfigure.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-      shooterIntakeConfigure.CurrentLimits.StatorCurrentLimit = 40;
+      shooterIntakeConfigure.CurrentLimits.StatorCurrentLimit = SHOOTER_MOTOR_CURRENT_LIMIT;
       shooterIntakeConfigure.CurrentLimits.StatorCurrentLimitEnable = true;
-
-    /*SparkMaxConfig feederConfig = new SparkMaxConfig();
-    feederConfig.smartCurrentLimit(INDEXER_MOTOR_CURRENT_LIMIT);
-    Indexer.configure(feederConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);*/
 
     // create the configuration for the launcher roller, set a current limit, set
     // the motor to inverted so that positive values are used for both intaking and
