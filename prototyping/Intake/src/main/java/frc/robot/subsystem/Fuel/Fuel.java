@@ -4,9 +4,9 @@
 
 package frc.robot.subsystem.Fuel;
 
-import static frc.robot.Constants.IntakeConstants.FEEDER_MOTOR_ID;
-import static frc.robot.Constants.IntakeConstants.SHOOTER_INTAKE_MOTOR_ID;
-import static frc.robot.Constants.IntakeConstants.SHOOTER_MOTOR_ID;
+import static frc.robot.Constants.FuelConstants.FEEDER_MOTOR_ID;
+import static frc.robot.Constants.FuelConstants.SHOOTER_INTAKE_MOTOR_ID;
+import static frc.robot.Constants.FuelConstants.SHOOTER_MOTOR_ID;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;

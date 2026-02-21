@@ -32,27 +32,12 @@ public final class Constants {
         /** Replaying from a log file. */
         REPLAY
     }
-        public static final class IntakeConstants {
-        public static InvertedValue intakeMotorInvert = InvertedValue.Clockwise_Positive;
-        public static NeutralModeValue intakeMotorBrakeMode = NeutralModeValue.Brake;
-        public static double kTopP = 0.00;
-        public static double kTopV = 0.00;
-        public static double kTopS = 0.00;
-        public static double topCurrentLimit = 10;
-
-        public static double idleRollerSpeed = 0;
-        public static double forwardRollerSpeed = 1.0;
-        public static double reverseRollerSpeed = -1.0;
-        
-        // Motor controller IDs for Feed motor
-        public static final int FEEDER_MOTOR_ID = 18;
-        // Motor controller IDs for Intake motor
-        public static final int SHOOTER_INTAKE_MOTOR_ID = 16;
-        public static final int SHOOTER_MOTOR_ID = 17;
-    }
+       
      public static final class FuelConstants {
     // Motor controller IDs for Fuel Mechanism motors
-
+     public static final int FEEDER_MOTOR_ID = 18;
+     public static final int SHOOTER_INTAKE_MOTOR_ID = 16;
+     public static final int SHOOTER_MOTOR_ID = 17;
     // Current limit for fuel mechanism motors.
     public static final int FEEDER_MOTOR_CURRENT_LIMIT = 40;
     public static final int LAUNCHER_MOTOR_CURRENT_LIMIT = 40;
