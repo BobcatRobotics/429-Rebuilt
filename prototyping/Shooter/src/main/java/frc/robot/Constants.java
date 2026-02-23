@@ -32,27 +32,26 @@ public final class Constants {
         /** Replaying from a log file. */
         REPLAY
     }
+       
+     public static final class ShooterConstants {
+    // Motor controller IDs for Fuel Mechanism motors
+     public static final int FEEDER_MOTOR_ID = 18;
+     public static final int SHOOTER_INTAKE_MOTOR_ID = 16;
+     public static final int SHOOTER_MOTOR_ID = 17;
 
-    public final static class ShooterConstants {
+    // Current limit for fuel mechanism motors.
+    public static final int FEEDER_MOTOR_CURRENT_LIMIT = 40;
+    public static final int SHOOTER_MOTOR_CURRENT_LIMIT = 40;
 
-        public static final InvertedValue topMotorInvert = InvertedValue.CounterClockwise_Positive;
-        public static final NeutralModeValue topMotorBrakeMode = NeutralModeValue.Brake;
-        public static final double kTopP = 0;
-        public static final double kTopS = 0;
-        public static final double kTopV = 0;
-        public static final double topCurrentLimit = 0;
+    // All values likely need to be tuned based on your robot
+    public static final double FEEDER_INTAKING_PERCENT = -0.1; 
+    public static final double FEEDER_EJECT_PERCENT = 0.1;
+    public static final double FEEDER_LAUNCHING_PERCENT = 0.1;
+    public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.1;
 
-        public static final InvertedValue bottomMotorInvert = InvertedValue.CounterClockwise_Positive;
-        public static final NeutralModeValue bottomMotorBrakeMode = NeutralModeValue.Brake;
-        public static final double kBottomP = 0;
-        public static final double kBottomS = 0;
-        public static final double kBottomV = 0;
-        public static final double bottomCurrentLimit = 0;
+    public static final double SHOOTER_INTAKE_PERCENT = .085;
+    public static final double SHOOTER_INTAKE_EJECT_PERCENT = -0.1;
 
-        public static final double idlePosition = 0.0;
-        public static final double idleSpeed = 0.0; 
-        
-    
-
-    }
+    public static final double SPIN_UP_SECONDS = 0.75;
+  }
 }
