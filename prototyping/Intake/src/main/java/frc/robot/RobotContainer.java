@@ -83,17 +83,14 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    operator.rightBumper().whileTrue(Commands.run(() -> {
+    operator.leftBumper().whileTrue(Commands.run(() -> {
             fuel.setIntakeLauncherRoller(FuelConstants.SHOOTER_INTAKE_PERCENT);
-            fuel.setFeederRoller(FuelConstants.FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT);
-        }, fuel)/*.withTimeout(FuelConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setIntakeLauncherRoller(FuelConstants.SHOOTER_INTAKE_PERCENT);
-            fuel.setFeederRoller(FuelConstants.FEEDER_LAUNCHING_PERCENT);
-        }, fuel))*/).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+            fuel.setFeederRoller(FuelConstants.FEEDER_INTAKING_PERCENT);
+        }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
         operator.a().whileTrue(Commands.run(() -> {
-            fuel.setIntakeLauncherRoller(FuelConstants.INTAKE_EJECT_PERCENT);
-            fuel.setFeederRoller(FuelConstants.FEEDER_LAUNCHING_PERCENT);
+            fuel.setIntakeLauncherRoller(FuelConstants.SHOOTER_INTAKE_EJECT_PERCENT);
+            fuel.setFeederRoller(FuelConstants.FEEDER_EJECT_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
     // Default command, normal field-relative drive
