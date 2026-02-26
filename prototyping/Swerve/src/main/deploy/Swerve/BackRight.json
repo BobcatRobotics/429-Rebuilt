@@ -1,10 +1,10 @@
 {
     "module": {
-        "type": "mk4n",
-        "kCoupleRatio": 3.5714285714285716,
-        "kDriveGearRatio": 6.746031746031747,
-        "kSteerGearRatio": 21.428571428571427,
-        "driveInverted":true,
+  "type": "mk4n",
+        "kCoupleRatio": 3.125,
+        "kDriveGearRatio": 5.357142857142857,
+        "kSteerGearRatio": 18.75,
+        "driveInverted":false,
         "steerInverted":true,
         "encoderInverted":false
     },
@@ -13,15 +13,15 @@
         "kI": 0,
         "kD": 0.5,
         "kS": 0.1,
-        "kV": 2.66,
+        "kV": 2.33,
         "kA": 0.00
     },
     "driveGains": {
         "kP": 0.1,
         "kI": 0,
         "kD": 0,
-        "kS": 0.15727,
-        "kV": 0.76397
+        "kS": 0,
+        "kV": 0.124
     },
     "name": "BackRight"
 }
