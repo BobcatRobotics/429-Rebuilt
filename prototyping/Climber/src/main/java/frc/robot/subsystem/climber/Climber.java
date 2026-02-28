@@ -2,35 +2,42 @@ package frc.robot.subsystem.climber;
 
 import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_CURRENT_LIMIT;
 import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_ID;
-import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_NEGATIVE_ROTATIONS;
-import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_POSITIVE_ROTATIONS;
-import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_STATOR_LIMIT;
 
-import com.thethriftybot.devices.ThriftyNova;
-import com.thethriftybot.devices.ThriftyNova.CurrentType;
+import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
-  private final ThriftyNova climberMotor;
+  private DutyCycleOut climberMotorrequest = new DutyCycleOut(0);
+  private final TalonFX climberMotor;
+
  @SuppressWarnings("resource")
   public Climber() {
-    climberMotor = new ThriftyNova(CLIMBER_MOTOR_ID)
-        .setBrakeMode(true)
-        .setInversion(false)
-        .setSoftLimits(CLIMBER_MOTOR_NEGATIVE_ROTATIONS, CLIMBER_MOTOR_POSITIVE_ROTATIONS)
-        .setMaxCurrent(CurrentType.STATOR, CLIMBER_MOTOR_STATOR_LIMIT)
-        .setMaxCurrent(CurrentType.SUPPLY, CLIMBER_MOTOR_CURRENT_LIMIT);
+    climberMotor = new TalonFX(CLIMBER_MOTOR_ID, new CANBus("rio"));
+
+    var ClimberConfig = new TalonFXConfiguration();
+      ClimberConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+      ClimberConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+      ClimberConfig.CurrentLimits.StatorCurrentLimit = CLIMBER_MOTOR_CURRENT_LIMIT;
+      ClimberConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+
+
+      climberMotor.getConfigurator().apply(ClimberConfig);
   }
 
   // A method to set the percentage of the climber
   public void setClimber(double power) {
-    climberMotor.set(power);
+    climberMotor.setControl(climberMotorrequest.withOutput(power));
   }
 
   // A method to stop the climber
   public void stop() {
-    climberMotor.set(0);
+    climberMotor.stopMotor();
   }
 
   @Override

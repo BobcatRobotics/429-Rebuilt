@@ -39,11 +39,11 @@ public class RobotContainer {
   // Subsystems
   
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController controller = new CommandXboxController(1);
 
   // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser;
-  private final CommandXboxController operator = new CommandXboxController(1);
+  //private final LoggedDashboardChooser<Command> autoChooser;
+  private final CommandXboxController operator = new CommandXboxController(0);
   private final Climber climber;
 
 
@@ -67,7 +67,7 @@ public class RobotContainer {
 
 
     // Set up auto routines
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+    //autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up SysId routines
 
@@ -99,9 +99,9 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    return autoChooser.get();
-  }
+  //public Command getAutonomousCommand() {
+    //return autoChooser.get();
+  //}
 
 
   public void teleopPeriodic() {
