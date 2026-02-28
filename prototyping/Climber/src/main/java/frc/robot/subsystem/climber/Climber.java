@@ -22,7 +22,7 @@ public class Climber extends SubsystemBase {
 
     var ClimberConfig = new TalonFXConfiguration();
       ClimberConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-      ClimberConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+      ClimberConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       ClimberConfig.CurrentLimits.StatorCurrentLimit = CLIMBER_MOTOR_CURRENT_LIMIT;
       ClimberConfig.CurrentLimits.StatorCurrentLimitEnable = true;
 
