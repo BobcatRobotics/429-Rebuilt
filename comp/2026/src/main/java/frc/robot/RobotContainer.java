@@ -52,6 +52,7 @@ import org.bobcatrobotics.Commands.ActionFactory;
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubData;
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
 import org.bobcatrobotics.Subsystems.AntiTippingLib.AntiTipping;
+import org.bobcatrobotics.Subsystems.Swerve.ModuleWrapper;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -83,13 +84,18 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+                ModuleWrapper newFrontRight = new ModuleWrapper("FrontRight.json", "FrontRight");
+        ModuleWrapper newFrontLeft = new ModuleWrapper("FrontLeft.json", "FrontLeft");
+        ModuleWrapper newBackLeft = new ModuleWrapper("BackLeft.json", "BackLeft");
+        ModuleWrapper newBackRight = new ModuleWrapper("BackRight.json", "BackRight");
         switch (Constants.currentMode) {
             case REAL:
                 // Real robot, instantiate hardware IO implementations
-                drive = new Drive(new GyroIOPigeon2(), new ModuleIOTalonFX(TunerConstants.FrontLeft),
-                        new ModuleIOTalonFX(TunerConstants.FrontRight),
-                        new ModuleIOTalonFX(TunerConstants.BackLeft),
-                        new ModuleIOTalonFX(TunerConstants.BackRight));
+                drive = new Drive(new GyroIOPigeon2(),
+                        new ModuleIOTalonFX(newFrontLeft.addModuleConstants(TunerConstants.FrontLeft)),
+                        new ModuleIOTalonFX(newFrontRight.addModuleConstants(TunerConstants.FrontRight)),
+                        new ModuleIOTalonFX(newBackLeft.addModuleConstants(TunerConstants.BackLeft)),
+                        new ModuleIOTalonFX(newBackRight.addModuleConstants(TunerConstants.BackRight)));
                 fuel = new Fuel(new FuelIOReal());
                 climber = new Climber(new ClimberIOReal());
                 // Vision
@@ -165,7 +171,7 @@ public class RobotContainer {
                         drive,
                         () -> -controller.getLeftY(),
                         () -> -controller.getLeftX(),
-                        () -> -controller.getRightX()));
+                        () -> controller.getRightX()));
 
         fuel.setDefaultCommand(fuel.run(() -> fuel.stop()));
         climber.setDefaultCommand(climber.run(() -> climber.stop()));

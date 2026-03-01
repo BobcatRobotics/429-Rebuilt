@@ -1,0 +1,27 @@
+{
+    "module": {
+               "type": "mk4i",
+        "kCoupleRatio": 3.125,
+        "kDriveGearRatio": 5.357142857142857,
+        "kSteerGearRatio": 21.428571428571427,
+        "driveInverted":false,
+        "steerInverted":true,
+        "encoderInverted":false
+    },
+    "steerGains": {
+        "kP": 100,
+        "kI": 0,
+        "kD": 0.5,
+        "kS": 0.1,
+        "kV": 2.66,
+        "kA": 0.00
+    },
+    "driveGains": {
+        "kP": 0.1,
+        "kI": 0,
+        "kD": 0,
+        "kS": 0,
+        "kV": 0.124
+    },
+    "name": "FrontRight"
+}

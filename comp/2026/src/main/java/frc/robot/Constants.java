@@ -41,7 +41,7 @@ public final class Constants {
     public static final int SHOOTER_MOTOR_CURRENT_LIMIT = 70;
 
     // All values likely need to be tuned based on your robot
-    public static final double FEEDER_INTAKING_PERCENT = -0.2;
+    public static final double FEEDER_INTAKING_PERCENT = -0.35;
     public static final double FEEDER_EJECT_PERCENT = 0.2;
     public static final double FEEDER_LAUNCHING_PERCENT = 0.2;
     public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.2;
