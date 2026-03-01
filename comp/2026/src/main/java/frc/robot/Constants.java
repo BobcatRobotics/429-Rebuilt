@@ -30,38 +30,62 @@ public final class Constants {
         REPLAY
     }
 
-      public static final class FuelConstants {
+      public static final class ShooterConstants {
     // Motor controller IDs for Fuel Mechanism motors
-    public static final int LEFT_INTAKE_LAUNCHER_MOTOR_ID = 5;
-    public static final int RIGHT_INTAKE_LAUNCHER_MOTOR_ID = 6;
-    public static final int INDEXER_MOTOR_ID = 8;
+    public static final int FEEDER_MOTOR_ID = 18;
+    public static final int SHOOTER_INTAKE_MOTOR_ID = 16;
+    public static final int SHOOTER_MOTOR_ID = 17;
 
     // Current limit for fuel mechanism motors.
-    public static final int INDEXER_MOTOR_CURRENT_LIMIT = 80;
-    public static final int LAUNCHER_MOTOR_CURRENT_LIMIT = 80;
+    public static final int FEEDER_MOTOR_CURRENT_LIMIT = 70;
+    public static final int SHOOTER_MOTOR_CURRENT_LIMIT = 70;
 
     // All values likely need to be tuned based on your robot
-    public static final double INDEXER_INTAKING_PERCENT = -.8; 
-    public static final double INDEXER_LAUNCHING_PERCENT = 0.6;
-    public static final double INDEXER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.5;
+    public static final double FEEDER_INTAKING_PERCENT = -0.2;
+    public static final double FEEDER_EJECT_PERCENT = 0.2;
+    public static final double FEEDER_LAUNCHING_PERCENT = 0.2;
+    public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.2;
 
-    public static final double INTAKE_INTAKING_PERCENT = 0.6;
-    public static final double LAUNCHING_LAUNCHER_PERCENT = .85;
-    public static final double INTAKE_EJECT_PERCENT = -0.8;
+    public static final double SHOOTER_INTAKE_PERCENT = 0.85;
+    public static final double SHOOTER_INTAKE_EJECT_PERCENT = -0.85;
 
     public static final double SPIN_UP_SECONDS = 0.75;
   }
 
     public static final class ClimbConstatns {
     // Motor controller IDs for Climb motor
-    public static final int CLIMBER_MOTOR_ID = 7;
+    public static final int CLIMBER_MOTOR_ID = 20;
 
     // Current limit for climb motor
-    public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 40;
+    public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 70;
+    public static final int CLIMBER_MOTOR_STATOR_LIMIT = 80;
+    public static final int CLIMBER_MOTOR_NEGATIVE_ROTATIONS = -1;
+    public static final int CLIMBER_MOTOR_POSITIVE_ROTATIONS = 1;
     // Percentage to power the motor both up and down
-    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.8;
-    public static final double CLIMBER_MOTOR_UP_PERCENT = 0.8;
+    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.6;
+    public static final double CLIMBER_MOTOR_UP_PERCENT = 0.6;
   }
 
+  public static final class IntakeConstants {
+    // Motor controller IDs for Fuel Mechanism motors
+     public static final int FEEDER_MOTOR_ID = 18;
+     public static final int SHOOTER_INTAKE_MOTOR_ID = 16;
+     public static final int SHOOTER_MOTOR_ID = 17;
+
+    // Current limit for fuel mechanism motors.
+    public static final int FEEDER_MOTOR_CURRENT_LIMIT = 40;
+    public static final int SHOOTER_MOTOR_CURRENT_LIMIT = 40;
+
+    // All values likely need to be tuned based on your robot
+    public static final double FEEDER_INTAKING_PERCENT = -0.1;
+    public static final double FEEDER_EJECT_PERCENT = 0.1;
+    public static final double FEEDER_LAUNCHING_PERCENT = 0.1;
+    public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.1;
+
+    public static final double SHOOTER_INTAKE_PERCENT = .085;
+    public static final double SHOOTER_INTAKE_EJECT_PERCENT = -0.1;
+
+    public static final double SPIN_UP_SECONDS = 0.75;
+  }
 
 }

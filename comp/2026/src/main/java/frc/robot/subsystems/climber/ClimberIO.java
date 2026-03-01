@@ -37,7 +37,7 @@ public interface ClimberIO {
      * This is not PID based and will apply output to the motor.
      * 
      */
-    public default void setClimber(double power){
+    public default void setClimberPower(double power){
 
     }
     public default void stop(){

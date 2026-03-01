@@ -1,7 +1,19 @@
 package frc.robot.subsystems.climber;
 
+import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_CURRENT_LIMIT;
+import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_ID;
+
+import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 public class ClimberIOReal implements ClimberIO {
-    
+    private DutyCycleOut climberMotorrequest = new DutyCycleOut(0);
+    private TalonFX climberMotor;
+
     public void updateInputs(ClimberIOInputs inputs) {
 
     }
@@ -12,7 +24,14 @@ public class ClimberIOReal implements ClimberIO {
      * current limit, neutral mode , inverted state
      */
     public void configureClimber() {
+        climberMotor = new TalonFX(CLIMBER_MOTOR_ID, new CANBus("rio"));
 
+    var ClimberConfig = new TalonFXConfiguration();
+        ClimberConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        ClimberConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        ClimberConfig.CurrentLimits.StatorCurrentLimit = CLIMBER_MOTOR_CURRENT_LIMIT;
+        ClimberConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        climberMotor.getConfigurator().apply(ClimberConfig);
     }
 
     /**
@@ -30,11 +49,11 @@ public class ClimberIOReal implements ClimberIO {
      * This is not PID based and will apply output to the motor.
      * 
      */
-    public void setClimber(double power) {
-
+    public void setClimberPower(double power) {
+        climberMotor.setControl(climberMotorrequest.withOutput(power));
     }
 
     public void stop() {
-
+        climberMotor.stopMotor();
     }
 }

@@ -10,6 +10,7 @@ public class Climber extends SubsystemBase {
 
     public Climber(ClimberIO io) {
         this.io = io;
+        this.io.configureClimber();
     }
 
     /**
@@ -27,8 +28,8 @@ public class Climber extends SubsystemBase {
      * This is not PID based and will apply output to the motor.
      * 
      */
-    public void setClimber(double power) {
-        io.setClimber(power);
+    public void setClimberPower(double power) {
+        io.setClimberPower(power);
     }
 
     public void stop() {

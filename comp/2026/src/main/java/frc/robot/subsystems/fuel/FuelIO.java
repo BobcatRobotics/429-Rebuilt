@@ -22,7 +22,7 @@ public interface FuelIO {
      * The configuration MUST set up and have the following configurations ; stator
      * current limit, neutral mode , inverted
      */
-    public default void configureLeftIntakeLauncher() {
+    public default void configureShooter() {
 
     }
 
@@ -31,7 +31,7 @@ public interface FuelIO {
      * The configuration MUST set up and have the following configurations ; stator
      * current limit, neutral mode , inverted
      */
-    public default void configureRightIntakeLauncher() {
+    public default void configureShooterIntake() {
 
     }
 
@@ -40,7 +40,7 @@ public interface FuelIO {
      * The configuration MUST set up and have the following configurations ; stator
      * current limit
      */
-    public default void configureIndexer() {
+    public default void configureFeeder() {
 
     }
 
@@ -48,9 +48,9 @@ public interface FuelIO {
      * Sets the velocity of the intake Launcher.
      * This is PID based and velocityvoltage control mode.
      * 
-     * @param velSetpoint
+     * 
      */
-    public default void setIntakeLauncherRollerVelocity(double velSetpoint) {
+    public default void setShooterIntakePower(double power) {
 
     }
 

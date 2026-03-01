@@ -28,7 +28,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ClimbConstatns;
-import frc.robot.Constants.FuelConstants;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.climber.Climber;
@@ -198,26 +199,27 @@ public class RobotContainer {
                                 antiTipping)));
 
         operator.leftBumper().whileTrue(Commands.run(() -> {
-            fuel.setIntakeLauncherRoller(FuelConstants.INTAKE_INTAKING_PERCENT);
-            fuel.setFeederRoller(FuelConstants.INDEXER_INTAKING_PERCENT);
+            fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
-        operator.rightBumper().whileTrue(Commands.run(() -> {
-            fuel.setIntakeLauncherRoller(FuelConstants.LAUNCHING_LAUNCHER_PERCENT);
-            fuel.setFeederRoller(FuelConstants.INDEXER_SPIN_UP_PRE_LAUNCH_PERCENT);
-        }, fuel).withTimeout(FuelConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setIntakeLauncherRoller(FuelConstants.LAUNCHING_LAUNCHER_PERCENT);
-            fuel.setFeederRoller(FuelConstants.INDEXER_LAUNCHING_PERCENT);
+          operator.rightBumper().whileTrue(Commands.run(() -> {
+            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+        }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
+            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }, fuel))).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
-        operator.a().whileTrue(Commands.run(() -> {
-            fuel.setIntakeLauncherRoller(-1 * FuelConstants.INTAKE_EJECT_PERCENT);
-            fuel.setFeederRoller(FuelConstants.INDEXER_LAUNCHING_PERCENT);
+       operator.a().whileTrue(Commands.run(() -> {
+            fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_EJECT_PERCENT);
+            fuel.setFeederRoller(IntakeConstants.FEEDER_EJECT_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+
         operator.povUp().whileTrue(Commands.run(() -> {
-            climber.setClimber(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
-        }, fuel)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
+            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
+        }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
         operator.povDown().whileTrue(Commands.run(() -> {
-            climber.setClimber(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-        }, fuel)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
+            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
+        }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
     }
 
     /**
