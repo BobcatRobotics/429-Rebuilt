@@ -20,8 +20,8 @@ public class FuelIOReal implements FuelIO {
     private TalonFX feedMotor;
     private TalonFX shooterMotor;
     private TalonFX shooterIntakeMotor;
-    private DutyCycleOut shooterMotorRequest = new DutyCycleOut(0);
-  private DutyCycleOut feederMotorRequest = new DutyCycleOut(0);
+    private DutyCycleOut shooterMotorRequest = new DutyCycleOut(0).withEnableFOC(false);
+    private DutyCycleOut feederMotorRequest = new DutyCycleOut(0).withEnableFOC(false);
     public void updateInputs(FuelIOInputs inputs) {
 
     }

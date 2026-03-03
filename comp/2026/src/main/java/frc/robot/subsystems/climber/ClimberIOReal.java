@@ -11,7 +11,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class ClimberIOReal implements ClimberIO {
-    private DutyCycleOut climberMotorrequest = new DutyCycleOut(0);
+    private DutyCycleOut climberMotorrequest = new DutyCycleOut(0).withEnableFOC(false);
     private TalonFX climberMotor;
 
     public void updateInputs(ClimberIOInputs inputs) {
