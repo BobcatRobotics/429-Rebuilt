@@ -72,7 +72,7 @@ public class RobotContainer {
     private Vision vision;
 
     // Controller
-    private final CommandXboxController controller = new CommandXboxController(0);
+    private final CommandXboxController driver = new CommandXboxController(0);
     private final CommandXboxController operator = new CommandXboxController(1);
 
     // Dashboard inputs
@@ -169,38 +169,38 @@ public class RobotContainer {
         drive.setDefaultCommand(
                 DriveCommands.joystickDrive(
                         drive,
-                        () -> -controller.getLeftY(),
-                        () -> -controller.getLeftX(),
-                        () -> controller.getRightX()));
+                        () -> -driver.getLeftY(),
+                        () -> -driver.getLeftX(),
+                        () -> driver.getRightX()));
 
         fuel.setDefaultCommand(fuel.run(() -> fuel.stop()));
         climber.setDefaultCommand(climber.run(() -> climber.stop()));
 
         // Lock to 0° when A button is held
-        controller
+        driver
                 .a()
                 .whileTrue(
                         DriveCommands.joystickDriveAtAngle(
                                 drive,
-                                () -> -controller.getLeftY(),
-                                () -> -controller.getLeftX(),
+                                () -> -driver.getLeftY(),
+                                () -> -driver.getLeftX(),
                                 () -> Rotation2d.kZero));
 
         // Switch to X pattern when X button is pressed
-        controller.x()
+        driver.x()
                 .onTrue(new ActionFactory().singleAction("X-Command", () -> drive.stopWithX(), drive));
 
         // Reset gyro to 0° when B button is pressed
-        controller.b()
+        driver.b()
                 .onTrue(new ActionFactory().singleAction("ZeroGyroCommand",
                         () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                         drive).ignoringDisable(true));
 
         // Antitipping
-        controller.leftBumper()
+        driver.leftBumper()
                 .whileTrue(new ActionFactory().continuousAction("DriveWithAntiTipping",
-                        () -> DriveCommands.joystickDriveWithAntiTipping(drive, () -> -controller.getLeftY(),
-                                () -> -controller.getLeftX(), () -> -controller.getRightX(), antiTipping),
+                        () -> DriveCommands.joystickDriveWithAntiTipping(drive, () -> -driver.getLeftY(),
+                                () -> -driver.getLeftX(), () -> -driver.getRightX(), antiTipping),
                         () -> DriveCommands.joystickDriveWithAntiTipping(drive, () -> 0, () -> 0, () -> 0,
                                 antiTipping)));
 

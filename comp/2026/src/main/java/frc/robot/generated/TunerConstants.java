@@ -99,11 +99,11 @@ public class TunerConstants {
 
     // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
     // This may need to be tuned to your individual robot
-    private static final double kCoupleRatio = 3.5714285714285716;
+    private static final double kCoupleRatio = 3.125;
 
-    private static final double kDriveGearRatio = 6.746031746031747;
+    private static final double kDriveGearRatio = 5.357142857142857;
     private static final double kSteerGearRatio = 21.428571428571427;
-    private static final Distance kWheelRadius = Inches.of(1.934);
+    private static final Distance kWheelRadius = Inches.of(2);
 
     private static final boolean kInvertLeftSide = false;
     private static final boolean kInvertRightSide = true;
@@ -150,45 +150,45 @@ public class TunerConstants {
     private static final int kFrontLeftDriveMotorId = 9;
     private static final int kFrontLeftSteerMotorId = 8;
     private static final int kFrontLeftEncoderId = 13;
-    private static final Angle kFrontLeftEncoderOffset = Rotations.of(-0.480224609375);
+    private static final Angle kFrontLeftEncoderOffset = Rotations.of(-0.48193359375);
     private static final boolean kFrontLeftSteerMotorInverted = true;
     private static final boolean kFrontLeftEncoderInverted = false;
 
-    private static final Distance kFrontLeftXPos = Inches.of(10);
-    private static final Distance kFrontLeftYPos = Inches.of(10);
+    private static final Distance kFrontLeftXPos = Inches.of(10.4375);
+    private static final Distance kFrontLeftYPos = Inches.of(11.75);
 
     // Front Right
     private static final int kFrontRightDriveMotorId = 7;
     private static final int kFrontRightSteerMotorId = 6;
     private static final int kFrontRightEncoderId = 15;
-    private static final Angle kFrontRightEncoderOffset = Rotations.of(0.4560546875);
+    private static final Angle kFrontRightEncoderOffset = Rotations.of(0.455322265625);
     private static final boolean kFrontRightSteerMotorInverted = true;
     private static final boolean kFrontRightEncoderInverted = false;
 
-    private static final Distance kFrontRightXPos = Inches.of(10);
-    private static final Distance kFrontRightYPos = Inches.of(-10);
+    private static final Distance kFrontRightXPos = Inches.of(10.4375);
+    private static final Distance kFrontRightYPos = Inches.of(-11.75);
 
     // Back Left
     private static final int kBackLeftDriveMotorId = 5;
     private static final int kBackLeftSteerMotorId = 4;
     private static final int kBackLeftEncoderId = 14;
-    private static final Angle kBackLeftEncoderOffset = Rotations.of(-0.071533203125);
+    private static final Angle kBackLeftEncoderOffset = Rotations.of(-0.070556640625);
     private static final boolean kBackLeftSteerMotorInverted = true;
     private static final boolean kBackLeftEncoderInverted = false;
 
-    private static final Distance kBackLeftXPos = Inches.of(-10);
-    private static final Distance kBackLeftYPos = Inches.of(10);
+    private static final Distance kBackLeftXPos = Inches.of(-10.4375);
+    private static final Distance kBackLeftYPos = Inches.of(11.75);
 
     // Back Right
     private static final int kBackRightDriveMotorId = 3;
     private static final int kBackRightSteerMotorId = 2;
     private static final int kBackRightEncoderId = 12;
-    private static final Angle kBackRightEncoderOffset = Rotations.of(0.49853515625);
+    private static final Angle kBackRightEncoderOffset = Rotations.of(-0.499267578125);
     private static final boolean kBackRightSteerMotorInverted = true;
     private static final boolean kBackRightEncoderInverted = false;
 
-    private static final Distance kBackRightXPos = Inches.of(-10);
-    private static final Distance kBackRightYPos = Inches.of(-10);
+    private static final Distance kBackRightXPos = Inches.of(-10.4375);
+    private static final Distance kBackRightYPos = Inches.of(-11.75);
 
 
     public static final SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration> FrontLeft =
