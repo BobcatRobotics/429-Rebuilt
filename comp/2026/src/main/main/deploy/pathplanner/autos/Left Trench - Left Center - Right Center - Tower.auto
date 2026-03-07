@@ -1,0 +1,50 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Trench to Left Alliance Zone"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Alliance Zone to Left Mid Center"
+          }
+        },
+        shooterIntakeMotor.set(power);
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Mid Center to Left Center"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Center to Right Center"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Center to Right Alliance Zone"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Alliance Zone to Tower"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
