@@ -79,8 +79,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    // Subsystems
-    
+    // Subsystems    
     private final Shooter shooter;
     private final Fuel fuel;
     private final Climber climber;
