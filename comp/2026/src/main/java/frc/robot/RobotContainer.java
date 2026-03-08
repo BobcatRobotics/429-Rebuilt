@@ -17,13 +17,19 @@ package frc.robot;
 import org.littletonrobotics.junction.Logger;
 // import frc.robot.subsystems.roller.RollerSubsystem;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -76,7 +82,7 @@ public class RobotContainer {
     private final CommandXboxController operator = new CommandXboxController(1);
 
     // Dashboard inputs
-    private final LoggedDashboardChooser<Command> autoChooser;
+    private final SendableChooser<Command> autoChooser;
 
     private final HubUtil hub;
 
@@ -133,21 +139,22 @@ public class RobotContainer {
         );
 
         // Set up auto routines
-        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+        autoChooser = AutoBuilder.buildAutoChooser();
 
-        // Set up SysId routines
-        autoChooser.addOption("Drive Wheel Radius Characterization",
-                DriveCommands.wheelRadiusCharacterization(drive));
-        autoChooser.addOption("Drive Simple FF Characterization",
-                DriveCommands.feedforwardCharacterization(drive));
-        autoChooser.addOption("Drive SysId (Quasistatic Forward)",
-                drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-        autoChooser.addOption("Drive SysId (Quasistatic Reverse)",
-                drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-        autoChooser.addOption("Drive SysId (Dynamic Forward)",
-                drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-        autoChooser.addOption("Drive SysId (Dynamic Reverse)",
-                drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+                NamedCommands.registerCommand("Intake", Commands.run(() -> {
+            fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
+        }, fuel));
+
+                NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
+            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+        }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
+            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+        }, fuel)).withTimeout(3));
+
+        SmartDashboard.putData("Auto Chooser", autoChooser);
 
         // Configure the button bindings
         configureButtonBindings();
@@ -203,11 +210,13 @@ public class RobotContainer {
                                 () -> -driver.getLeftX(), () -> -driver.getRightX(), antiTipping),
                         () -> DriveCommands.joystickDriveWithAntiTipping(drive, () -> 0, () -> 0, () -> 0,
                                 antiTipping)));
-
+        //intake
         operator.leftBumper().whileTrue(Commands.run(() -> {
             fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+
+        //shoot
           operator.rightBumper().whileTrue(Commands.run(() -> {
             fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
@@ -215,14 +224,19 @@ public class RobotContainer {
             fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }, fuel))).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+
+        //eject through intake
        operator.a().whileTrue(Commands.run(() -> {
             fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_EJECT_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_EJECT_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
+        //climb up
         operator.povUp().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
+
+        //climb down
         operator.povDown().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
@@ -234,7 +248,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return autoChooser.get();
+        return autoChooser.getSelected();
     }
 
     public Pose2d getPose2D() {
