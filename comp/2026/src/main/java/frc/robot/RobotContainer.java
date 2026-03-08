@@ -25,7 +25,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -70,6 +69,14 @@ import org.bobcatrobotics.Subsystems.Swerve.ModuleWrapper;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+        public void resetFieldOrientation(boolean isRed) {
+    drive.setPose(new Pose2d(
+        drive.getPose().getTranslation(),
+        isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero
+    ));
+}
+
     // Subsystems
     private final Fuel fuel;
     private final Climber climber;
@@ -203,21 +210,14 @@ public class RobotContainer {
                         () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                         drive).ignoringDisable(true));
 
-        // Antitipping
-        driver.leftBumper()
-                .whileTrue(new ActionFactory().continuousAction("DriveWithAntiTipping",
-                        () -> DriveCommands.joystickDriveWithAntiTipping(drive, () -> -driver.getLeftY(),
-                                () -> -driver.getLeftX(), () -> -driver.getRightX(), antiTipping),
-                        () -> DriveCommands.joystickDriveWithAntiTipping(drive, () -> 0, () -> 0, () -> 0,
-                                antiTipping)));
         //intake
-        operator.leftBumper().whileTrue(Commands.run(() -> {
+        driver.leftBumper().whileTrue(Commands.run(() -> {
             fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
         //shoot
-          operator.rightBumper().whileTrue(Commands.run(() -> {
+          driver.rightBumper().whileTrue(Commands.run(() -> {
             fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {

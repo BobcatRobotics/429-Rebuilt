@@ -50,6 +50,8 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class Drive extends SubsystemBase {
+  private Rotation2d gyroOffset = Rotation2d.kZero;
+
   // TunerConstants doesn't include these constants, so they are declared locally
   static final double ODOMETRY_FREQUENCY = TunerConstants.kCANBus.isNetworkFD() ? 250.0 : 100.0;
   public static final double DRIVE_BASE_RADIUS =
@@ -194,7 +196,7 @@ public class Drive extends SubsystemBase {
       // Update gyro angle
       if (gyroInputs.connected) {
         // Use the real gyro angle
-        rawGyroRotation = gyroInputs.odometryYawPositions[i];
+rawGyroRotation = gyroInputs.odometryYawPositions[i].plus(gyroOffset);
       } else {
         // Use the angle delta from the kinematics and module deltas
         Twist2d twist = kinematics.toTwist2d(moduleDeltas);
@@ -326,8 +328,9 @@ public class Drive extends SubsystemBase {
 
   /** Resets the current odometry pose. */
   public void setPose(Pose2d pose) {
+    gyroOffset = pose.getRotation().minus(rawGyroRotation);
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
-  }
+}
 
   /** Adds a new timestamped vision measurement. */
   public void addVisionMeasurement(
