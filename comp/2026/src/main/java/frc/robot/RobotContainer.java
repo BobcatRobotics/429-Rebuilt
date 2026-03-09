@@ -210,16 +210,12 @@ public class RobotContainer {
                 .onTrue(new ActionFactory().singleAction("X-Command", () -> drive.stopWithX(), drive));
 
         // Reset gyro / field orientation when B button is pressed
-        driver.b()
-                .onTrue(Commands.runOnce(
-                        () -> {
-                            boolean isRed = DriverStation.getAlliance().isPresent()
-                                && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
-                            drive.setPose(new Pose2d(
-                                drive.getPose().getTranslation(),
-                                isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero));
-                        },
-                        drive).ignoringDisable(true));
+        //THIS CODE IS THE EXACT BUTTON COMMAND FROM 429 2025 CODE - Mike L March 9th
+        driver.b().onTrue(
+                Commands.runOnce(
+                () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+                drive)
+            .ignoringDisable(true));
 
         //intake
         driver.leftBumper().whileTrue(Commands.run(() -> {

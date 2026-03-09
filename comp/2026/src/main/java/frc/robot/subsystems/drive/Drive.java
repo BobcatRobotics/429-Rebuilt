@@ -90,6 +90,7 @@ public class Drive extends SubsystemBase {
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
   private Rotation2d rawGyroRotation = Rotation2d.kZero;
+  //this line above in 2025 code is "= new rotation2d();"
   private SwerveModulePosition[] lastModulePositions = // For delta tracking
       new SwerveModulePosition[] {
         new SwerveModulePosition(),
@@ -99,6 +100,7 @@ public class Drive extends SubsystemBase {
       };
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, Pose2d.kZero);
+      //check this line above, pose2d.kzero. in 2025 code we have "new Pose2d()" there.
 
   public Drive(
       GyroIO gyroIO,
@@ -203,7 +205,7 @@ rawGyroRotation = gyroInputs.odometryYawPositions[i];
       }
 
       // Apply update
-      poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation.plus(gyroOffset), modulePositions);
+      poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
     }
 
     // Update gyro alert
@@ -327,7 +329,6 @@ rawGyroRotation = gyroInputs.odometryYawPositions[i];
 
   /** Resets the current odometry pose. */
   public void setPose(Pose2d pose) {
-    gyroOffset = pose.getRotation().minus(rawGyroRotation);
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
   }
 
