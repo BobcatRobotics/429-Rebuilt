@@ -1,4 +1,3 @@
-
 // Copyright 2021-2025 FRC 6328
 // http://github.com/Mechanical-Advantage
 //
@@ -23,6 +22,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -53,6 +53,8 @@ import frc.robot.subsystems.fuel.FuelIOReal;
 import frc.robot.subsystems.fuel.FuelIOSim;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
+import frc.robot.util.AllianceFlipUtil;
+
 import org.bobcatrobotics.Commands.ActionFactory;
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubData;
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
@@ -146,12 +148,32 @@ public class RobotContainer {
         );
 
         // Set up auto routines
+
+        registerNammedCommands();
+
         autoChooser = AutoBuilder.buildAutoChooser();
 
-                NamedCommands.registerCommand("Intake", Commands.run(() -> {
+        SmartDashboard.putData("Auto Chooser", autoChooser);
+
+        // Configure the button bindings
+        configureButtonBindings();
+
+        hub = new HubUtil();
+    }
+
+    private void registerNammedCommands(){
+        NamedCommands.registerCommand("Intake", Commands.run(() -> {
             fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel));
+
+        NamedCommands.registerCommand("Set Pose", Commands.runOnce(() -> {
+        boolean isRed = DriverStation.getAlliance().isPresent()
+                            && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+                        drive.setPose(new Pose2d(
+                            drive.getPose().getTranslation(),
+                            isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero));
+        }, drive).ignoringDisable(true));
 
                 NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
             fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
@@ -160,13 +182,6 @@ public class RobotContainer {
             fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }, fuel)).withTimeout(3));
-
-        SmartDashboard.putData("Auto Chooser", autoChooser);
-
-        // Configure the button bindings
-        configureButtonBindings();
-
-        hub = new HubUtil();
     }
 
     /**
@@ -190,24 +205,20 @@ public class RobotContainer {
         fuel.setDefaultCommand(fuel.run(() -> fuel.stop()));
         climber.setDefaultCommand(climber.run(() -> climber.stop()));
 
-        // Lock to 0° when A button is held
-        driver
-                .a()
-                .whileTrue(
-                        DriveCommands.joystickDriveAtAngle(
-                                drive,
-                                () -> -driver.getLeftY(),
-                                () -> -driver.getLeftX(),
-                                () -> Rotation2d.kZero));
-
         // Switch to X pattern when X button is pressed
         driver.x()
                 .onTrue(new ActionFactory().singleAction("X-Command", () -> drive.stopWithX(), drive));
 
-        // Reset gyro to 0° when B button is pressed
+        // Reset gyro / field orientation when B button is pressed
         driver.b()
-                .onTrue(new ActionFactory().singleAction("ZeroGyroCommand",
-                        () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
+                .onTrue(Commands.runOnce(
+                        () -> {
+                            boolean isRed = DriverStation.getAlliance().isPresent()
+                                && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+                            drive.setPose(new Pose2d(
+                                drive.getPose().getTranslation(),
+                                isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero));
+                        },
                         drive).ignoringDisable(true));
 
         //intake

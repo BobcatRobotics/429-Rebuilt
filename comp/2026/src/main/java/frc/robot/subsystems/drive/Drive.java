@@ -1,4 +1,3 @@
-
 // Copyright (c) 2021-2026 Littleton Robotics
 // http://github.com/Mechanical-Advantage
 //
@@ -196,7 +195,7 @@ public class Drive extends SubsystemBase {
       // Update gyro angle
       if (gyroInputs.connected) {
         // Use the real gyro angle
-rawGyroRotation = gyroInputs.odometryYawPositions[i].plus(gyroOffset);
+rawGyroRotation = gyroInputs.odometryYawPositions[i];
       } else {
         // Use the angle delta from the kinematics and module deltas
         Twist2d twist = kinematics.toTwist2d(moduleDeltas);
@@ -204,7 +203,7 @@ rawGyroRotation = gyroInputs.odometryYawPositions[i].plus(gyroOffset);
       }
 
       // Apply update
-      poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
+      poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation.plus(gyroOffset), modulePositions);
     }
 
     // Update gyro alert
@@ -330,7 +329,7 @@ rawGyroRotation = gyroInputs.odometryYawPositions[i].plus(gyroOffset);
   public void setPose(Pose2d pose) {
     gyroOffset = pose.getRotation().minus(rawGyroRotation);
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
-}
+  }
 
   /** Adds a new timestamped vision measurement. */
   public void addVisionMeasurement(

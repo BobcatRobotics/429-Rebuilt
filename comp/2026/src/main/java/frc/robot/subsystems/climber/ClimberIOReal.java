@@ -27,7 +27,7 @@ public class ClimberIOReal implements ClimberIO {
         climberMotor = new TalonFX(CLIMBER_MOTOR_ID, new CANBus("rio"));
 
     var ClimberConfig = new TalonFXConfiguration();
-        ClimberConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        ClimberConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         ClimberConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         ClimberConfig.CurrentLimits.SupplyCurrentLimit = CLIMBER_MOTOR_CURRENT_LIMIT;
         ClimberConfig.CurrentLimits.SupplyCurrentLimitEnable = true;

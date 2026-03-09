@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 public final class Constants {
     public static final Mode simMode = Mode.SIM;
     public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
-
+    
     public static enum Mode {
         /** Running on a real robot. */
         REAL,
@@ -42,7 +42,7 @@ public final class Constants {
 
     // All values likely need to be tuned based on your robot
     public static final double FEEDER_INTAKING_PERCENT = -0.35;
-    public static final double FEEDER_EJECT_PERCENT = 0.6;
+    public static final double FEEDER_EJECT_PERCENT = 0.5;
     public static final double FEEDER_LAUNCHING_PERCENT = 0.2;
     public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.2;
 
@@ -62,8 +62,8 @@ public final class Constants {
     public static final int CLIMBER_MOTOR_NEGATIVE_ROTATIONS = -1;
     public static final int CLIMBER_MOTOR_POSITIVE_ROTATIONS = 1;
     // Percentage to power the motor both up and down
-    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.6;
-    public static final double CLIMBER_MOTOR_UP_PERCENT = 0.6;
+    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.5;
+    public static final double CLIMBER_MOTOR_UP_PERCENT = 0.5;
   }
 
   public static final class IntakeConstants {

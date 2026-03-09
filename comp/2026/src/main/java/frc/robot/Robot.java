@@ -107,17 +107,13 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousInit() {
 
-    // Set correct field-relative starting orientation based on alliance
-    boolean isRed = DriverStation.getAlliance().isPresent()
-        && DriverStation.getAlliance().get() == Alliance.Red;
-    m_robotContainer.resetFieldOrientation(isRed);
-
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       CommandScheduler.getInstance().schedule(m_autonomousCommand);
     }
+
   }
 
   /** This function is called periodically during autonomous. */
@@ -133,7 +129,14 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    
+
+    boolean isRed = DriverStation.getAlliance().isPresent()
+        && DriverStation.getAlliance().get() == Alliance.Red;
+    m_robotContainer.resetFieldOrientation(isRed);
+
   }
+
 
   /** This function is called periodically during operator control. */
   @Override
