@@ -168,14 +168,14 @@ public class RobotContainer {
         }, fuel));
 
         NamedCommands.registerCommand("Set Pose", Commands.runOnce(() -> {
-        boolean isRed = DriverStation.getAlliance().isPresent()
+            boolean isRed = DriverStation.getAlliance().isPresent()
                             && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
                         drive.setPose(new Pose2d(
                             drive.getPose().getTranslation(),
                             isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero));
         }, drive).ignoringDisable(true));
 
-                NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
+        NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
             fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
