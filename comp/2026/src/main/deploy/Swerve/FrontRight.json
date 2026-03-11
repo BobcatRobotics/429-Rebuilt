@@ -1,9 +1,9 @@
 {
     "module": {
-               "type": "mk4i",
+               "type": "mk4n",
         "kCoupleRatio": 3.125,
-        "kDriveGearRatio": 5.357142857142857,
-        "kSteerGearRatio": 21.428571428571427,
+        "kDriveGearRatio": 5.902777777777778,
+        "kSteerGearRatio": 18.75,
         "driveInverted":false,
         "steerInverted":true,
         "encoderInverted":false
