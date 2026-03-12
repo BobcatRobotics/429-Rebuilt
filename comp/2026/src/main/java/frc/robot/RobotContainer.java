@@ -72,12 +72,12 @@ import org.bobcatrobotics.Subsystems.Swerve.ModuleWrapper;
  */
 public class RobotContainer {
 
-        public void resetFieldOrientation(boolean isRed) {
-    drive.setPose(new Pose2d(
-        drive.getPose().getTranslation(),
-        isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero
-    ));
-}
+//         public void resetFieldOrientation(boolean isRed) {
+//     drive.setPose(new Pose2d(
+//         drive.getPose().getTranslation(),
+//         isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero
+//     ));
+//          }
 
     // Subsystems
     private final Fuel fuel;
