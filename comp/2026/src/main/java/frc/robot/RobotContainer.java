@@ -22,6 +22,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -31,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ClimbConstatns;
 import frc.robot.Constants.IntakeConstants;
@@ -94,12 +96,13 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     private final HubUtil hub;
+    Trigger shooterButton = new Trigger(driver.rightBumper());
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-                ModuleWrapper newFrontRight = new ModuleWrapper("FrontRight.json", "FrontRight");
+        ModuleWrapper newFrontRight = new ModuleWrapper("FrontRight.json", "FrontRight");
         ModuleWrapper newFrontLeft = new ModuleWrapper("FrontLeft.json", "FrontLeft");
         ModuleWrapper newBackLeft = new ModuleWrapper("BackLeft.json", "BackLeft");
         ModuleWrapper newBackRight = new ModuleWrapper("BackRight.json", "BackRight");
@@ -193,7 +196,6 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-
         // Default command, normal field-relative drive
         drive.setDefaultCommand(
                 DriveCommands.joystickDrive(
@@ -222,13 +224,13 @@ public class RobotContainer {
                         drive).ignoringDisable(true));
 
         //intake
-        driver.leftBumper().whileTrue(Commands.run(() -> {
+        operator.leftBumper().whileTrue(Commands.run(() -> {
             fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
         //shoot
-          driver.rightBumper().whileTrue(Commands.run(() -> {
+        operator.rightBumper().whileTrue(Commands.run(() -> {
             fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
@@ -237,7 +239,7 @@ public class RobotContainer {
         }, fuel))).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
         //eject through intake
-       operator.a().whileTrue(Commands.run(() -> {
+        operator.a().whileTrue(Commands.run(() -> {
             fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_EJECT_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_EJECT_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
@@ -251,6 +253,10 @@ public class RobotContainer {
         operator.povDown().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
+
+        shooterButton.onTrue(new InstantCommand(() -> {
+            System.out.println("Virtual Button Pressed!");
+        }));
     }
 
     /**
