@@ -234,13 +234,13 @@ public class RobotContainer {
             .ignoringDisable(true));
 
         //intake
-        driver.leftBumper().whileTrue(Commands.run(() -> {
+        operator.leftBumper().whileTrue(Commands.run(() -> {
             fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
         //shoot
-          driver.rightBumper().whileTrue(Commands.run(() -> {
+          operator.rightBumper().whileTrue(Commands.run(() -> {
             fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
