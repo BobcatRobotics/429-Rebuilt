@@ -61,6 +61,9 @@ import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
 import org.bobcatrobotics.Subsystems.AntiTippingLib.AntiTipping;
 import org.bobcatrobotics.Subsystems.Swerve.ModuleWrapper;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -78,210 +81,216 @@ public class RobotContainer {
 //         isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero
 //     ));
 //          }
-
-    // Subsystems
-    private final Fuel fuel;
-    private final Climber climber;
-    private final Drive drive;
-    private final AntiTipping antiTipping;
-    private Vision vision;
-
-    // Controller
-    private final CommandXboxController driver = new CommandXboxController(0);
-    private final CommandXboxController operator = new CommandXboxController(1);
-
-    // Dashboard inputs
-    private final SendableChooser<Command> autoChooser;
-
-    private final HubUtil hub;
-
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
-    public RobotContainer() {
-                ModuleWrapper newFrontRight = new ModuleWrapper("FrontRight.json", "FrontRight");
-        ModuleWrapper newFrontLeft = new ModuleWrapper("FrontLeft.json", "FrontLeft");
-        ModuleWrapper newBackLeft = new ModuleWrapper("BackLeft.json", "BackLeft");
-        ModuleWrapper newBackRight = new ModuleWrapper("BackRight.json", "BackRight");
-        switch (Constants.currentMode) {
-            case REAL:
-                // Real robot, instantiate hardware IO implementations
-                drive = new Drive(new GyroIOPigeon2(),
-                        new ModuleIOTalonFX(newFrontLeft.addModuleConstants(TunerConstants.FrontLeft)),
-                        new ModuleIOTalonFX(newFrontRight.addModuleConstants(TunerConstants.FrontRight)),
-                        new ModuleIOTalonFX(newBackLeft.addModuleConstants(TunerConstants.BackLeft)),
-                        new ModuleIOTalonFX(newBackRight.addModuleConstants(TunerConstants.BackRight)));
-                fuel = new Fuel(new FuelIOReal());
-                climber = new Climber(new ClimberIOReal());
-                // Vision
-                vision = new Vision(drive::addVisionMeasurement, new VisionIOLimelight("", drive::getRotation));
-                break;
-            case SIM:
-                // Sim robot, instantiate physics sim IO implementations
-                drive = new Drive(new GyroIO() {
-                }, new ModuleIOSim(TunerConstants.FrontLeft),
-                        new ModuleIOSim(TunerConstants.FrontRight), new ModuleIOSim(TunerConstants.BackLeft),
-                        new ModuleIOSim(TunerConstants.BackRight));
-                fuel = new Fuel(new FuelIOSim());
-                climber = new Climber(new ClimberIOSim());
-                break;
-
-            default:
-                // Replayed robot, disable IO implementations
-                drive = new Drive(new GyroIO() {
-                }, new ModuleIO() {
-                }, new ModuleIO() {
-                }, new ModuleIO() {
-                },
-                        new ModuleIO() {
-                        });
-                fuel = new Fuel(new FuelIO() {
-                });
-                climber = new Climber(new ClimberIO() {
-                });
-                break;
+        NetworkTableEntry motorSpeedEntry;
+        // Subsystems
+        private final Fuel fuel;
+        private final Climber climber;
+        private final Drive drive;
+        private final AntiTipping antiTipping;
+        private Vision vision;
+    
+        // Controller
+        private final CommandXboxController driver = new CommandXboxController(0);
+        private final CommandXboxController operator = new CommandXboxController(1);
+    
+        // Dashboard inputs
+        private final SendableChooser<Command> autoChooser;
+    
+        private final HubUtil hub;
+    
+        /**
+         * The container for the robot. Contains subsystems, OI devices, and commands.
+         */
+        public RobotContainer() {
+                    ModuleWrapper newFrontRight = new ModuleWrapper("FrontRight.json", "FrontRight");
+            ModuleWrapper newFrontLeft = new ModuleWrapper("FrontLeft.json", "FrontLeft");
+            ModuleWrapper newBackLeft = new ModuleWrapper("BackLeft.json", "BackLeft");
+            ModuleWrapper newBackRight = new ModuleWrapper("BackRight.json", "BackRight");
+            switch (Constants.currentMode) {
+                case REAL:
+                    // Real robot, instantiate hardware IO implementations
+                    drive = new Drive(new GyroIOPigeon2(),
+                            new ModuleIOTalonFX(newFrontLeft.addModuleConstants(TunerConstants.FrontLeft)),
+                            new ModuleIOTalonFX(newFrontRight.addModuleConstants(TunerConstants.FrontRight)),
+                            new ModuleIOTalonFX(newBackLeft.addModuleConstants(TunerConstants.BackLeft)),
+                            new ModuleIOTalonFX(newBackRight.addModuleConstants(TunerConstants.BackRight)));
+                    fuel = new Fuel(new FuelIOReal());
+                    climber = new Climber(new ClimberIOReal());
+                    // Vision
+                    vision = new Vision(drive::addVisionMeasurement, new VisionIOLimelight("", drive::getRotation));
+                    break;
+                case SIM:
+                    // Sim robot, instantiate physics sim IO implementations
+                    drive = new Drive(new GyroIO() {
+                    }, new ModuleIOSim(TunerConstants.FrontLeft),
+                            new ModuleIOSim(TunerConstants.FrontRight), new ModuleIOSim(TunerConstants.BackLeft),
+                            new ModuleIOSim(TunerConstants.BackRight));
+                    fuel = new Fuel(new FuelIOSim());
+                    climber = new Climber(new ClimberIOSim());
+                    break;
+    
+                default:
+                    // Replayed robot, disable IO implementations
+                    drive = new Drive(new GyroIO() {
+                    }, new ModuleIO() {
+                    }, new ModuleIO() {
+                    }, new ModuleIO() {
+                    },
+                            new ModuleIO() {
+                            });
+                    fuel = new Fuel(new FuelIO() {
+                    });
+                    climber = new Climber(new ClimberIO() {
+                    });
+                    break;
+            }
+    
+            antiTipping = new AntiTipping(() -> drive.getPitch(), () -> drive.getRoll(), 0.04, // kP
+                    3.0, // tipping threshold (degrees)
+                    2.5 // max correction speed (m/s)
+            );
+    
+            // Set up auto routines
+    
+            registerNammedCommands();
+    
+            autoChooser = AutoBuilder.buildAutoChooser();
+    
+            SmartDashboard.putData("Auto Chooser", autoChooser);
+    
+                // Set up SysId routines
+        autoChooser.addOption(
+            "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
+        autoChooser.addOption(
+            "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
+        autoChooser.addOption(
+            "Drive SysId (Quasistatic Forward)",
+            drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        autoChooser.addOption(
+            "Drive SysId (Quasistatic Reverse)",
+            drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        autoChooser.addOption(
+            "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        autoChooser.addOption(
+            "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    
+            // Configure the button bindings
+            configureButtonBindings();
+    
+            hub = new HubUtil();
         }
-
-        antiTipping = new AntiTipping(() -> drive.getPitch(), () -> drive.getRoll(), 0.04, // kP
-                3.0, // tipping threshold (degrees)
-                2.5 // max correction speed (m/s)
-        );
-
-        // Set up auto routines
-
-        registerNammedCommands();
-
-        autoChooser = AutoBuilder.buildAutoChooser();
-
-        SmartDashboard.putData("Auto Chooser", autoChooser);
-
-            // Set up SysId routines
-    autoChooser.addOption(
-        "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
-    autoChooser.addOption(
-        "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Forward)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Reverse)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-
-        // Configure the button bindings
-        configureButtonBindings();
-
-        hub = new HubUtil();
-    }
-
-    private void registerNammedCommands(){
-        NamedCommands.registerCommand("Intake", Commands.run(() -> {
-            fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
-            fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
-        }, fuel));
-
-        NamedCommands.registerCommand("Set Pose", Commands.runOnce(() -> {
-        boolean isRed = DriverStation.getAlliance().isPresent()
-                            && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
-                        drive.setPose(new Pose2d(
-                            drive.getPose().getTranslation(),
-                            isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero));
-        }, drive).ignoringDisable(true));
-
-                NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
-            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
-            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
-        }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
-            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }, fuel)).withTimeout(3));
-    }
-
-    /**
-     * Use this method to define your button->command mappings. Buttons can be
-     * created by
-     * instantiating a {@link GenericHID} or one of its subclasses
-     * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-     * passing it to a
-     * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
-    private void configureButtonBindings() {
-
-        // Default command, normal field-relative drive
-        drive.setDefaultCommand(
-                DriveCommands.joystickDrive(
-                        drive,
-                        () -> -driver.getLeftY(),
-                        () -> -driver.getLeftX(),
-                        () -> driver.getRightX()));
-
-        fuel.setDefaultCommand(fuel.run(() -> fuel.stop()));
-        climber.setDefaultCommand(climber.run(() -> climber.stop()));
-
-        // Switch to X pattern when X button is pressed
-        driver.x()
-                .onTrue(new ActionFactory().singleAction("X-Command", () -> drive.stopWithX(), drive));
-
-        // Reset gyro / field orientation when B button is pressed
-        //THIS CODE IS THE EXACT BUTTON COMMAND FROM 429 2025 CODE - Mike L March 9th
-        driver.b().onTrue(
-                Commands.runOnce(
-                () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                drive)
-            .ignoringDisable(true));
-
-        //intake
-        operator.leftBumper().whileTrue(Commands.run(() -> {
-            fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
-            fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
-        }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
-
-        //shoot
-          operator.rightBumper().whileTrue(Commands.run(() -> {
-            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
-            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
-        }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
-            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }, fuel))).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
-
-        //eject through intake
-       operator.a().whileTrue(Commands.run(() -> {
-            fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_EJECT_PERCENT);
-            fuel.setFeederRoller(IntakeConstants.FEEDER_EJECT_PERCENT);
-        }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
-
-        //climb up
-        operator.povUp().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
-        }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
-
-        //climb down
-        operator.povDown().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-        }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
-    }
-
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
-    }
-
-    public Pose2d getPose2D() {
-        return drive.getPose();
-    }
-
-    public void teleopPeriodic() {
-        antiTipping.calculate();
-        HubData hubData = hub.getHubData();
-        Logger.recordOutput("Hub/Status", hubData.owner);
-        Logger.recordOutput("Hub/TimeRemaing", hubData.timeRemaining);
+    
+        private void registerNammedCommands(){
+            NamedCommands.registerCommand("Intake", Commands.run(() -> {
+                fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
+                fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
+            }, fuel));
+    
+            NamedCommands.registerCommand("Set Pose", Commands.runOnce(() -> {
+            boolean isRed = DriverStation.getAlliance().isPresent()
+                                && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+                            drive.setPose(new Pose2d(
+                                drive.getPose().getTranslation(),
+                                isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero));
+            }, drive).ignoringDisable(true));
+    
+                    NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
+                fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+                fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
+                fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+                fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+            }, fuel)).withTimeout(3));
+        }
+    
+        /**
+         * Use this method to define your button->command mappings. Buttons can be
+         * created by
+         * instantiating a {@link GenericHID} or one of its subclasses
+         * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+         * passing it to a
+         * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+         */
+        private void configureButtonBindings() {
+    
+            // Default command, normal field-relative drive
+            drive.setDefaultCommand(
+                    DriveCommands.joystickDrive(
+                            drive,
+                            () -> -driver.getLeftY(),
+                            () -> -driver.getLeftX(),
+                            () -> driver.getRightX()));
+    
+            fuel.setDefaultCommand(fuel.run(() -> fuel.stop()));
+            climber.setDefaultCommand(climber.run(() -> climber.stop()));
+    
+            // Switch to X pattern when X button is pressed
+            driver.x()
+                    .onTrue(new ActionFactory().singleAction("X-Command", () -> drive.stopWithX(), drive));
+    
+            // Reset gyro / field orientation when B button is pressed
+            //THIS CODE IS THE EXACT BUTTON COMMAND FROM 429 2025 CODE - Mike L March 9th
+            driver.b().onTrue(
+                    Commands.runOnce(
+                    () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+                    drive)
+                .ignoringDisable(true));
+    
+            //intake
+            operator.leftBumper().whileTrue(Commands.run(() -> {
+                fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
+                fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
+            }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+    
+            //shoot
+              operator.rightBumper().whileTrue(Commands.run(() -> {
+                fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+                fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
+                fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+                fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+            }, fuel))).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+    
+            //eject through intake
+           operator.a().whileTrue(Commands.run(() -> {
+                fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_EJECT_PERCENT);
+                fuel.setFeederRoller(IntakeConstants.FEEDER_EJECT_PERCENT);
+            }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+    
+            //climb up
+            operator.povUp().whileTrue(Commands.run(() -> {
+                climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
+            }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
+    
+            //climb down
+            operator.povDown().whileTrue(Commands.run(() -> {
+                climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
+            }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
+    
+            motorSpeedEntry = NetworkTableInstance.getDefault()
+                .getTable("SmartDashboard")
+                .getEntry("Feeder Intake Percent");
+        }
+    
+        /**
+         * Use this to pass the autonomous command to the main {@link Robot} class.
+         *
+         * @return the command to run in autonomous
+         */
+        public Command getAutonomousCommand() {
+            return autoChooser.getSelected();
+        }
+    
+        public Pose2d getPose2D() {
+            return drive.getPose();
+        }
+    
+        public void teleopPeriodic() {
+            antiTipping.calculate();
+            HubData hubData = hub.getHubData();
+            Logger.recordOutput("Hub/Status", hubData.owner);
+            Logger.recordOutput("Hub/TimeRemaing", hubData.timeRemaining);
+    
+            double feederIntakePercent = motorSpeedEntry.getDouble(0.0);
     }
 }
