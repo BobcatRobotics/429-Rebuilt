@@ -54,6 +54,7 @@ import frc.robot.subsystems.fuel.FuelIOSim;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.util.AllianceFlipUtil;
+import frc.robot.commands.SimpleAuto;
 
 import org.bobcatrobotics.Commands.ActionFactory;
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubData;
@@ -152,24 +153,25 @@ public class RobotContainer {
         registerNammedCommands();
 
         autoChooser = AutoBuilder.buildAutoChooser();
+        autoChooser.addOption("Drive back and Shoot", new SimpleAuto(drive));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
             // Set up SysId routines
-    autoChooser.addOption(
-        "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
-    autoChooser.addOption(
-        "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Forward)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Reverse)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+//     autoChooser.addOption(
+//         "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
+//     autoChooser.addOption(
+//         "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
+//     autoChooser.addOption(
+//         "Drive SysId (Quasistatic Forward)",
+//         drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+//     autoChooser.addOption(
+//         "Drive SysId (Quasistatic Reverse)",
+//         drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+//     autoChooser.addOption(
+//         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+//     autoChooser.addOption(
+//         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -183,13 +185,10 @@ public class RobotContainer {
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel));
 
-        NamedCommands.registerCommand("Set Pose", Commands.runOnce(() -> {
-        boolean isRed = DriverStation.getAlliance().isPresent()
-                            && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
-                        drive.setPose(new Pose2d(
-                            drive.getPose().getTranslation(),
-                            isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero));
-        }, drive).ignoringDisable(true));
+        NamedCommands.registerCommand("Set Pose", Commands.runOnce(
+                () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+                drive)
+            .ignoringDisable(true));
 
                 NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
             fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
