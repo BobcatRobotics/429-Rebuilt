@@ -64,6 +64,10 @@ public final class Constants {
     // Percentage to power the motor both up and down
     public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.5;
     public static final double CLIMBER_MOTOR_UP_PERCENT = 0.5;
+
+    public static final double CLIMBER_PRECLIMB = -280.68;
+    public static final double CLIMBER_CLIMBED = 180;
+    
   }
 
   public static final class IntakeConstants {

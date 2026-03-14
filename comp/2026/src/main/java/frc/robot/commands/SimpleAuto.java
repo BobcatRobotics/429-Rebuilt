@@ -11,7 +11,7 @@ public class SimpleAuto extends SequentialCommandGroup{
 
         NamedCommands.getCommand("Set Pose"),
 
-      DriveCommands.joystickDrive(drive, () -> 0.0, () -> -0.5, () -> 0.0)
+      DriveCommands.joystickDrive(drive, () -> -0.5, () -> 0, () -> 0.0)
                    .withTimeout(2.0),
 
       DriveCommands.joystickDrive(drive, () -> 0.0, () -> 0.0, () -> 0.0)

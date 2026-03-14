@@ -185,7 +185,7 @@ public class RobotContainer {
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel));
 
-        NamedCommands.registerCommand("Set Pose", Commands.runOnce(
+        NamedCommands.registerCommand("Set Pose",   Commands.runOnce(
                 () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                 drive)
             .ignoringDisable(true));

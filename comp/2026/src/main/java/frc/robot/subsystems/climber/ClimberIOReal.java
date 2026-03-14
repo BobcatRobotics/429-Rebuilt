@@ -1,7 +1,9 @@
 package frc.robot.subsystems.climber;
 
+import static frc.robot.Constants.ClimbConstatns.CLIMBER_CLIMBED;
 import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_CURRENT_LIMIT;
 import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_ID;
+import static frc.robot.Constants.ClimbConstatns.CLIMBER_PRECLIMB;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -33,6 +35,11 @@ public class ClimberIOReal implements ClimberIO {
         ClimberConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         ClimberConfig.CurrentLimits.StatorCurrentLimit = CLIMBER_MOTOR_CURRENT_LIMIT;
         ClimberConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        ClimberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = CLIMBER_CLIMBED;
+        ClimberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        ClimberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = CLIMBER_PRECLIMB;
+        ClimberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+
         climberMotor.getConfigurator().apply(ClimberConfig);
     }
 
