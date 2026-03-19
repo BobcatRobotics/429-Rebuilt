@@ -2,6 +2,9 @@ package frc.robot.subsystems.climber;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+
 public interface ClimberIO {
     @AutoLog
     public class ClimberIOInputs {
@@ -22,6 +25,15 @@ public interface ClimberIO {
 
     }
 
+    public default Command disableLimits(){
+        return Commands.none();
+    }
+
+    public default Command enableLimits(){
+        return Commands.none();
+    }
+
+
 
     /**
      * Sets the position of the climber.
@@ -37,7 +49,7 @@ public interface ClimberIO {
      * This is not PID based and will apply output to the motor.
      * 
      */
-    public default void setClimber(double power){
+    public default void setClimberPower(double power){
 
     }
     public default void stop(){

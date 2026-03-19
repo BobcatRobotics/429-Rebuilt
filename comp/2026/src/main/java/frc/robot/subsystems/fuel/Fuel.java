@@ -2,6 +2,7 @@ package frc.robot.subsystems.fuel;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Fuel extends SubsystemBase {
@@ -10,6 +11,23 @@ public class Fuel extends SubsystemBase {
 
     public Fuel(FuelIO io) {
         this.io = io;
+        this.io.configureFeeder();
+        this.io.configureShooterIntake();
+        this.io.configureShooter();
+        // create brushed motors for each of the motors on the launcher mechanism
+
+    // create the configuration for the launcher roller, set a current limit, set
+    // the motor to inverted so that positive values are used for both intaking and
+    // launching, and apply the config to the controller
+
+    // put default values for various fuel operations onto the dashboard
+    // all commands using this subsystem pull values from the dashbaord to allow
+    // you to tune the values easily, and then replace the values in Constants.java
+    // with your new values. For more information, see the Software Guide.
+    SmartDashboard.putNumber("Intaking feeder roller value", 0.8);
+    SmartDashboard.putNumber("Intaking intake roller value", 0.6);
+    SmartDashboard.putNumber("Launching feeder roller value", 0.6);
+    SmartDashboard.putNumber("Launching launcher roller value", 0.85);
     }
 
     /**
@@ -20,8 +38,8 @@ public class Fuel extends SubsystemBase {
      * 
      * @param velSetpoint
      */
-    public void setIntakeLauncherRollerVelocity(double velSetpoint) {
-        io.setIntakeLauncherRollerVelocity(velSetpoint);
+    public void setShooterIntakePower(double velSetpoint) {
+        io.setShooterIntakePower(velSetpoint);
     }
 
     /**
