@@ -21,13 +21,13 @@ public class SimpleAuto extends SequentialCommandGroup{
 
       NamedCommands.getCommand("Climb down")
             .withTimeout(2),
- 
+
       NamedCommands.getCommand("Shooter at tower distance")
                     .withTimeout(5),
 
       NamedCommands.getCommand("Shooter spin")
- 
+
     );
   }
 }
- 
+

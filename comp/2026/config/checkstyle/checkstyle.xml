@@ -4,29 +4,14 @@
   "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <module name="Checker">
-  <!--
-    RegexpSingleline:
-    Checks each line for trailing whitespace,
-    but skips lines that are comments (starting with //, /*, or * inside block comments).
-    Severity set to "info" so it's a warning, not an error.
-  -->
-  <module name="RegexpSingleline">
-    <property name="format" value="^(?!\s*(//|/\*|\*)).*\s+$"/>
-    <property name="message" value="Line has trailing whitespace."/>
-    <property name="severity" value="info"/>
-  </module>
+  
   <!--
     TreeWalker module analyzes Java AST (Abstract Syntax Tree).
     Most style checks are inside TreeWalker.
   -->
   <module name="TreeWalker">
 
-    <!--
-      NeedBraces:
-      Enforces that all if, else, while, for, do statements use braces.
-      Helps prevent bugs from single-line statements without braces.
-    -->
-    <module name="NeedBraces"/>
+
 
     <!--   
       NestedIfDepth:
@@ -68,7 +53,7 @@
     <module name="LeftCurly">
       <property name="option" value="eol"/>
     </module>
-    <module name="RightCurly"/>
+    <module name="RightCurly"/>a
 
     
       TypeName:

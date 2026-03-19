@@ -17,8 +17,8 @@ public class SimpleAuto_Climb_Blue extends SequentialCommandGroup{
               NamedCommands.getCommand("Climb down"))
                    .withTimeout(5)
                    .finallyDo(() -> NamedCommands.getCommand("Stop Climber")),
- 
-      
+
+
 
       DriveCommands.joystickDrive(drive, () -> 0.0, () -> 0.0, () -> 0.0)
                    .withTimeout(0.02),
