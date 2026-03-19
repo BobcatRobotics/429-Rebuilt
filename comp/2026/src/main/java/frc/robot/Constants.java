@@ -66,8 +66,8 @@ public final class Constants {
     public static final int CLIMBER_MOTOR_ID = 20;
 
     // Current limit for climb motor
-    public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 70;
-    public static final int CLIMBER_MOTOR_STATOR_LIMIT = 60;
+    public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 30;
+    public static final int CLIMBER_MOTOR_STATOR_LIMIT = 20;
     public static final int CLIMBER_MOTOR_NEGATIVE_ROTATIONS = -1;
     public static final int CLIMBER_MOTOR_POSITIVE_ROTATIONS = 1;
     // Percentage to power the motor both up and down
