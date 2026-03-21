@@ -59,6 +59,8 @@ import frc.robot.commands.SimpleAuto;
 import frc.robot.commands.SimpleAuto_Climb_Blue;
 import frc.robot.commands.SimpleAuto_Climb_Red;
 
+import static frc.robot.Constants.IntakeConstants.INTAKE_PERCENT;
+
 import org.bobcatrobotics.Commands.ActionFactory;
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubData;
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
@@ -187,7 +189,7 @@ public class RobotContainer {
 
     private void registerNammedCommands(){
         NamedCommands.registerCommand("Intake", Commands.run(() -> {
-            fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel));
 
@@ -197,10 +199,12 @@ public class RobotContainer {
             .ignoringDisable(true));
 
                 NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
-            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
+            fuel.setShooterLeftPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
+            fuel.setShooterLeftPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }, fuel)).withTimeout(3));
 
@@ -219,7 +223,8 @@ public class RobotContainer {
 
 
                 NamedCommands.registerCommand("Shooter spin", Commands.run(() -> {
-                fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+                fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
+                fuel.setShooterLeftPower(ShooterConstants.SHOOTER_PERCENT);
             }, fuel).withTimeout(2));
 
         // //for SHOOTING, NOT CLIMBING
@@ -267,54 +272,56 @@ public class RobotContainer {
 
         //intake
         operator.leftBumper().whileTrue(Commands.run(() -> {
-            fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
         //shoot
           operator.rightBumper().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
+            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }, fuel))).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+        })));
 
             operator.rightBumper().onFalse(Commands.run(() -> {
-                fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT);
-            }, fuel).withTimeout(2));
+                fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
+            }, fuel).withTimeout(2).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         operator.y().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT_MID);
+            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_MID);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT_MID);
+            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_MID);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }, fuel))).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+        })));
 
         operator.y().onFalse(Commands.run(() -> {
-                fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT_MID);
-            }, fuel).withTimeout(2));
+                fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_MID);
+            }, fuel).withTimeout(2).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         operator.x().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT_CLOSE);
+            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_CLOSE);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT_CLOSE);
+            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_CLOSE);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }, fuel))).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+        })));
 
         operator.x().onFalse(Commands.run(() -> {
-                fuel.setShooterIntakePower(ShooterConstants.SHOOTER_INTAKE_PERCENT_CLOSE);
-            }, fuel).withTimeout(2));
+                fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_CLOSE);
+            }, fuel).withTimeout(2).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
             
 
         //eject through intake
        operator.a().whileTrue(Commands.run(() -> {
-            fuel.setShooterIntakePower(IntakeConstants.SHOOTER_INTAKE_EJECT_PERCENT);
+            fuel.setShooterRightPower(ShooterConstants.SHOOTER_EJECT_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_EJECT_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_EJECT_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
