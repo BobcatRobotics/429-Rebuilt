@@ -11,6 +11,8 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,6 +33,14 @@ public class Robot extends LoggedRobot {
    * initialization code.
    */
   public Robot() {
+
+    UsbCamera intakeCamera = CameraServer.startAutomaticCapture(0);
+    intakeCamera.setFPS(15);
+    intakeCamera.setResolution(160, 120);
+    
+    // UsbCamera frontCamera = CameraServer.startAutomaticCapture(1);
+    // frontCamera.setFPS(5);
+    // frontCamera.setResolution(160, 120);
 
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
