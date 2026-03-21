@@ -59,6 +59,8 @@ import frc.robot.commands.SimpleAuto;
 import frc.robot.commands.SimpleAuto_Climb_Blue;
 import frc.robot.commands.SimpleAuto_Climb_Red;
 
+import static frc.robot.Constants.IntakeConstants.INTAKE_PERCENT;
+
 import org.bobcatrobotics.Commands.ActionFactory;
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubData;
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
@@ -279,10 +281,11 @@ public class RobotContainer {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        })));//, fuel))).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+        })));
 
             operator.rightBumper().onFalse(Commands.run(() -> {
                 fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
@@ -295,11 +298,11 @@ public class RobotContainer {
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_MID);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }, fuel))).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+        })));
 
         operator.y().onFalse(Commands.run(() -> {
                 fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_MID);
-            }, fuel).withTimeout(2));
+            }, fuel).withTimeout(2).withTimeout(2).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         operator.x().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
@@ -308,11 +311,11 @@ public class RobotContainer {
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_CLOSE);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }, fuel))).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+        })));
 
         operator.x().onFalse(Commands.run(() -> {
                 fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_CLOSE);
-            }, fuel).withTimeout(2));
+            }, fuel).withTimeout(2).withTimeout(2).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
             
 
         //eject through intake
