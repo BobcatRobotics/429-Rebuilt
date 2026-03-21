@@ -34,10 +34,17 @@ public class Robot extends LoggedRobot {
    */
   public Robot() {
 
+    @SuppressWarnings("resource")
     UsbCamera camera = new UsbCamera("Intake_Camera", 0);
-    camera.setFPS(15);
+    camera.setFPS(5);
     camera.setResolution(320, 240);
-    CameraServer.startAutomaticCapture(camera);
+    camera = CameraServer.startAutomaticCapture(0);
+    
+    @SuppressWarnings("resource")
+    UsbCamera camera2 = new UsbCamera("Front_Camera", 1);
+    camera2.setFPS(5);
+    camera2.setResolution(320, 240);
+    camera2 = CameraServer.startAutomaticCapture(1);
 
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
