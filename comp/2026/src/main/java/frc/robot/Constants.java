@@ -33,13 +33,13 @@ public final class Constants {
       public static final class ShooterConstants {
     // Motor controller IDs for Fuel Mechanism motors
     public static final int FEEDER_MOTOR_ID = 18;
-    public static final int SHOOTER_MOTOR2_ID = 16;
-    public static final int SHOOTER_MOTOR_ID = 17;
+    public static final int SHOOTER_LEFT_MOTOR_ID = 16;
+    public static final int SHOOTER_RIGHT_MOTOR_ID = 17;
 
     // Current limit for fuel mechanism motors.
     public static final int FEEDER_MOTOR_CURRENT_LIMIT = 70;
     public static final int SHOOTER_MOTOR_CURRENT_LIMIT = 70;
-    public static final int SHOOTER_MOTOR_SUPPLY_LIMIT = 70;
+    //public static final int SHOOTER_MOTOR_SUPPLY_LIMIT = 70;
 
     // All values likely need to be tuned based on your robot
     public static final double FEEDER_INTAKING_PERCENT = -0.35;
@@ -47,8 +47,10 @@ public final class Constants {
     public static final double FEEDER_LAUNCHING_PERCENT = 0.2;
     public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.2;
 
-    public static final double SHOOTER_PERCENT = 0.9;
-    public static final double SHOOTER_EJECT_PERCENT = -0.9;
+    public static final double SHOOTER_PERCENT = 0.7;
+    public static final double SHOOTER_EJECT_PERCENT = -0.7;
+
+    public static final double SHOOTER_STOP_PERCENT = 0;
 
     public static final double SHOOTER_PERCENT_MID = 0.80;
     public static final double SHOOTER_EJECT_PERCENT_MID = 0.80;

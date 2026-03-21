@@ -22,7 +22,7 @@ public interface FuelIO {
      * The configuration MUST set up and have the following configurations ; stator
      * current limit, neutral mode , inverted
      */
-    public default void configureShooter() {
+    public default void configureShooterRight() {
 
     }
 
@@ -31,7 +31,7 @@ public interface FuelIO {
      * The configuration MUST set up and have the following configurations ; stator
      * current limit, neutral mode , inverted
      */
-    public default void configureShooter2() {
+    public default void configureShooterLeft() {
 
     }
 
@@ -54,11 +54,11 @@ public interface FuelIO {
      * 
      * 
      */
-    public default void setShooterPower(double power) {
+    public default void setShooterRightPower(double power) {
 
     }
 
-    public default void setShooter2Power(double power){
+    public default void setShooterLeftPower(double power){
 
     }
 

@@ -12,8 +12,8 @@ public class Fuel extends SubsystemBase {
     public Fuel(FuelIO io) {
         this.io = io;
         this.io.configureFeeder();
-        this.io.configureShooter2();
-        this.io.configureShooter();
+        this.io.configureShooterLeft();
+        this.io.configureShooterRight();
         this.io.configureIntake();
         // create brushed motors for each of the motors on the launcher mechanism
 
@@ -39,12 +39,12 @@ public class Fuel extends SubsystemBase {
      * 
      * @param velSetpoint
      */
-    public void setShooterPower(double velSetpoint) {
-        io.setShooterPower(velSetpoint);
+    public void setShooterRightPower(double velSetpoint) {
+        io.setShooterRightPower(velSetpoint);
     }
 
-    public void setShooter2Power(double velSetpoint) {
-        io.setShooter2Power(velSetpoint);
+    public void setShooterLeftPower(double velSetpoint) {
+        io.setShooterLeftPower(velSetpoint);
     }
 
     public void setIntakePower(double velSetpoint) {
