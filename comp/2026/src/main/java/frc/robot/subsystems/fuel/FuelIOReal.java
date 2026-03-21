@@ -1,10 +1,14 @@
 package frc.robot.subsystems.fuel;
 
 import static frc.robot.Constants.IntakeConstants.FEEDER_MOTOR_ID;
-import static frc.robot.Constants.IntakeConstants.SHOOTER_INTAKE_MOTOR_ID;
-import static frc.robot.Constants.IntakeConstants.SHOOTER_MOTOR_ID;
+import static frc.robot.Constants.IntakeConstants.INTAKE_MOTOR_CURRENT_LIMIT;
+import static frc.robot.Constants.ShooterConstants.SHOOTER_MOTOR_ID;
+import static frc.robot.Constants.ShooterConstants.SHOOTER_MOTOR2_ID;
 import static frc.robot.Constants.IntakeConstants.FEEDER_MOTOR_CURRENT_LIMIT;
-import static frc.robot.Constants.IntakeConstants.SHOOTER_MOTOR_CURRENT_LIMIT;
+import static frc.robot.Constants.ShooterConstants.SHOOTER_MOTOR_CURRENT_LIMIT;
+import static frc.robot.Constants.IntakeConstants.INTAKE_MOTOR_ID;
+import static frc.robot.Constants.IntakeConstants.INTAKE_MOTOR_SUPPLY_LIMIT;
+import static frc.robot.Constants.ShooterConstants.SHOOTER_MOTOR_SUPPLY_LIMIT;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -19,9 +23,12 @@ public class FuelIOReal implements FuelIO {
 
     private TalonFX feedMotor;
     private TalonFX shooterMotor;
-    private TalonFX shooterIntakeMotor;
+    private TalonFX shooterMotor2;
+    private TalonFX intakeMotor;
     private DutyCycleOut shooterMotorRequest = new DutyCycleOut(0).withEnableFOC(false);
     private DutyCycleOut feederMotorRequest = new DutyCycleOut(0).withEnableFOC(false);
+    private DutyCycleOut shooterMotor2Request = new DutyCycleOut(0).withEnableFOC(false);
+    private DutyCycleOut intakeMotorRequest = new DutyCycleOut(0).withEnableFOC(false);
     public void updateInputs(FuelIOInputs inputs) {
 
     }
@@ -33,13 +40,16 @@ public class FuelIOReal implements FuelIO {
      */
     public void configureShooter() {
         shooterMotor = new TalonFX(SHOOTER_MOTOR_ID, new CANBus("rio"));
+        shooterMotor2 = new TalonFX(SHOOTER_MOTOR2_ID, new CANBus("rio"));
         var shooterConfigure = new TalonFXConfiguration();
         shooterConfigure.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         shooterConfigure.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         shooterConfigure.CurrentLimits.StatorCurrentLimit = SHOOTER_MOTOR_CURRENT_LIMIT;
         shooterConfigure.CurrentLimits.StatorCurrentLimitEnable = true;
+        shooterConfigure.CurrentLimits.SupplyCurrentLimit = SHOOTER_MOTOR_SUPPLY_LIMIT;
+        shooterConfigure.CurrentLimits.SupplyCurrentLimitEnable = true;
         shooterMotor.getConfigurator().apply(shooterConfigure);
-        shooterMotor.setControl(new StrictFollower(SHOOTER_INTAKE_MOTOR_ID));
+        shooterMotor.setControl(new StrictFollower(SHOOTER_MOTOR2_ID));
     }
 
     /**
@@ -47,14 +57,16 @@ public class FuelIOReal implements FuelIO {
      * The configuration MUST set up and have the following configurations ; stator
      * current limit, neutral mode , inverted
      */
-    public void configureShooterIntake() {
-        shooterIntakeMotor = new TalonFX(SHOOTER_INTAKE_MOTOR_ID, new CANBus("rio"));
-        var shooterIntakeConfigure = new TalonFXConfiguration();
-      shooterIntakeConfigure.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-      shooterIntakeConfigure.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-      shooterIntakeConfigure.CurrentLimits.StatorCurrentLimit = SHOOTER_MOTOR_CURRENT_LIMIT;
-      shooterIntakeConfigure.CurrentLimits.StatorCurrentLimitEnable = true;
-        shooterIntakeMotor.getConfigurator().apply(shooterIntakeConfigure);
+    public void configureIntake() {
+        intakeMotor = new TalonFX(INTAKE_MOTOR_ID, new CANBus("rio"));
+        var intakeConfigure = new TalonFXConfiguration();
+        intakeConfigure.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        intakeConfigure.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        intakeConfigure.CurrentLimits.StatorCurrentLimit = INTAKE_MOTOR_CURRENT_LIMIT;
+        intakeConfigure.CurrentLimits.StatorCurrentLimitEnable = true;
+        intakeConfigure.CurrentLimits.SupplyCurrentLimit = INTAKE_MOTOR_SUPPLY_LIMIT;
+        intakeConfigure.CurrentLimits.SupplyCurrentLimitEnable = true;
+        intakeMotor.getConfigurator().apply(intakeConfigure);
     }
 
     /**
@@ -79,8 +91,16 @@ public class FuelIOReal implements FuelIO {
      * 
      * 
      */
-    public void setShooterIntakePower(double power) {
-        shooterIntakeMotor.setControl(shooterMotorRequest.withOutput(power)); // positive for shooting
+    public void setIntakePower(double power) {
+        intakeMotor.setControl(intakeMotorRequest.withOutput(power)); // positive for shooting
+    }
+
+    public void setShooterPower(double power) {
+        shooterMotor.setControl(shooterMotorRequest.withOutput(power));
+    }
+
+    public void setShooter2Power(double power) {
+        shooterMotor2.setControl(shooterMotor2Request.withOutput(power));
     }
 
     /**
@@ -118,6 +138,6 @@ public class FuelIOReal implements FuelIO {
 
     public void stop() {
         feedMotor.stopMotor();
-        shooterIntakeMotor.stopMotor();
+        intakeMotor.stopMotor();
     }
 }
