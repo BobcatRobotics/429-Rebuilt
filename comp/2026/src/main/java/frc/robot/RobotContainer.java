@@ -302,7 +302,7 @@ public class RobotContainer {
 
         operator.y().onFalse(Commands.run(() -> {
                 fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_MID);
-            }, fuel).withTimeout(2).withTimeout(2).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
+            }, fuel).withTimeout(2).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         operator.x().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
@@ -315,7 +315,7 @@ public class RobotContainer {
 
         operator.x().onFalse(Commands.run(() -> {
                 fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_CLOSE);
-            }, fuel).withTimeout(2).withTimeout(2).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
+            }, fuel).withTimeout(2).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
             
 
         //eject through intake
