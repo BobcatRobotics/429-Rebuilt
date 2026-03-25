@@ -60,7 +60,6 @@ public class LedController extends SubsystemBase {
      * </p>
      */
     public void setAnimation() {
-        // TODO: Implement animation logic
     }
 
     /**

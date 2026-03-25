@@ -46,19 +46,10 @@ public final class Constants {
     public static final double FEEDER_LAUNCHING_PERCENT = 0.2;
     public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.2;
 
-    public static final double SHOOTER_INTAKE_PERCENT = 0.9;
-    public static final double SHOOTER_INTAKE_EJECT_PERCENT = -0.9;
+    public static final double SHOOTER_INTAKE_PERCENT = 0.85;
+    public static final double SHOOTER_INTAKE_EJECT_PERCENT = -0.85;
 
-    public static final double SHOOTER_INTAKE_PERCENT_MID = 0.80;
-    public static final double SHOOTER_EJECT_PERCENT_MID = 0.80;
-
-    public static final double SHOOTER_INTAKE_PERCENT_CLOSE = 0.70;
-    public static final double SHOOTER_EJECT_PERCENT_CLOSE = 0.70;
-
-
-    //put shooter precents for shooting to 90%
-
-    public static final double SPIN_UP_SECONDS = 1;
+    public static final double SPIN_UP_SECONDS = 0.75;
   }
 
     public static final class ClimbConstatns {
@@ -67,17 +58,12 @@ public final class Constants {
 
     // Current limit for climb motor
     public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 70;
-    public static final int CLIMBER_MOTOR_STATOR_LIMIT = 60;
+    public static final int CLIMBER_MOTOR_STATOR_LIMIT = 80;
     public static final int CLIMBER_MOTOR_NEGATIVE_ROTATIONS = -1;
     public static final int CLIMBER_MOTOR_POSITIVE_ROTATIONS = 1;
     // Percentage to power the motor both up and down
     public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.5;
     public static final double CLIMBER_MOTOR_UP_PERCENT = 0.5;
-
-    public static final double CLIMBER_PRECLIMB = -268;
-    public static final double CLIMBER_CLIMBED = 180;
-    
-    public static final double CLIMBER_STOP = 0;
   }
 
   public static final class IntakeConstants {

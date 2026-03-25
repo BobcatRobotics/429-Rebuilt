@@ -2,7 +2,6 @@ package frc.robot.subsystems.climber;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
@@ -31,14 +30,6 @@ public class Climber extends SubsystemBase {
      */
     public void setClimberPower(double power) {
         io.setClimberPower(power);
-    }
-
-    public Command disableLimits(){
-        return io.disableLimits();
-    }
-
-    public Command enableLimits(){
-        return io.enableLimits();
     }
 
     public void stop() {

@@ -131,9 +131,9 @@ public class Robot extends LoggedRobot {
     }
     
 
-    // boolean isRed = DriverStation.getAlliance().isPresent()
-    //   && DriverStation.getAlliance().get() == Alliance.Red;
-    // m_robotContainer.resetFieldOrientation(isRed);
+    //boolean isRed = DriverStation.getAlliance().isPresent()
+      //  && DriverStation.getAlliance().get() == Alliance.Red;
+    //m_robotContainer.resetFieldOrientation(isRed);
 
   }
 
