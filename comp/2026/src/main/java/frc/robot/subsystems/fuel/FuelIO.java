@@ -2,6 +2,10 @@ package frc.robot.subsystems.fuel;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.ctre.phoenix6.StatusSignal;
+
+import edu.wpi.first.units.measure.AngularVelocity;
+
 public interface FuelIO {
     @AutoLog
     class FuelIOInputs {
@@ -11,6 +15,8 @@ public interface FuelIO {
         public double currentOfRightIntakeLauncher = 0.0;
         public double velocityOfIndexer = 0.0;
         public double currentOfIndexer = 0.0;
+        public double velocityOfLeftShooterMotor = 0.0;
+        public double velocityOfRightShooterMotor = 0.0;
     }
 
     public default void updateInputs(FuelIOInputs inputs) {
@@ -94,6 +100,14 @@ public interface FuelIO {
      */
     public default void setFeederRoller(double power) {
 
+    }
+
+    public default StatusSignal<AngularVelocity> getLeftShooterMotorVelocity() {
+        return new StatusSignal<>(null, null, null);
+    }
+
+    public default StatusSignal<AngularVelocity> getRightShooterMotorVelocity() {
+        return new StatusSignal<>(null, null, null);
     }
 
     public default void stop() {

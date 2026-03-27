@@ -37,6 +37,7 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Blue_Simple_Auto;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.ShooterCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.climber.ClimberIO;
@@ -200,17 +201,21 @@ public class RobotContainer {
 
                 NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
-            fuel.setShooterLeftPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
-            fuel.setShooterLeftPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }, fuel)).withTimeout(3));
 
                 NamedCommands.registerCommand("Climb down", (Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-        }, climber)));
+            climber.setClimberPower(ClimbConstatns.CLIMBER_AUTO_DOWN_PERCENT);
+        }, climber).withTimeout(0.7).andThen(Commands.runOnce(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_STOP)))));
+
+
+                NamedCommands.registerCommand(("Pre Climb Auto Set Up"), Commands.run(() -> {
+            climber.setClimberPower(ClimbConstatns.CLIMBER_AUTO_DOWN_PERCENT);
+        }, climber).withTimeout(2.3).andThen(Commands.runOnce(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_STOP))));
 
         NamedCommands.registerCommand("Stop Climber", (Commands.run(() -> {
             climber.stop();
@@ -218,14 +223,18 @@ public class RobotContainer {
 
 
             NamedCommands.registerCommand("Stop Shooting", Commands.run(() -> {
-                fuel.stop();
+                fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT);
+                fuel.setIntakePower(ShooterConstants.INTAKE_STOP_PERCENT);
+                fuel.setFeederRoller(ShooterConstants.FEEDER_STOP_PERCENT);
             }, fuel));
 
 
                 NamedCommands.registerCommand("Shooter spin", Commands.run(() -> {
                 fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
                 fuel.setShooterLeftPower(ShooterConstants.SHOOTER_PERCENT);
-            }, fuel).withTimeout(2));
+                fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+                fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
+            }, fuel).withTimeout(1));
 
         // //for SHOOTING, NOT CLIMBING
         //         NamedCommands.registerCommand("PreShootClimberSetPosition", (Commands.run(() -> {
@@ -285,16 +294,20 @@ public class RobotContainer {
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        })));
+        }).withTimeout(0.5).andThen(Commands.run(() -> {
+            fuel.setShooterRightPower(ShooterConstants.SHOOTER_LONG_PERCENT);
+            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+        }))));
 
             operator.rightBumper().onFalse(Commands.run(() -> {
                 fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
-            }, fuel).withTimeout(2).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
+            }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         operator.y().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_MID);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_MID);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
@@ -302,12 +315,13 @@ public class RobotContainer {
 
         operator.y().onFalse(Commands.run(() -> {
                 fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_MID);
-            }, fuel).withTimeout(2).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
+            }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         operator.x().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_CLOSE);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_CLOSE);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
@@ -315,7 +329,7 @@ public class RobotContainer {
 
         operator.x().onFalse(Commands.run(() -> {
                 fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_CLOSE);
-            }, fuel).withTimeout(2).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
+            }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
             
 
         //eject through intake

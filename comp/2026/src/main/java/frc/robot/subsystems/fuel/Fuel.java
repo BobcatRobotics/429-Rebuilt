@@ -2,6 +2,9 @@ package frc.robot.subsystems.fuel;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.StatusSignal;
+
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -85,6 +88,14 @@ public class Fuel extends SubsystemBase {
         io.setFeederRoller(power);
     }
 
+    public StatusSignal<AngularVelocity> getLeftShooterMotorVelocity() {
+        return io.getLeftShooterMotorVelocity();
+    }
+
+    public StatusSignal<AngularVelocity> getRightShooterMotorVelocity() {
+        return io.getRightShooterMotorVelocity();
+    }
+
     public void stop() {
         io.stop();
     }
@@ -92,5 +103,7 @@ public class Fuel extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Fuel", inputs);
+        Logger.recordOutput("Fuel/velocityOfLeftShooterMotor", getLeftShooterMotorVelocity().getValueAsDouble());
+        Logger.recordOutput("Fuel/velocityOfRightShooterMotor", getRightShooterMotorVelocity().getValueAsDouble());
     }
 }

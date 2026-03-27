@@ -83,7 +83,7 @@ public class Robot extends LoggedRobot {
     }
 
     // Start AdvantageKit logger
-    //Logger.start(); LOGGING TURNED OFF!!
+    Logger.start(); //LOGGING TURNED OFF!!
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.

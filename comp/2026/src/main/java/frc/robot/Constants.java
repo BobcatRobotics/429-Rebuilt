@@ -47,15 +47,18 @@ public final class Constants {
     public static final double FEEDER_LAUNCHING_PERCENT = 0.2;
     public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.2;
 
-    public static final double SHOOTER_PERCENT = 0.9;
+    public static final double SHOOTER_PERCENT = 0.90; //0.9 for comp, 0.8 for doosan
+    public static final double SHOOTER_LONG_PERCENT = 0.92;
     public static final double SHOOTER_EJECT_PERCENT = -0.9;
 
     public static final double SHOOTER_STOP_PERCENT = 0;
+    public static final double INTAKE_STOP_PERCENT = 0;
+    public static final double FEEDER_STOP_PERCENT = 0;
 
-    public static final double SHOOTER_PERCENT_MID = 0.80;
+    public static final double SHOOTER_PERCENT_MID = 0.83;
     public static final double SHOOTER_EJECT_PERCENT_MID = 0.80;
 
-    public static final double SHOOTER_PERCENT_CLOSE = 0.70;
+    public static final double SHOOTER_PERCENT_CLOSE = 0.75;
     public static final double SHOOTER_EJECT_PERCENT_CLOSE = 0.70;
 
 
@@ -76,6 +79,7 @@ public final class Constants {
     // Percentage to power the motor both up and down
     public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.7;
     public static final double CLIMBER_MOTOR_UP_PERCENT = 1;
+    public static final double CLIMBER_AUTO_DOWN_PERCENT = -1;
 
     public static final double CLIMBER_PRECLIMB = -268;
     public static final double CLIMBER_CLIMBED = 180;

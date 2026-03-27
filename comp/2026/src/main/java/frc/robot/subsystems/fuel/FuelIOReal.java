@@ -11,12 +11,15 @@ import static frc.robot.Constants.IntakeConstants.INTAKE_MOTOR_SUPPLY_LIMIT;
 //import static frc.robot.Constants.ShooterConstants.SHOOTER_MOTOR_SUPPLY_LIMIT;
 
 import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.units.measure.AngularVelocity;
 
 
 public class FuelIOReal implements FuelIO {
@@ -144,6 +147,14 @@ public class FuelIOReal implements FuelIO {
      */
     public void setFeederRoller(double power) {
         feedMotor.setControl(feederMotorRequest.withOutput(power)); // positive for shooting
+    }
+
+    public StatusSignal<AngularVelocity> getLeftShooterMotorVelocity() {
+        return shooterMotorLeft.getVelocity();
+    }
+
+    public StatusSignal<AngularVelocity> getRightShooterMotorVelocity() {
+        return shooterMotorRight.getVelocity();
     }
 
     public void stop() {
