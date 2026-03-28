@@ -12,10 +12,10 @@ public class SimpleAuto_Climb_Blue extends SequentialCommandGroup{
 
     NamedCommands.getCommand("Set Pose"),
 
-      new ParallelCommandGroup(DriveCommands.joystickDrive(drive, () -> 0, () -> 0, () -> 0.0).withTimeout(2.25)
+      new ParallelCommandGroup(DriveCommands.joystickDrive(drive, () -> 0, () -> 0, () -> 0.0).withTimeout(2.3)
               .andThen(DriveCommands.joystickDrive(drive, () -> 0.5, () -> 0, () -> 0.0)),
-              NamedCommands.getCommand("Climb down"))
-                   .withTimeout(5)
+              NamedCommands.getCommand("Pre Climb Auto Set Up"))
+                   .withTimeout(4.6)
                    .finallyDo(() -> NamedCommands.getCommand("Stop Climber")),
 
 
@@ -24,15 +24,16 @@ public class SimpleAuto_Climb_Blue extends SequentialCommandGroup{
                    .withTimeout(0.02),
  
       NamedCommands.getCommand("Shooter at tower distance")
-                    .withTimeout(5)
-                    .finallyDo(() -> NamedCommands.getCommand("Stop Shooting")),
+                    .withTimeout(5),
+
+      NamedCommands.getCommand("Stop Shooting"),
 
       
       // NamedCommands.getCommand("Shooter spin")
       //     .withTimeout(2),
 
       NamedCommands.getCommand("Climb Up")
-                    .withTimeout(6)
+                    .withTimeout(1.65)
                      .finallyDo(() -> NamedCommands.getCommand("Stop Climber"))
     );
   }

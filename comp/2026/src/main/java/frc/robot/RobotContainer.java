@@ -222,7 +222,7 @@ public class RobotContainer {
         }, climber)));
 
 
-            NamedCommands.registerCommand("Stop Shooting", Commands.run(() -> {
+            NamedCommands.registerCommand("Stop Shooting", Commands.runOnce(() -> {
                 fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT);
                 fuel.setIntakePower(ShooterConstants.INTAKE_STOP_PERCENT);
                 fuel.setFeederRoller(ShooterConstants.FEEDER_STOP_PERCENT);

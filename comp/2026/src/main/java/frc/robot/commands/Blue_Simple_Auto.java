@@ -19,11 +19,14 @@ public class Blue_Simple_Auto extends SequentialCommandGroup{
 
       DriveCommands.joystickDrive(drive, () -> 0.0, () -> 0.0, () -> 0.0)
                    .withTimeout(0.02),
+
+
+      NamedCommands.getCommand("Climb down"),
  
       NamedCommands.getCommand("Shooter at tower distance")
                     .withTimeout(5),
 
-      NamedCommands.getCommand("Shooter spin")
+      NamedCommands.getCommand("Stop Shooting")
  
     );
   }
