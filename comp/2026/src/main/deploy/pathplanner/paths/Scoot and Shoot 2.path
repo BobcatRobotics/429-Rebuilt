@@ -17,28 +17,39 @@
     {
       "anchor": {
         "x": 1.8609660107334522,
-        "y": 2.0
+        "y": 2.2096422182468687
       },
       "prevControl": {
-        "x": 1.8609660107334522,
-        "y": 2.25
+        "x": 1.6109660107334522,
+        "y": 2.2096422182468687
+      },
+      "nextControl": {
+        "x": 2.110966010733452,
+        "y": 2.2096422182468687
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.8669409660107332,
+        "y": 2.7937567084078707
+      },
+      "prevControl": {
+        "x": 2.6754298552309885,
+        "y": 2.633059805986236
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1,
-      "rotationDegrees": 40.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.5,
+    "maxVelocity": 1.0,
     "maxAcceleration": 0.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -47,7 +58,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 40.0
   },
   "reversed": false,
   "folder": "Akash Scoot and Shoot",
@@ -55,5 +66,5 @@
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
