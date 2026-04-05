@@ -260,11 +260,10 @@ public class RobotContainer {
         // Default command, normal field-relative drive
         drive.setDefaultCommand(
                 DriveCommands.joystickDrive(
-                        drive,                                      // red                  //blue
-                        () -> AllianceFlipUtil.shouldFlip() ? -driver.getLeftY() : driver.getLeftY(),
-                        () -> AllianceFlipUtil.shouldFlip() ? -driver.getLeftX() : driver.getLeftX(),
-                        () -> AllianceFlipUtil.shouldFlip() ? driver.getRightX() : 
-                        driver.back().getAsBoolean() ? -driver.getRightX() : driver.getRightX()));
+                        drive,
+                        () -> -driver.getLeftY(),
+                        () -> -driver.getLeftX(),
+                        () -> -driver.getRightX()));
 
         fuel.setDefaultCommand(fuel.run(() -> fuel.stop()));
         climber.setDefaultCommand(climber.run(() -> climber.stop()));
@@ -274,12 +273,13 @@ public class RobotContainer {
                 .onTrue(new ActionFactory().singleAction("X-Command", () -> drive.stopWithX(), drive));
 
         // Reset gyro / field orientation when B button is pressed
-        //THIS CODE IS THE EXACT BUTTON COMMAND FROM 429 2025 CODE - Mike L March 9th
-        driver.b().onTrue(
-                Commands.runOnce(
-                () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                drive)
-            .ignoringDisable(true));
+        //Akash changed this to what 177 uses
+                // Reset gyro to 0° when B button is pressed
+                driver.b()
+                                .onTrue(new ActionFactory().singleAction("ZeroGyroCommand",
+                                                () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(),
+                                                                AllianceFlipUtil.apply(Rotation2d.kZero))),
+                                                drive).ignoringDisable(true));
 
         //intake
         operator.leftBumper().whileTrue(Commands.run(() -> {
