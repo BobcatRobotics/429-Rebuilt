@@ -19,6 +19,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -163,6 +164,7 @@ public class RobotContainer {
         autoChooser.addOption("Drive Back Shoot with Climb Blue", new SimpleAuto_Climb_Blue(drive));
         autoChooser.addOption("Drive back and Shoot Blue Side", new Blue_Simple_Auto(drive));
         autoChooser.addOption("Drive back and Shoot with Climb Red Side", new SimpleAuto_Climb_Red(drive));
+        autoChooser.addOption("Akash Scoot and Shoot", new PathPlannerAuto("Akash Scoot and Shoot"));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 

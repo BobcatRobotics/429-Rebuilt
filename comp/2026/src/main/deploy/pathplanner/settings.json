@@ -2,7 +2,13 @@
   "robotWidth": 0.9,
   "robotLength": 0.9,
   "holonomicMode": true,
-  "pathFolders": [],
+  "pathFolders": [
+    "Depot Clean Sweep",
+    "Akash Scoot and Shoot",
+    "Outpost Clean Sweep",
+    "Trench Depot Sweep",
+    "Trench Outpost Sweep"
+  ],
   "autoFolders": [],
   "defaultMaxVel": 0.5,
   "defaultMaxAccel": 0.5,
