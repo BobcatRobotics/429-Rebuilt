@@ -34,9 +34,11 @@ public class Robot extends LoggedRobot {
    */
   public Robot() {
 
+if (Constants.currentMode == Constants.Mode.REAL) {
     UsbCamera intakeCamera = CameraServer.startAutomaticCapture(0);
     intakeCamera.setFPS(15);
     intakeCamera.setResolution(160, 120);
+}
     
     // UsbCamera frontCamera = CameraServer.startAutomaticCapture(1);
     // frontCamera.setFPS(5);
