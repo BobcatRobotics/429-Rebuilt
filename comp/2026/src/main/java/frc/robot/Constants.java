@@ -100,11 +100,13 @@ public final class Constants {
     // All values likely need to be tuned based on your robot
     public static final double FEEDER_INTAKING_PERCENT = -0.4;
     public static final double FEEDER_EJECT_PERCENT = 0.4;
+    public static final double FEEDER_STOP_PERCENT = 0;
     public static final double FEEDER_LAUNCHING_PERCENT = 0.3;
     public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.3;
 
     public static final double INTAKE_PERCENT = 0.6;
     public static final double INTAKE_EJECT_PERCENT = -0.6;
+    public static final double INTAKE_STOP_PERCENT = 0;
 
     public static final double SPIN_UP_SECONDS = 0.75;
   }

@@ -1,0 +1,93 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre Climb Auto Set Up"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Hub to Tower for Climb"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter at tower distance"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooting"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Tower to Depot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake stop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Depot to Tower"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter at tower distance"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooting"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Climb Up"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

@@ -38,6 +38,7 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Blue_Simple_Auto;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.climber.Climber;
@@ -167,8 +168,13 @@ public class RobotContainer {
 
         autoChooser.addOption("Akash Scoot and Shoot", new PathPlannerAuto("Akash Scoot and Shoot"));
         autoChooser.addOption("Hub to Tower Shoot", new PathPlannerAuto("Hub to Tower shoot"));
-        autoChooser.addOption("Hub to Tower Shoot and Climb", new PathPlannerAuto("Hub to Tower Shoot + Climb"));
-
+        autoChooser.addOption("Hub 23", new PathPlannerAuto("Hub to Tower Shoot + Climb"));
+        autoChooser.addOption("Left bump 23", new PathPlannerAuto("Left Bump to shoot and climb"));
+        autoChooser.addOption("Right bump 23", new PathPlannerAuto("Right Bump to shoot and climb"));
+        autoChooser.addOption("Hub double tower and climb", new PathPlannerAuto("Hub start with double tower shot and climb"));
+        autoChooser.addOption("Left bump double tower and climb", new PathPlannerAuto("Left bump start with double tower shot and climb"));
+        autoChooser.addOption("Right bump double tower and climb", new PathPlannerAuto("Right bump start with double tower shot and climb"));
+        
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
             // Set up SysId routines
@@ -211,7 +217,7 @@ public class RobotContainer {
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }, fuel)).withTimeout(4).andThen(new InstantCommand(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
+        }, fuel)).withTimeout(3.5).andThen(new InstantCommand(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         NamedCommands.registerCommand("Climb down", (Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_AUTO_DOWN_PERCENT);
@@ -249,6 +255,16 @@ public class RobotContainer {
         NamedCommands.registerCommand("Climb Up", Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
         }, climber).withTimeout(4).andThen(Commands.runOnce(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_STOP))));
+
+        NamedCommands.registerCommand("Intake", Commands.run(() -> {
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
+            fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
+        }));
+
+        NamedCommands.registerCommand("Intake stop", Commands.runOnce(() -> {
+            fuel.setIntakePower(IntakeConstants.INTAKE_STOP_PERCENT);
+            fuel.setFeederRoller(IntakeConstants.FEEDER_STOP_PERCENT);
+        }));
     }
     /**
      * Use this method to define your button->command mappings. Buttons can be
