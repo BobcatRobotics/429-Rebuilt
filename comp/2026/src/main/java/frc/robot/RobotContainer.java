@@ -166,6 +166,9 @@ public class RobotContainer {
         // autoChooser.addOption("Drive back and Shoot Blue Side", new Blue_Simple_Auto(drive));
         // autoChooser.addOption("Drive back and Shoot with Climb Red Side", new SimpleAuto_Climb_Red(drive));
 
+        //23 means 8 shot plus a climb
+        //double tower means go to tower first and shoot then depot and back to tower for another shot
+
         autoChooser.addOption("Akash Scoot and Shoot", new PathPlannerAuto("Akash Scoot and Shoot"));
         autoChooser.addOption("Hub to Tower Shoot", new PathPlannerAuto("Hub to Tower shoot"));
         autoChooser.addOption("Hub 23", new PathPlannerAuto("Hub to Tower Shoot + Climb"));
