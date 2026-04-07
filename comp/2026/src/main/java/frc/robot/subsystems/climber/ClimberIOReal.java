@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Constants.ClimbConstatns;
 
 public class ClimberIOReal implements ClimberIO {
     private DutyCycleOut climberMotorrequest = new DutyCycleOut(0).withEnableFOC(false);
@@ -95,6 +96,7 @@ public class ClimberIOReal implements ClimberIO {
     }
 
     public void stop() {
-        climberMotor.stopMotor();
+        setClimberPower(ClimbConstatns.CLIMBER_STOP);
+        //climberMotor.stopMotor();
     }
 }

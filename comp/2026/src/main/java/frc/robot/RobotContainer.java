@@ -81,13 +81,6 @@ import org.bobcatrobotics.Subsystems.Swerve.ModuleWrapper;
  */
 public class RobotContainer {
 
-//         public void resetFieldOrientation(boolean isRed) {
-//     drive.setPose(new Pose2d(
-//         drive.getPose().getTranslation(),
-//         isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero
-//     ));
-//          }
-
     // Subsystems
     private final Fuel fuel;
     private final Climber climber;
@@ -108,7 +101,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-                ModuleWrapper newFrontRight = new ModuleWrapper("FrontRight.json", "FrontRight");
+        ModuleWrapper newFrontRight = new ModuleWrapper("FrontRight.json", "FrontRight");
         ModuleWrapper newFrontLeft = new ModuleWrapper("FrontLeft.json", "FrontLeft");
         ModuleWrapper newBackLeft = new ModuleWrapper("BackLeft.json", "BackLeft");
         ModuleWrapper newBackRight = new ModuleWrapper("BackRight.json", "BackRight");
@@ -160,7 +153,8 @@ public class RobotContainer {
 
         registerNammedCommands();
 
-        autoChooser = AutoBuilder.buildAutoChooser();
+        autoChooser = new SendableChooser<>();
+
         // autoChooser.addOption("Drive back and Shoot", new SimpleAuto(drive));
         // autoChooser.addOption("Drive Back Shoot with Climb Blue", new SimpleAuto_Climb_Blue(drive));
         // autoChooser.addOption("Drive back and Shoot Blue Side", new Blue_Simple_Auto(drive));
@@ -206,67 +200,54 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake", Commands.run(() -> {
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
-        }, fuel));
-
-        NamedCommands.registerCommand("Set Pose",   Commands.runOnce(
-                () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                drive)
-            .ignoringDisable(true));
+        }, fuel)
+            .withTimeout(3));
 
         NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
-        }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
-            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }, fuel)).withTimeout(3.5).andThen(new InstantCommand(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
+        }, fuel)
+            .withTimeout(ShooterConstants.SPIN_UP_SECONDS)
+            .andThen(Commands.run(() -> {
+                fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
+                fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+            }, fuel))
+                .withTimeout(3.5));
 
         NamedCommands.registerCommand("Climb down", (Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_AUTO_DOWN_PERCENT);
-        }, climber).withTimeout(0.7).andThen(Commands.runOnce(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_STOP)))));
+        }, climber)
+            .withTimeout(0.7)));
 
-
-        NamedCommands.registerCommand(("Pre Climb Auto Set Up"), Commands.run(() -> {
+        NamedCommands.registerCommand("Pre Climb Auto Set Up", Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_AUTO_DOWN_PERCENT);
-        }, climber).withTimeout(2.3).andThen(Commands.runOnce(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_STOP))));
+        }, climber)
+            .withTimeout(2.3));
 
-        NamedCommands.registerCommand("Stop Climber", (Commands.run(() -> {
+        NamedCommands.registerCommand("Stop Climber", (Commands.runOnce(() -> {
             climber.stop();
         }, climber)));
 
+        NamedCommands.registerCommand("Stop Shooting", Commands.runOnce(() -> {
+            fuel.stop();
+        }, fuel));
 
-            NamedCommands.registerCommand("Stop Shooting", Commands.runOnce(() -> {
-                fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT);
-                fuel.setIntakePower(ShooterConstants.INTAKE_STOP_PERCENT);
-                fuel.setFeederRoller(ShooterConstants.FEEDER_STOP_PERCENT);
-            }, fuel));
-
-
-                NamedCommands.registerCommand("Shooter spin", Commands.run(() -> {
-                fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
-                fuel.setShooterLeftPower(ShooterConstants.SHOOTER_PERCENT);
-                fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-                fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
-            }, fuel).withTimeout(1));
-
-        // //for SHOOTING, NOT CLIMBING
-        //         NamedCommands.registerCommand("PreShootClimberSetPosition", (Commands.run(() -> {
-        //     climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-        // }, climber)).withTimeout(2));
+        NamedCommands.registerCommand("Shooter spin", Commands.run(() -> {
+            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
+            fuel.setShooterLeftPower(ShooterConstants.SHOOTER_PERCENT);
+            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
+        }, fuel)
+            .withTimeout(1));
 
         NamedCommands.registerCommand("Climb Up", Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
-        }, climber).withTimeout(4).andThen(Commands.runOnce(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_STOP))));
-
-        NamedCommands.registerCommand("Intake", Commands.run(() -> {
-            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
-            fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
-        }));
+        }, climber)
+            .withTimeout(4));
 
         NamedCommands.registerCommand("Intake stop", Commands.runOnce(() -> {
-            fuel.setIntakePower(IntakeConstants.INTAKE_STOP_PERCENT);
-            fuel.setFeederRoller(IntakeConstants.FEEDER_STOP_PERCENT);
+            fuel.stop();
         }));
     }
     /**

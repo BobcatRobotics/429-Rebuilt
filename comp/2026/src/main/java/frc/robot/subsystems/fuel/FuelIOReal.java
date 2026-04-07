@@ -20,6 +20,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.measure.AngularVelocity;
+import frc.robot.Constants.ShooterConstants;
 
 
 public class FuelIOReal implements FuelIO {
@@ -157,8 +158,11 @@ public class FuelIOReal implements FuelIO {
         return shooterMotorRight.getVelocity();
     }
 
-    public void stop() {
-        feedMotor.stopMotor();
-        intakeMotor.stopMotor();
+    public void stop() {        
+        setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT);
+        setIntakePower(ShooterConstants.INTAKE_STOP_PERCENT);
+        setFeederRoller(ShooterConstants.FEEDER_STOP_PERCENT);
+        // feedMotor.stopMotor();
+        // intakeMotor.stopMotor();
     }
 }

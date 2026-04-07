@@ -26,6 +26,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Stop Climber"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Shooter at tower distance"
           }
         },
@@ -55,15 +61,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Intake stop"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Depot to Tower"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Depot to Tower"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake stop"
+                }
+              }
+            ]
           }
         },
         {

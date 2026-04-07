@@ -26,6 +26,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Stop Climber"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Shooter at tower distance"
           }
         },
