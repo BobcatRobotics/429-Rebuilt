@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -55,14 +56,18 @@ import frc.robot.subsystems.fuel.Fuel;
 import frc.robot.subsystems.fuel.FuelIO;
 import frc.robot.subsystems.fuel.FuelIOReal;
 import frc.robot.subsystems.fuel.FuelIOSim;
+import frc.robot.subsystems.vision.LimelightHelpers;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.util.AllianceFlipUtil;
+import yams.mechanisms.swerve.SwerveDrive;
 import frc.robot.commands.SimpleAuto;
 import frc.robot.commands.SimpleAuto_Climb_Blue;
 import frc.robot.commands.SimpleAuto_Climb_Red;
 
 import static frc.robot.Constants.IntakeConstants.INTAKE_PERCENT;
+
+import javax.crypto.spec.DHPrivateKeySpec;
 
 import org.bobcatrobotics.Commands.ActionFactory;
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubData;
@@ -91,7 +96,7 @@ public class RobotContainer {
     // Subsystems
     private final Fuel fuel;
     private final Climber climber;
-    private final Drive drive;
+    public final Drive drive;
     private final AntiTipping antiTipping;
     private Vision vision;
 
@@ -179,22 +184,6 @@ public class RobotContainer {
         autoChooser.addOption("Right bump double tower and climb", new PathPlannerAuto("Right bump start with double tower shot and climb"));
         
         SmartDashboard.putData("Auto Chooser", autoChooser);
-
-            // Set up SysId routines
-//     autoChooser.addOption(
-//         "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
-//     autoChooser.addOption(
-//         "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-//     autoChooser.addOption(
-//         "Drive SysId (Quasistatic Forward)",
-//         drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-//     autoChooser.addOption(
-//         "Drive SysId (Quasistatic Reverse)",
-//         drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-//     autoChooser.addOption(
-//         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-//     autoChooser.addOption(
-//         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -302,6 +291,16 @@ public class RobotContainer {
                                                 () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(),
                                                                 AllianceFlipUtil.apply(Rotation2d.kZero))),
                                                 drive).ignoringDisable(true));
+
+
+                driver.a().whileTrue(Commands.run(
+                    () -> DriveCommands.joystickDrive(
+                        drive,
+                        //-driver.getLeftY(),
+                        () -> LimelightHelpers.getTY("limelight") * -0.1,
+                        () -> -driver.getLeftX(),
+                        () -> LimelightHelpers.getTX("limelight") * -0.05
+                    ), drive));
 
         //intake
         operator.leftBumper().whileTrue(Commands.run(() -> {
