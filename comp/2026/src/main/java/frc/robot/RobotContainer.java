@@ -160,11 +160,14 @@ public class RobotContainer {
         registerNammedCommands();
 
         autoChooser = AutoBuilder.buildAutoChooser();
-        autoChooser.addOption("Drive back and Shoot", new SimpleAuto(drive));
-        autoChooser.addOption("Drive Back Shoot with Climb Blue", new SimpleAuto_Climb_Blue(drive));
-        autoChooser.addOption("Drive back and Shoot Blue Side", new Blue_Simple_Auto(drive));
-        autoChooser.addOption("Drive back and Shoot with Climb Red Side", new SimpleAuto_Climb_Red(drive));
+        // autoChooser.addOption("Drive back and Shoot", new SimpleAuto(drive));
+        // autoChooser.addOption("Drive Back Shoot with Climb Blue", new SimpleAuto_Climb_Blue(drive));
+        // autoChooser.addOption("Drive back and Shoot Blue Side", new Blue_Simple_Auto(drive));
+        // autoChooser.addOption("Drive back and Shoot with Climb Red Side", new SimpleAuto_Climb_Red(drive));
+
         autoChooser.addOption("Akash Scoot and Shoot", new PathPlannerAuto("Akash Scoot and Shoot"));
+        autoChooser.addOption("Hub to Tower Shoot", new PathPlannerAuto("Hub to Tower shoot"));
+        autoChooser.addOption("Hub to Tower Shoot and Climb", new PathPlannerAuto("Hub to Tower Shoot + Climb"));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -201,21 +204,21 @@ public class RobotContainer {
                 drive)
             .ignoringDisable(true));
 
-                NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
+        NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }, fuel)).withTimeout(3));
+        }, fuel)).withTimeout(4).andThen(new InstantCommand(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
-                NamedCommands.registerCommand("Climb down", (Commands.run(() -> {
+        NamedCommands.registerCommand("Climb down", (Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_AUTO_DOWN_PERCENT);
         }, climber).withTimeout(0.7).andThen(Commands.runOnce(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_STOP)))));
 
 
-                NamedCommands.registerCommand(("Pre Climb Auto Set Up"), Commands.run(() -> {
+        NamedCommands.registerCommand(("Pre Climb Auto Set Up"), Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_AUTO_DOWN_PERCENT);
         }, climber).withTimeout(2.3).andThen(Commands.runOnce(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_STOP))));
 
@@ -224,7 +227,7 @@ public class RobotContainer {
         }, climber)));
 
 
-            NamedCommands.registerCommand("Stop Shooting", Commands.run(() -> {
+            NamedCommands.registerCommand("Stop Shooting", Commands.runOnce(() -> {
                 fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT);
                 fuel.setIntakePower(ShooterConstants.INTAKE_STOP_PERCENT);
                 fuel.setFeederRoller(ShooterConstants.FEEDER_STOP_PERCENT);
@@ -243,9 +246,9 @@ public class RobotContainer {
         //     climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
         // }, climber)).withTimeout(2));
 
-                NamedCommands.registerCommand("Climb Up", Commands.run(() -> {
+        NamedCommands.registerCommand("Climb Up", Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
-        }, climber));
+        }, climber).withTimeout(4).andThen(Commands.runOnce(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_STOP))));
     }
     /**
      * Use this method to define your button->command mappings. Buttons can be
