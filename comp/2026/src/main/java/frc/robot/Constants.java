@@ -77,7 +77,7 @@ public final class Constants {
     public static final int CLIMBER_MOTOR_NEGATIVE_ROTATIONS = -1;
     public static final int CLIMBER_MOTOR_POSITIVE_ROTATIONS = 1;
     // Percentage to power the motor both up and down
-    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.8;
+    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.7;
     public static final double CLIMBER_MOTOR_UP_PERCENT = 1;
     public static final double CLIMBER_AUTO_DOWN_PERCENT = -1;
 

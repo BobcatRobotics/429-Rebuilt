@@ -164,6 +164,16 @@ public class RobotContainer {
         autoChooser.addOption("Drive back and Shoot Blue Side", new Blue_Simple_Auto(drive));
         autoChooser.addOption("Drive back and Shoot with Climb Red Side", new SimpleAuto_Climb_Red(drive));
 
+<<<<<<< Updated upstream
+=======
+        //23 means 8 shot plus a climb
+        //double tower means go to tower first and shoot then depot and back to tower for another shot
+
+        autoChooser.addOption("Test", new PathPlannerAuto("Test"));
+        autoChooser.addOption("Test spin", new PathPlannerAuto("Test spin"));
+        autoChooser.addOption("90 turn", new PathPlannerAuto("90 turn"));
+        
+>>>>>>> Stashed changes
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
             // Set up SysId routines
@@ -222,7 +232,7 @@ public class RobotContainer {
         }, climber)));
 
 
-            NamedCommands.registerCommand("Stop Shooting", Commands.runOnce(() -> {
+            NamedCommands.registerCommand("Stop Shooting", Commands.run(() -> {
                 fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT);
                 fuel.setIntakePower(ShooterConstants.INTAKE_STOP_PERCENT);
                 fuel.setFeederRoller(ShooterConstants.FEEDER_STOP_PERCENT);
@@ -258,11 +268,10 @@ public class RobotContainer {
         // Default command, normal field-relative drive
         drive.setDefaultCommand(
                 DriveCommands.joystickDrive(
-                        drive,                                      // red                  //blue
-                        () -> AllianceFlipUtil.shouldFlip() ? -driver.getLeftY() : driver.getLeftY(),
-                        () -> AllianceFlipUtil.shouldFlip() ? -driver.getLeftX() : driver.getLeftX(),
-                        () -> AllianceFlipUtil.shouldFlip() ? driver.getRightX() : 
-                        driver.back().getAsBoolean() ? -driver.getRightX() : driver.getRightX()));
+                         drive,
+                        () -> -driver.getLeftY(),
+                        () -> -driver.getLeftX(),
+                        () -> -driver.getRightX()));
 
         fuel.setDefaultCommand(fuel.run(() -> fuel.stop()));
         climber.setDefaultCommand(climber.run(() -> climber.stop()));
