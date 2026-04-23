@@ -91,7 +91,6 @@ public class RobotContainer {
     private final Climber climber;
     private final Drive drive;
     private final AntiTipping antiTipping;
-    private Vision vision;
 
     // Controller
     private final CommandXboxController driver = new CommandXboxController(0);
@@ -120,8 +119,6 @@ public class RobotContainer {
                         new ModuleIOTalonFX(newBackRight.addModuleConstants(TunerConstants.BackRight)));
                 fuel = new Fuel(new FuelIOReal());
                 climber = new Climber(new ClimberIOReal());
-                // Vision
-                vision = new Vision(drive::addVisionMeasurement, new VisionIOLimelight("", drive::getRotation));
                 break;
             case SIM:
                 // Sim robot, instantiate physics sim IO implementations
@@ -164,16 +161,6 @@ public class RobotContainer {
         autoChooser.addOption("Drive back and Shoot Blue Side", new Blue_Simple_Auto(drive));
         autoChooser.addOption("Drive back and Shoot with Climb Red Side", new SimpleAuto_Climb_Red(drive));
 
-<<<<<<< Updated upstream
-=======
-        //23 means 8 shot plus a climb
-        //double tower means go to tower first and shoot then depot and back to tower for another shot
-
-        autoChooser.addOption("Test", new PathPlannerAuto("Test"));
-        autoChooser.addOption("Test spin", new PathPlannerAuto("Test spin"));
-        autoChooser.addOption("90 turn", new PathPlannerAuto("90 turn"));
-        
->>>>>>> Stashed changes
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
             // Set up SysId routines
