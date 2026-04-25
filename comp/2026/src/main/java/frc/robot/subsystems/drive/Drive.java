@@ -206,27 +206,8 @@ rawGyroRotation = gyroInputs.odometryYawPositions[i];
         rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
       }
     
-        LimelightHelpers.SetRobotOrientation("limelight-shooter", poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-  LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-shooter");
-   
-  // if our angular velocity is greater than 360 degrees per second, ignore vision updates
-  // if(Math.abs(Math.toDegrees(gyroIO.yawVelocityRadPerSec())) > 360)
-  boolean doRejectUpdate = true;
-  if(Math.abs(Math.toDegrees(gyroInputs.yawVelocityRadPerSec)) > 360)
-  {
-    doRejectUpdate = true;
-  }
-  if(mt2.tagCount == 0)
-  {
-    doRejectUpdate = true;
-  }
-  if(!doRejectUpdate)
-  {
-    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-    poseEstimator.addVisionMeasurement(
-        mt2.pose,
-        mt2.timestampSeconds);
-  }
+        
+
       // Apply update
       poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
     }

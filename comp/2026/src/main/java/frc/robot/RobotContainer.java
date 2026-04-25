@@ -22,7 +22,9 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -54,6 +56,7 @@ import frc.robot.subsystems.fuel.FuelIO;
 import frc.robot.subsystems.fuel.FuelIOReal;
 import frc.robot.subsystems.fuel.FuelIOSim;
 import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.util.AllianceFlipUtil;
 import frc.robot.commands.SimpleAuto;
@@ -91,6 +94,7 @@ public class RobotContainer {
     private final Climber climber;
     private final Drive drive;
     private final AntiTipping antiTipping;
+    private Vision vision;
 
     // Controller
     private final CommandXboxController driver = new CommandXboxController(0);
@@ -100,6 +104,8 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     private final HubUtil hub;
+
+    //Hub location
     
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -119,6 +125,10 @@ public class RobotContainer {
                         new ModuleIOTalonFX(newBackRight.addModuleConstants(TunerConstants.BackRight)));
                 fuel = new Fuel(new FuelIOReal());
                 climber = new Climber(new ClimberIOReal());
+                vision =
+                 new Vision(
+                    drive::addVisionMeasurement,
+                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
                 break;
             case SIM:
                 // Sim robot, instantiate physics sim IO implementations
@@ -128,6 +138,10 @@ public class RobotContainer {
                         new ModuleIOSim(TunerConstants.BackRight));
                 fuel = new Fuel(new FuelIOSim());
                 climber = new Climber(new ClimberIOSim());
+                vision =
+                 new Vision(
+                    drive::addVisionMeasurement,
+                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
                 break;
 
             default:
@@ -143,6 +157,10 @@ public class RobotContainer {
                 });
                 climber = new Climber(new ClimberIO() {
                 });
+                vision =
+                 new Vision(
+                    drive::addVisionMeasurement,
+                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
                 break;
         }
 
@@ -275,6 +293,13 @@ public class RobotContainer {
                 drive)
             .ignoringDisable(true));
 
+        driver.a().whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                         drive,
+                        () -> -driver.getLeftY(),
+                        () -> -driver.getLeftX(),
+                        () -> new Rotation2d(Constants.hubLocation.getX()-drive.getPose().getX(), Constants.hubLocation.getY()-drive.getPose().getY())));
+
         //intake
         operator.leftBumper().whileTrue(Commands.run(() -> {
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
@@ -369,9 +394,13 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
+        // Logger.recordOutput("Hub/Coords", DriverStation.getAlliance().get());
+        //System.out.println(Constants.alliance);
         antiTipping.calculate();
         HubData hubData = hub.getHubData();
         Logger.recordOutput("Hub/Status", hubData.owner);
         Logger.recordOutput("Hub/TimeRemaing", hubData.timeRemaining);
+
+       
     }
 }

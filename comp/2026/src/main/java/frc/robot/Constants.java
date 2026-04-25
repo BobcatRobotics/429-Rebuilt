@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
+
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -18,7 +23,9 @@ import edu.wpi.first.wpilibj.RobotBase;
 public final class Constants {
     public static final Mode simMode = Mode.SIM;
     public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
-    
+    public static Alliance alliance = Alliance.Red;
+    public static Translation2d hubLocation = HubUtil.getMyHubCoordinates(alliance).toPose2d().getTranslation();
+
     public static enum Mode {
         /** Running on a real robot. */
         REAL,

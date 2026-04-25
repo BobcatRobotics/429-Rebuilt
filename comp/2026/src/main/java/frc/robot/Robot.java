@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -34,9 +35,7 @@ public class Robot extends LoggedRobot {
    */
   public Robot() {
 
-    UsbCamera intakeCamera = CameraServer.startAutomaticCapture(0);
-    intakeCamera.setFPS(15);
-    intakeCamera.setResolution(160, 120);
+    
     
     // UsbCamera frontCamera = CameraServer.startAutomaticCapture(1);
     // frontCamera.setFPS(5);
@@ -66,6 +65,9 @@ public class Robot extends LoggedRobot {
         // Running on a real robot, log to a USB stick ("/U/logs")
         Logger.addDataReceiver(new WPILOGWriter());
         Logger.addDataReceiver(new NT4Publisher());
+        UsbCamera intakeCamera = CameraServer.startAutomaticCapture(0);
+          intakeCamera.setFPS(15);
+          intakeCamera.setResolution(160, 120);
         break;
 
       case SIM:
@@ -104,6 +106,11 @@ public class Robot extends LoggedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    if (DriverStation.getAlliance().isPresent()){
+    Constants.alliance = DriverStation.getAlliance().get();
+    Constants.hubLocation = HubUtil.getMyHubCoordinates(DriverStation.getAlliance().get()).toPose2d().getTranslation();
+    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
