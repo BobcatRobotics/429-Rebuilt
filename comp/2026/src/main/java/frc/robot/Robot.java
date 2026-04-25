@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -17,6 +18,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import frc.robot.Constants;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -106,6 +109,17 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    if (DriverStation.getAlliance().isPresent()){
+    Constants.alliance = DriverStation.getAlliance().get();
+    Constants.hubLocation = HubUtil.getMyHubCoordinates(DriverStation.getAlliance().get()).toPose2d().getTranslation();
+    }
+
+    Constants.distanceToHub = Math.sqrt(Math.pow(Constants.hubLocation.getX()-m_robotContainer.drive.getPose().getX(), 2) +
+     Math.pow(Constants.hubLocation.getY()-m_robotContainer.drive.getPose().getY(), 2));
+
+     
+    Logger.recordOutput("Distance to Hub", Constants.distanceToHub * 39.3701);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
+
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -18,6 +22,9 @@ import edu.wpi.first.wpilibj.RobotBase;
 public final class Constants {
     public static final Mode simMode = Mode.SIM;
     public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+    public static Alliance alliance = Alliance.Red;
+    public static Translation2d hubLocation = HubUtil.getMyHubCoordinates(alliance).toPose2d().getTranslation();
+    public static double distanceToHub = 0.0;
     
     public static enum Mode {
         /** Running on a real robot. */

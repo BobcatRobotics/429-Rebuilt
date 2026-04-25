@@ -61,6 +61,9 @@ import frc.robot.util.AllianceFlipUtil;
 import frc.robot.commands.SimpleAuto;
 import frc.robot.commands.SimpleAuto_Climb_Blue;
 import frc.robot.commands.SimpleAuto_Climb_Red;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.subsystems.vision.VisionConstants;
 
 import static frc.robot.Constants.IntakeConstants.INTAKE_PERCENT;
 
@@ -84,7 +87,7 @@ public class RobotContainer {
     // Subsystems
     private final Fuel fuel;
     private final Climber climber;
-    private final Drive drive;
+    public final Drive drive;
     private final AntiTipping antiTipping;
     private Vision vision;
 
@@ -116,7 +119,10 @@ public class RobotContainer {
                 fuel = new Fuel(new FuelIOReal());
                 climber = new Climber(new ClimberIOReal());
                 // Vision
-                vision = new Vision(drive::addVisionMeasurement, new VisionIOLimelight("", drive::getRotation));
+                vision =
+                 new Vision(
+                    drive::addVisionMeasurement,
+                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
                 break;
             case SIM:
                 // Sim robot, instantiate physics sim IO implementations
@@ -126,6 +132,10 @@ public class RobotContainer {
                         new ModuleIOSim(TunerConstants.BackRight));
                 fuel = new Fuel(new FuelIOSim());
                 climber = new Climber(new ClimberIOSim());
+                vision =
+                 new Vision(
+                    drive::addVisionMeasurement,
+                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
                 break;
 
             default:
@@ -141,6 +151,10 @@ public class RobotContainer {
                 });
                 climber = new Climber(new ClimberIO() {
                 });
+                vision =
+                 new Vision(
+                    drive::addVisionMeasurement,
+                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
                 break;
         }
 
@@ -283,6 +297,12 @@ public class RobotContainer {
                                                 () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(),
                                                                 AllianceFlipUtil.apply(Rotation2d.kZero))),
                                                 drive).ignoringDisable(true));
+            driver.a().whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                         drive,
+                        () -> -driver.getLeftY(),
+                        () -> -driver.getLeftX(),
+                        () -> new Rotation2d(Constants.hubLocation.getX()-drive.getPose().getX(), Constants.hubLocation.getY()-drive.getPose().getY())));
 
         //intake
         operator.leftBumper().whileTrue(Commands.run(() -> {
