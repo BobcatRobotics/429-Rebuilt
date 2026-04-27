@@ -115,11 +115,11 @@ RobotState.getInstance().alliance = DriverStation.getAlliance().get();
     RobotState.getInstance().hubLocation = HubUtil.getMyHubCoordinates(DriverStation.getAlliance().get()).toPose2d().getTranslation();
     }
 
-    Constants.distanceToHub = Math.sqrt(Math.pow(Constants.hubLocation.getX()-m_robotContainer.drive.getPose().getX(), 2) +
-     Math.pow(Constants.hubLocation.getY()-m_robotContainer.drive.getPose().getY(), 2));
+    RobotState.getInstance().distanceToHub = Math.sqrt(Math.pow(RobotState.getInstance().hubLocation.getX()-m_robotContainer.drive.getPose().getX(), 2) +
+     Math.pow(RobotState.getInstance().hubLocation.getY()-m_robotContainer.drive.getPose().getY(), 2));
 
      
-    Logger.recordOutput("Distance to Hub", Constants.distanceToHub * 39.3701);
+    Logger.recordOutput("Distance to Hub", RobotState.getInstance().distanceToHub * 39.3701);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
