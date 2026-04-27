@@ -108,8 +108,8 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().run();
 
     if (DriverStation.getAlliance().isPresent()){
-    Constants.alliance = DriverStation.getAlliance().get();
-    Constants.hubLocation = HubUtil.getMyHubCoordinates(DriverStation.getAlliance().get()).toPose2d().getTranslation();
+    RobotState.getInstance().alliance = DriverStation.getAlliance().get();
+    RobotState.getInstance().hubLocation = HubUtil.getMyHubCoordinates(DriverStation.getAlliance().get()).toPose2d().getTranslation();
     }
   }
 

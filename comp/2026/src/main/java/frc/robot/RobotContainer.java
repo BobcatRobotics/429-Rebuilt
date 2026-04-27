@@ -298,7 +298,7 @@ public class RobotContainer {
                          drive,
                         () -> -driver.getLeftY(),
                         () -> -driver.getLeftX(),
-                        () -> new Rotation2d(Constants.hubLocation.getX()-drive.getPose().getX(), Constants.hubLocation.getY()-drive.getPose().getY())));
+                        () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
 
         //intake
         operator.leftBumper().whileTrue(Commands.run(() -> {
