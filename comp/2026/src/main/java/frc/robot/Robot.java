@@ -111,8 +111,8 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     CommandScheduler.getInstance().run();
 
     if (DriverStation.getAlliance().isPresent()){
-    Constants.alliance = DriverStation.getAlliance().get();
-    Constants.hubLocation = HubUtil.getMyHubCoordinates(DriverStation.getAlliance().get()).toPose2d().getTranslation();
+RobotState.getInstance().alliance = DriverStation.getAlliance().get();
+    RobotState.getInstance().hubLocation = HubUtil.getMyHubCoordinates(DriverStation.getAlliance().get()).toPose2d().getTranslation();
     }
 
     Constants.distanceToHub = Math.sqrt(Math.pow(Constants.hubLocation.getX()-m_robotContainer.drive.getPose().getX(), 2) +

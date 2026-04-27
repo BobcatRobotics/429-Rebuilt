@@ -22,9 +22,6 @@ import edu.wpi.first.wpilibj.RobotBase;
 public final class Constants {
     public static final Mode simMode = Mode.SIM;
     public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
-    public static Alliance alliance = Alliance.Red;
-    public static Translation2d hubLocation = HubUtil.getMyHubCoordinates(alliance).toPose2d().getTranslation();
-    public static double distanceToHub = 0.0;
     
     public static enum Mode {
         /** Running on a real robot. */
