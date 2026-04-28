@@ -111,7 +111,7 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     CommandScheduler.getInstance().run();
 
     if (DriverStation.getAlliance().isPresent()){
-RobotState.getInstance().alliance = DriverStation.getAlliance().get();
+    RobotState.getInstance().alliance = DriverStation.getAlliance().get();
     RobotState.getInstance().hubLocation = HubUtil.getMyHubCoordinates(DriverStation.getAlliance().get()).toPose2d().getTranslation();
     }
 

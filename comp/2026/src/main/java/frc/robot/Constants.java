@@ -51,9 +51,9 @@ public final class Constants {
     public static final double FEEDER_LAUNCHING_PERCENT = 0.2;
     public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.2;
 
-    public static final double SHOOTER_PERCENT = 0.90; //0.9 for comp, 0.8 for doosan
-    public static final double SHOOTER_LONG_PERCENT = 0.92;
-    public static final double SHOOTER_EJECT_PERCENT = -0.9;
+    public static final double SHOOTER_VELOCITY = 0.90; //0.9 for comp, 0.8 for doosan
+    public static final double SHOOTER_LONG_VELOCITY = 0.92;
+    public static final double SHOOTER_EJECT_VELOCITY = -0.9;
 
     public static final double SHOOTER_STOP_PERCENT = 0;
     public static final double INTAKE_STOP_PERCENT = 0;

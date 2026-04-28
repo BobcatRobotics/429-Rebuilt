@@ -60,11 +60,11 @@ public interface FuelIO {
      * 
      * 
      */
-    public default void setShooterRightPower(double power) {
+    public default void setShooterRightVelocity(double velocity) {
 
     }
 
-    public default void setShooterLeftPower(double power){
+    public default void setShooterLeftVelocity(double velocity){
 
     }
 

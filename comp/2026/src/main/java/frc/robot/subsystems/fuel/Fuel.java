@@ -42,12 +42,12 @@ public class Fuel extends SubsystemBase {
      * 
      * @param velSetpoint
      */
-    public void setShooterRightPower(double velSetpoint) {
-        io.setShooterRightPower(velSetpoint);
+    public void setShooterRightVelocity(double velSetpoint) {
+        io.setShooterRightVelocity(velSetpoint);
     }
 
-    public void setShooterLeftPower(double velSetpoint) {
-        io.setShooterLeftPower(velSetpoint);
+    public void setShooterLeftVelocity(double velSetpoint) {
+        io.setShooterLeftVelocity(velSetpoint);
     }
 
     public void setIntakePower(double velSetpoint) {
