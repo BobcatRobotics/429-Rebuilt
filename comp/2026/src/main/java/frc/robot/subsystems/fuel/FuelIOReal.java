@@ -35,7 +35,9 @@ public class FuelIOReal implements FuelIO {
     private DutyCycleOut feederMotorRequest = new DutyCycleOut(0).withEnableFOC(false);
     private DutyCycleOut shooterMotorLeftRequest = new DutyCycleOut(0).withEnableFOC(false);
     private DutyCycleOut intakeMotorRequest = new DutyCycleOut(0).withEnableFOC(false);
-    final VelocityVoltage shooterMotorPIDRequest = new VelocityVoltage(0).withSlot(0);
+    final VelocityVoltage shooterMotorPIDRequest = new VelocityVoltage(0).withSlot(0).withEnableFOC(false);
+    final VelocityVoltage feederMotorPIDRequest = new VelocityVoltage(0).withSlot(0).withEnableFOC(false);
+    
     
     public void updateInputs(FuelIOInputs inputs) {
 
@@ -111,6 +113,13 @@ public class FuelIOReal implements FuelIO {
         feederConfigure.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         feederConfigure.CurrentLimits.StatorCurrentLimit = FEEDER_MOTOR_CURRENT_LIMIT;
         feederConfigure.CurrentLimits.StatorCurrentLimitEnable = true;
+        var slot1Configs = new Slot0Configs();
+            slot1Configs.kS = 0.05; // Add 0.05 V output to overcome static friction
+            slot1Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+            slot1Configs.kP = 0.11; // An error of 1 rps results in 0.11 V output
+            slot1Configs.kI = 0.0; // no output for integrated error
+            slot1Configs.kD = 0.0; // no output for error derivative
+            feedMotor.getConfigurator().apply(slot1Configs);
         feedMotor.getConfigurator().apply(feederConfigure);
     }
 
@@ -142,8 +151,8 @@ public class FuelIOReal implements FuelIO {
      * 
      * @param power
      */
-    public void setFeederPower(double power) {
-        feedMotor.setControl(feederMotorRequest.withOutput(power)); // positive for shooting
+    public void setFeederVelocity(double velocity) {
+        feedMotor.setControl(feederMotorPIDRequest.withVelocity(velocity)); // positive for shooting
 }
 
     /**
