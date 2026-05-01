@@ -110,6 +110,10 @@ public interface FuelIO {
         return new StatusSignal<>(null, null, null);
     }
 
+    public default StatusSignal<AngularVelocity> getFeederMotorVelocity() {
+        return new StatusSignal<>(null, null, null);
+    }
+
     public default void stop() {
 
     }

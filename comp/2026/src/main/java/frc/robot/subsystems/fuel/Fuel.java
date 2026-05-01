@@ -96,6 +96,10 @@ public class Fuel extends SubsystemBase {
         return io.getRightShooterMotorVelocity();
     }
 
+    public StatusSignal<AngularVelocity> getFeederMotorVelocity() {
+        return io.getFeederMotorVelocity();
+    }
+
     public void stop() {
         io.stop();
     }
@@ -105,5 +109,6 @@ public class Fuel extends SubsystemBase {
         Logger.processInputs("Fuel", inputs);
         Logger.recordOutput("Fuel/velocityOfLeftShooterMotor", getLeftShooterMotorVelocity().getValueAsDouble());
         Logger.recordOutput("Fuel/velocityOfRightShooterMotor", getRightShooterMotorVelocity().getValueAsDouble());
+        Logger.recordOutput("Fuel/velocityOfFeederMotor", getFeederMotorVelocity().getValueAsDouble());
     }
 }

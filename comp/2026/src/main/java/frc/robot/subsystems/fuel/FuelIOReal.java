@@ -35,7 +35,7 @@ public class FuelIOReal implements FuelIO {
     private DutyCycleOut feederMotorRequest = new DutyCycleOut(0).withEnableFOC(false);
     private DutyCycleOut shooterMotorLeftRequest = new DutyCycleOut(0).withEnableFOC(false);
     private DutyCycleOut intakeMotorRequest = new DutyCycleOut(0).withEnableFOC(false);
-    final VelocityVoltage shooterMotorPIDRequest = new VelocityVoltage(0).withSlot(0);
+    final VelocityVoltage shooterMotorPIDRequest = new VelocityVoltage(0).withSlot(0).withEnableFOC(false);
     
     public void updateInputs(FuelIOInputs inputs) {
 
@@ -57,16 +57,14 @@ public class FuelIOReal implements FuelIO {
         shooterConfigure.CurrentLimits.StatorCurrentLimitEnable = true;
         // shooterConfigure.CurrentLimits.SupplyCurrentLimit = SHOOTER_MOTOR_SUPPLY_LIMIT;
         // shooterConfigure.CurrentLimits.SupplyCurrentLimitEnable = true;
+        shooterMotorRight.getConfigurator().apply(shooterConfigure);
 
         var slot0Configs = new Slot0Configs();
-            slot0Configs.kS = 0.05; // Add 0.05 V output to overcome static friction
-            slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-            slot0Configs.kP = 0.11; // An error of 1 rps results in 0.11 V output
+            slot0Configs.kV = 0.11; // A velocity target of 1 rps results in 0.12 V output
+            slot0Configs.kP = 2.8; // An error of 1 rps results in 0.11 V output
             slot0Configs.kI = 0.0; // no output for integrated error
             slot0Configs.kD = 0.0; // no output for error derivative
         shooterMotorRight.getConfigurator().apply(slot0Configs);
-
-        shooterMotorRight.getConfigurator().apply(shooterConfigure);
         shooterMotorRight.setControl(new StrictFollower(SHOOTER_LEFT_MOTOR_ID));
     }
     
@@ -176,11 +174,16 @@ public class FuelIOReal implements FuelIO {
         return shooterMotorRight.getVelocity();
     }
 
+    public StatusSignal<AngularVelocity> getFeederMotorVelocity() {
+        return feedMotor.getVelocity();
+    }
+
     public void stop() {        
         setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT);
         setIntakePower(ShooterConstants.INTAKE_STOP_PERCENT);
         setFeederRoller(ShooterConstants.FEEDER_STOP_PERCENT);
-        // feedMotor.stopMotor();
-        // intakeMotor.stopMotor();
+        feedMotor.stopMotor();
+        intakeMotor.stopMotor();
+        shooterMotorRight.stopMotor();
     }
 }
