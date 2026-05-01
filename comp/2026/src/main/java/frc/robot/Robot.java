@@ -119,7 +119,7 @@ if (Constants.currentMode == Constants.Mode.REAL) {
      Math.pow(RobotState.getInstance().hubLocation.getY()-m_robotContainer.drive.getPose().getY(), 2));
 
      
-    Logger.recordOutput("Distance to Hub", RobotState.getInstance().distanceToHub * 39.3701);
+    Logger.recordOutput("Distance to Hub", RobotState.getInstance().distanceToHub * 39.3701 - 36.5);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

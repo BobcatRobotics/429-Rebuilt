@@ -69,6 +69,10 @@ public final class Constants {
     //put shooter precents for shooting to 90%
 
     public static final double SPIN_UP_SECONDS = 1;
+
+    public static final double[] SHOOTER_DISTANCES = {40, 50, 60, 70, 80, 90, 100, 110, 120, 130};
+
+    public static final double[] SHOOTER_SPEEDS = {70, 72.5, 75, 81, 84, 88, 91.5, 94, 97, 104};
   }
 
     public static final class ClimbConstatns {
