@@ -14,12 +14,14 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -110,16 +112,22 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
+    var robotState = RobotState.getInstance();
+
     if (DriverStation.getAlliance().isPresent()){
-    RobotState.getInstance().alliance = DriverStation.getAlliance().get();
-    RobotState.getInstance().hubLocation = HubUtil.getMyHubCoordinates(DriverStation.getAlliance().get()).toPose2d().getTranslation();
+      robotState.alliance = DriverStation.getAlliance().get();
+      robotState.hubLocation = HubUtil.getMyHubCoordinates(DriverStation.getAlliance().get()).toPose2d().getTranslation();
     }
 
-    RobotState.getInstance().distanceToHub = Math.sqrt(Math.pow(RobotState.getInstance().hubLocation.getX()-m_robotContainer.drive.getPose().getX(), 2) +
-     Math.pow(RobotState.getInstance().hubLocation.getY()-m_robotContainer.drive.getPose().getY(), 2));
-
+    robotState.setDistanceToHub(
+      Units.metersToInches(
+        Math.sqrt(Math.pow(robotState.hubLocation.getX()-m_robotContainer.drive.getPose().getX(), 2) +
+        Math.pow(robotState.hubLocation.getY()-m_robotContainer.drive.getPose().getY(), 2))
+      ) - ShooterConstants.SHOOTING_DISTANCE_OFFSET);
      
-    Logger.recordOutput("Distance to Hub", RobotState.getInstance().distanceToHub * 39.3701 - 36.5);
+    Logger.recordOutput("Distance to Hub", robotState.getDistanceToHub());
+
+    Logger.recordOutput("Shooter Velocity", robotState.getShooterVelocity());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

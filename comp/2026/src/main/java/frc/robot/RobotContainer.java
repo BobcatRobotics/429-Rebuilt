@@ -287,22 +287,22 @@ public class RobotContainer {
 
         // Switch to X pattern when X button is pressed
         driver.x()
-                .onTrue(new ActionFactory().singleAction("X-Command", () -> drive.stopWithX(), drive));
+            .onTrue(new ActionFactory().singleAction("X-Command", () -> drive.stopWithX(), drive));
 
         // Reset gyro / field orientation when B button is pressed
-        //Akash changed this to what 177 uses
-                // Reset gyro to 0° when B button is pressed
-                driver.b()
-                                .onTrue(new ActionFactory().singleAction("ZeroGyroCommand",
-                                                () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(),
-                                                                AllianceFlipUtil.apply(Rotation2d.kZero))),
-                                                drive).ignoringDisable(true));
-            driver.a().whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                         drive,
-                        () -> -driver.getLeftY(),
-                        () -> -driver.getLeftX(),
-                        () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
+        driver.b()
+            .onTrue(new ActionFactory().singleAction("ZeroGyroCommand",
+                            () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(),
+                                            AllianceFlipUtil.apply(Rotation2d.kZero))),
+                            drive).ignoringDisable(true));
+
+        driver.rightBumper().whileTrue(
+        DriveCommands.joystickDriveAtAngle(
+                    drive,
+                    () -> -driver.getLeftY(),
+                    () -> -driver.getLeftX(),
+                    () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
+
         //intake
         operator.leftBumper().whileTrue(Commands.run(() -> {
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
@@ -310,7 +310,7 @@ public class RobotContainer {
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
         //shoot
-          operator.rightBumper().whileTrue(Commands.run(() -> {
+        driver.rightBumper().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_VELOCITY);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
@@ -319,13 +319,13 @@ public class RobotContainer {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_VELOCITY);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }).withTimeout(0.5).andThen(Commands.run(() -> {
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_LONG_VELOCITY);
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }))));
 
-            operator.rightBumper().onFalse(Commands.run(() -> {
-                fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_VELOCITY);
-            }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
+        operator.rightBumper().onFalse(Commands.run(() -> {
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_VELOCITY);
+        }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         operator.y().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
@@ -338,8 +338,8 @@ public class RobotContainer {
         })));
 
         operator.y().onFalse(Commands.run(() -> {
-                fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_MID);
-            }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_MID);
+        }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         operator.x().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
@@ -352,8 +352,8 @@ public class RobotContainer {
         })));
 
         operator.x().onFalse(Commands.run(() -> {
-                fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
-            }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
+        }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
             
 
         //eject through intake
@@ -376,11 +376,6 @@ public class RobotContainer {
         operator.start().whileTrue(climber.disableLimits());
 
         operator.start().onFalse(climber.enableLimits());
-
-        // operator.back().onFalse(climber.enableLimits().andThen(Commands.run(() -> {
-        //     climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
-        // })));
-        
     }
 
     /**
