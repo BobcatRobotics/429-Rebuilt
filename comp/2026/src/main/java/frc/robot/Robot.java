@@ -115,7 +115,7 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     var robotState = RobotState.getInstance();
 
     if (DriverStation.getAlliance().isPresent()){
-      robotState.alliance = DriverStation.getAlliance().get();
+      robotState.setAlliance(DriverStation.getAlliance().get());
       robotState.hubLocation = HubUtil.getMyHubCoordinates(DriverStation.getAlliance().get()).toPose2d().getTranslation();
     }
 

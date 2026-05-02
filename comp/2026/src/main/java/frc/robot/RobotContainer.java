@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -36,10 +37,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ClimbConstatns;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.Blue_Simple_Auto;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.IntakeCommands;
-import frc.robot.commands.ShooterCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.climber.ClimberIO;
@@ -65,7 +63,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.vision.VisionConstants;
 
-import static frc.robot.Constants.IntakeConstants.INTAKE_PERCENT;
+import java.util.Set;
 
 import org.bobcatrobotics.Commands.ActionFactory;
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubData;
@@ -97,6 +95,7 @@ public class RobotContainer {
 
     // Dashboard inputs
     private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Boolean> climbLocationChooser;
 
     private final HubUtil hub;
     
@@ -168,6 +167,7 @@ public class RobotContainer {
         registerNammedCommands();
 
         autoChooser = new SendableChooser<>();
+        climbLocationChooser = new SendableChooser<>();
 
         // autoChooser.addOption("Drive back and Shoot", new SimpleAuto(drive));
         // autoChooser.addOption("Drive Back Shoot with Climb Blue", new SimpleAuto_Climb_Blue(drive));
@@ -187,6 +187,11 @@ public class RobotContainer {
         autoChooser.addOption("Right bump double tower and climb", new PathPlannerAuto("Right bump start with double tower shot and climb"));
         
         SmartDashboard.putData("Auto Chooser", autoChooser);
+
+        climbLocationChooser.addOption("left tower climb", true);
+        climbLocationChooser.addOption("right tower climb", false);
+
+        SmartDashboard.putData("Climb Location Chooser", climbLocationChooser);
 
             // Set up SysId routines
 //     autoChooser.addOption(
@@ -297,11 +302,15 @@ public class RobotContainer {
                             drive).ignoringDisable(true));
 
         driver.rightBumper().whileTrue(
-        DriveCommands.joystickDriveAtAngle(
+            DriveCommands.joystickDriveAtAngle(
                     drive,
                     () -> -driver.getLeftY(),
                     () -> -driver.getLeftX(),
                     () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
+
+       driver.leftBumper().onTrue(Commands.defer(() -> 
+            DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(climbLocationChooser.getSelected()))
+        , Set.of(drive)));
 
         //intake
         operator.leftBumper().whileTrue(Commands.run(() -> {
@@ -310,9 +319,9 @@ public class RobotContainer {
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
         //shoot
-        driver.rightBumper().whileTrue(Commands.run(() -> {
+        operator.rightBumper().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_VELOCITY);
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
@@ -324,21 +333,21 @@ public class RobotContainer {
         }))));
 
         operator.rightBumper().onFalse(Commands.run(() -> {
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_VELOCITY);
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
         }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         operator.y().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_MID);
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_MID);
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         })));
 
         operator.y().onFalse(Commands.run(() -> {
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_MID);
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
         }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         operator.x().whileTrue(Commands.run(() -> {

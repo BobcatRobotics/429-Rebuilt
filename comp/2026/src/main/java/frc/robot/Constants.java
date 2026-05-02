@@ -58,6 +58,8 @@ public final class Constants {
     public static final double INTAKE_STOP_PERCENT = 0;
     public static final double FEEDER_STOP_PERCENT = 0;
 
+    public static final double SHOOTER_PERCENT_TOWER = 85.0;
+
     public static final double SHOOTER_PERCENT_MID = 0.83;
     public static final double SHOOTER_EJECT_PERCENT_MID = 0.80;
 

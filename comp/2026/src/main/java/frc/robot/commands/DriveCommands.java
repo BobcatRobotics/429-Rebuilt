@@ -37,6 +37,9 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.bobcatrobotics.Subsystems.AntiTippingLib.AntiTipping;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
+
 public class DriveCommands {
   private static final double DEADBAND = 0.1; //% of joystick movement i believe. 
   private static final double ANGLE_KP = 5.0;
@@ -163,6 +166,11 @@ public class DriveCommands {
 
     }, drive);
   }
+
+      public static Command driveToPose(Pose2d pose){
+          return AutoBuilder.pathfindToPose(pose, 
+          new PathConstraints(2.0, 2.0, Math.toRadians(540), Math.toRadians(720)));
+      }
 
   /**
    * Measures the velocity feedforward constants for the drive motors.
