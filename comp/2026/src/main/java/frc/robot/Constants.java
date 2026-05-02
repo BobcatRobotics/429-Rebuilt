@@ -79,6 +79,9 @@ public final class Constants {
     // Motor controller IDs for Climb motor
     public static final int CLIMBER_MOTOR_ID = 20;
 
+    public static final double CLIMBER_CLIMBED_PITCH_L2 = 150;
+    public static final double CLIMBER_CLIMBED_PITCH_L1 = 30;
+
     // Current limit for climb motor
     public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 30;
     public static final int CLIMBER_MOTOR_STATOR_LIMIT = 20;

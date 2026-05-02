@@ -301,6 +301,7 @@ public class RobotContainer {
                                             AllianceFlipUtil.apply(Rotation2d.kZero))),
                             drive).ignoringDisable(true));
 
+        //align to hub
         driver.rightBumper().whileTrue(
             DriveCommands.joystickDriveAtAngle(
                     drive,
@@ -308,8 +309,11 @@ public class RobotContainer {
                     () -> -driver.getLeftX(),
                     () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
 
-       driver.leftBumper().onTrue(Commands.defer(() -> 
+        //drive to tower and climb
+        driver.leftBumper().onTrue(Commands.defer(() -> 
             DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(climbLocationChooser.getSelected()))
+                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
+                    .until(() -> drive.getPitch() >= ClimbConstatns.CLIMBER_CLIMBED_PITCH_L2))
         , Set.of(drive)));
 
         //intake

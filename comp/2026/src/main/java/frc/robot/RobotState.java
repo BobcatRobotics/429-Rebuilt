@@ -2,7 +2,6 @@ package frc.robot;
 
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
 import org.bobcatrobotics.Util.Interpolators.SingleOutputInterpolator;
-import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -45,8 +44,6 @@ public class RobotState {
     }
 
     public Pose2d getTowerLocation(boolean isLeftSideTower){
-      
-    Logger.recordOutput("alliance in tower location", alliance);
         if(alliance == Alliance.Red && isLeftSideTower == true){
             return new Pose2d(15.144, 4.034536, new Rotation2d(Math.toRadians(180)));
         }
