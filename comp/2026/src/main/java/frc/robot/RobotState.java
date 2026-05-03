@@ -43,19 +43,31 @@ public class RobotState {
       return shooterVelocity; 
     }
 
-    public Pose2d getTowerLocation(boolean isLeftSideTower){
+    public Pose2d[] getTowerLocation(boolean isLeftSideTower){
         if(alliance == Alliance.Red && isLeftSideTower == true){
-            return new Pose2d(15.144, 4.034536, new Rotation2d(Math.toRadians(180)));
+            return new Pose2d[]{
+              new Pose2d(14.5, 4.034536, new Rotation2d(Math.toRadians(180))), 
+              new Pose2d(15.144, 4.034536, new Rotation2d(Math.toRadians(180)))
+            };
         }
         if(alliance == Alliance.Red && isLeftSideTower == false){
-            return new Pose2d(15.144, 4.593, new Rotation2d(Math.toRadians(180)));
+            return new Pose2d[] {
+            new Pose2d(14.5, 4.593, new Rotation2d(Math.toRadians(180))),
+            new Pose2d(15.144, 4.593, new Rotation2d(Math.toRadians(180)))
+          };
         }
         if(alliance == Alliance.Blue && isLeftSideTower == true){
-            return new Pose2d(1.4, 4.034536, new Rotation2d());
+          return new Pose2d[]{
+            new Pose2d(2.8, 4.1, new Rotation2d()),
+            new Pose2d(1.6, 4.1, new Rotation2d())
+          };
         }
         if(alliance == Alliance.Blue && isLeftSideTower == false){
-            return new Pose2d(1.4, 3.577, new Rotation2d());
+          return new Pose2d[]{
+            new Pose2d(2.8, 3.275, new Rotation2d()),
+            new Pose2d(1.6, 3.275, new Rotation2d())
+          };
         }
-        return new Pose2d();
+        return new Pose2d[] {new Pose2d(), new Pose2d()};
     }
 }

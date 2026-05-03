@@ -97,6 +97,6 @@ public class ClimberIOReal implements ClimberIO {
 
     public void stop() {
         setClimberPower(ClimbConstatns.CLIMBER_STOP);
-        //climberMotor.stopMotor();
+        climberMotor.stopMotor();
     }
 }

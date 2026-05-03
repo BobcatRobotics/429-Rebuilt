@@ -310,11 +310,31 @@ public class RobotContainer {
                     () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
 
         //drive to tower and climb
-        driver.leftBumper().onTrue(Commands.defer(() -> 
-            DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(climbLocationChooser.getSelected()))
+        driver.povLeft().onTrue(Commands.defer(() -> 
+            DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(true)[0])
+                .andThen(DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(true)[1]))
+                .andThen(new ActionFactory().singleAction("Striaght-Command", () -> drive.stopWithStraight(), drive))
                 .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
-                    .until(() -> drive.getPitch() >= ClimbConstatns.CLIMBER_CLIMBED_PITCH_L2))
-        , Set.of(drive)));
+                    .until(() -> drive.getPitch() <= -2))
+                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
+                .withTimeout(2.8))
+                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber))
+                    .until(() -> 
+                        drive.getPitch() <= ClimbConstatns.CLIMBER_CLIMBED_PITCH_L2)
+        , Set.of(drive))); 
+
+        driver.povRight().onTrue(Commands.defer(() -> 
+            DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(false)[0])
+                .andThen(DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(false)[1]))
+                .andThen(new ActionFactory().singleAction("Striaght-Command", () -> drive.stopWithStraight(), drive))
+                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
+                    .until(() -> drive.getPitch() <= -2)
+                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
+                .withTimeout(2.8))
+                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber))
+                    .until(() -> 
+                        drive.getPitch() <= ClimbConstatns.CLIMBER_CLIMBED_PITCH_L2))
+        , Set.of(drive))); 
 
         //intake
         operator.leftBumper().whileTrue(Commands.run(() -> {

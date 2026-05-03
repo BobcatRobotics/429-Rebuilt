@@ -128,6 +128,8 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     Logger.recordOutput("Distance to Hub", robotState.getDistanceToHub());
 
     Logger.recordOutput("Shooter Velocity", robotState.getShooterVelocity());
+
+    Logger.recordOutput("pitch", m_robotContainer.drive.getPitch());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

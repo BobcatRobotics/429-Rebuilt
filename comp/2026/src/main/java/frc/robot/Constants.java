@@ -79,8 +79,8 @@ public final class Constants {
     // Motor controller IDs for Climb motor
     public static final int CLIMBER_MOTOR_ID = 20;
 
-    public static final double CLIMBER_CLIMBED_PITCH_L2 = 150;
-    public static final double CLIMBER_CLIMBED_PITCH_L1 = 30;
+    public static final double CLIMBER_CLIMBED_PITCH_L2 = -35;
+    public static final double CLIMBER_CLIMBED_PITCH_L1 = -20;
 
     // Current limit for climb motor
     public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 30;
@@ -96,6 +96,9 @@ public final class Constants {
     public static final double CLIMBER_CLIMBED = 180;
     
     public static final double CLIMBER_STOP = 0;
+
+    public static final double AUTO_CLIMB_VELOCITY = 2; //3 at comp 2 at doosan
+    public static final double AUTO_CLIMB_ACCEL = 2; // 5 at comp 2 at doosan
   }
 
   public static final class IntakeConstants {
