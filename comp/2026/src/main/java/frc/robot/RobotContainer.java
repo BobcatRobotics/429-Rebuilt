@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -313,27 +314,25 @@ public class RobotContainer {
         driver.povLeft().onTrue(Commands.defer(() -> 
             DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(true)[0])
                 .andThen(DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(true)[1]))
-                .andThen(new ActionFactory().singleAction("Striaght-Command", () -> drive.stopWithStraight(), drive))
+                .andThen(new ActionFactory().singleAction("Straight-Command", () -> drive.stopWithStraight(), drive))
                 .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
                     .until(() -> drive.getPitch() <= -2))
                 .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
-                .withTimeout(2.8))
-                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber))
-                    .until(() -> 
-                        drive.getPitch() <= ClimbConstatns.CLIMBER_CLIMBED_PITCH_L2)
-        , Set.of(drive))); 
+                    .withTimeout(2.8))
+                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
+                    .until(() -> drive.getPitch() >= ClimbConstatns.CLIMBER_CLIMBED_PITCH_L2))
+        , Set.of(drive)));
 
         driver.povRight().onTrue(Commands.defer(() -> 
             DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(false)[0])
                 .andThen(DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(false)[1]))
-                .andThen(new ActionFactory().singleAction("Striaght-Command", () -> drive.stopWithStraight(), drive))
+                .andThen(new ActionFactory().singleAction("Straight-Command", () -> drive.stopWithStraight(), drive))
                 .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
-                    .until(() -> drive.getPitch() <= -2)
+                    .until(() ->  drive.getPitch() <= -2))
                 .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
-                .withTimeout(2.8))
-                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber))
-                    .until(() -> 
-                        drive.getPitch() <= ClimbConstatns.CLIMBER_CLIMBED_PITCH_L2))
+                    .withTimeout(2.8))
+                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
+                    .until(() -> drive.getPitch() >= ClimbConstatns.CLIMBER_CLIMBED_PITCH_L2))
         , Set.of(drive))); 
 
         //intake
