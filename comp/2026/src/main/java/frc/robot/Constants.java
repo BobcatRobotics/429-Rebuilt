@@ -75,12 +75,12 @@ public final class Constants {
     public static final double[] SHOOTER_SPEEDS = {70, 72.5, 75, 81, 84, 88, 91.5, 94, 97, 104};
   }
 
-    public static final class ClimbConstatns {
+    public static final class ClimbConstants {
     // Motor controller IDs for Climb motor
     public static final int CLIMBER_MOTOR_ID = 20;
 
-    public static final double CLIMBER_CLIMBED_PITCH_L2 = -35;
-    public static final double CLIMBER_CLIMBED_PITCH_L1 = -20;
+    public static final double CLIMBER_CLIMBED_PITCH_L2 = -38;
+    public static final double CLIMBER_CLIMBED_PITCH_L1 = 61;
 
     // Current limit for climb motor
     public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 30;
@@ -97,8 +97,8 @@ public final class Constants {
     
     public static final double CLIMBER_STOP = 0;
 
-    public static final double AUTO_CLIMB_VELOCITY = 2; //3 at comp 2 at doosan
-    public static final double AUTO_CLIMB_ACCEL = 2; // 5 at comp 2 at doosan
+    public static final double AUTO_CLIMB_VELOCITY = 0.5; //3 at comp 2 at doosan
+    public static final double AUTO_CLIMB_ACCEL = 0.5; // 5 at comp 2 at doosan
   }
 
   public static final class IntakeConstants {

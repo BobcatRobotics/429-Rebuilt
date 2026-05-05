@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -35,9 +36,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.Constants.ClimbConstatns;
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.climber.Climber;
@@ -62,6 +64,7 @@ import frc.robot.commands.SimpleAuto_Climb_Blue;
 import frc.robot.commands.SimpleAuto_Climb_Red;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import frc.robot.subsystems.vision.VisionConstants;
 
 import java.util.Set;
@@ -122,7 +125,8 @@ public class RobotContainer {
                 vision =
                  new Vision(
                     drive::addVisionMeasurement,
-                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
+                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+                    new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
                 break;
             case SIM:
                 // Sim robot, instantiate physics sim IO implementations
@@ -135,7 +139,8 @@ public class RobotContainer {
                 vision =
                  new Vision(
                     drive::addVisionMeasurement,
-                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
+                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+                    new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
                 break;
 
             default:
@@ -154,7 +159,8 @@ public class RobotContainer {
                 vision =
                  new Vision(
                     drive::addVisionMeasurement,
-                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
+                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+                    new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
                 break;
         }
 
@@ -236,12 +242,12 @@ public class RobotContainer {
                 .withTimeout(3.5));
 
         NamedCommands.registerCommand("Climb down", (Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_AUTO_DOWN_PERCENT);
+            climber.setClimberPower(ClimbConstants.CLIMBER_AUTO_DOWN_PERCENT);
         }, climber)
             .withTimeout(0.7)));
 
         NamedCommands.registerCommand("Pre Climb Auto Set Up", Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_AUTO_DOWN_PERCENT);
+            climber.setClimberPower(ClimbConstants.CLIMBER_AUTO_DOWN_PERCENT);
         }, climber)
             .withTimeout(2.3));
 
@@ -262,7 +268,7 @@ public class RobotContainer {
             .withTimeout(1));
 
         NamedCommands.registerCommand("Climb Up", Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT);
         }, climber)
             .withTimeout(4));
 
@@ -311,29 +317,13 @@ public class RobotContainer {
                     () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
 
         //drive to tower and climb
-        driver.povLeft().onTrue(Commands.defer(() -> 
-            DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(true)[0])
-                .andThen(DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(true)[1]))
-                .andThen(new ActionFactory().singleAction("Straight-Command", () -> drive.stopWithStraight(), drive))
-                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
-                    .until(() -> drive.getPitch() <= -2))
-                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
-                    .withTimeout(2.8))
-                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
-                    .until(() -> drive.getPitch() >= ClimbConstatns.CLIMBER_CLIMBED_PITCH_L2))
-        , Set.of(drive)));
+        driver.povLeft().onTrue(ClimberCommands.climbToLevel(drive, climber, true, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
 
-        driver.povRight().onTrue(Commands.defer(() -> 
-            DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(false)[0])
-                .andThen(DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(false)[1]))
-                .andThen(new ActionFactory().singleAction("Straight-Command", () -> drive.stopWithStraight(), drive))
-                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
-                    .until(() ->  drive.getPitch() <= -2))
-                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
-                    .withTimeout(2.8))
-                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT), climber)
-                    .until(() -> drive.getPitch() >= ClimbConstatns.CLIMBER_CLIMBED_PITCH_L2))
-        , Set.of(drive))); 
+        driver.povRight().onTrue(ClimberCommands.climbToLevel(drive, climber, false, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
+
+        // for stopping auto climb command
+        driver.y().onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll())
+                .andThen(Commands.runOnce(() -> climber.stop())));
 
         //intake
         operator.leftBumper().whileTrue(Commands.run(() -> {
@@ -343,7 +333,7 @@ public class RobotContainer {
 
         //shoot
         operator.rightBumper().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
@@ -360,7 +350,7 @@ public class RobotContainer {
         }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         operator.y().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
@@ -374,7 +364,7 @@ public class RobotContainer {
         }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         operator.x().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
@@ -397,12 +387,12 @@ public class RobotContainer {
 
         //climb up
         operator.povUp().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT);
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
         //climb down
         operator.povDown().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
         operator.start().whileTrue(climber.disableLimits());

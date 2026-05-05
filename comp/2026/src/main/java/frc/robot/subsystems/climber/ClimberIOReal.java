@@ -1,9 +1,9 @@
 package frc.robot.subsystems.climber;
 
-import static frc.robot.Constants.ClimbConstatns.CLIMBER_CLIMBED;
-import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_CURRENT_LIMIT;
-import static frc.robot.Constants.ClimbConstatns.CLIMBER_MOTOR_ID;
-import static frc.robot.Constants.ClimbConstatns.CLIMBER_PRECLIMB;
+import static frc.robot.Constants.ClimbConstants.CLIMBER_CLIMBED;
+import static frc.robot.Constants.ClimbConstants.CLIMBER_MOTOR_CURRENT_LIMIT;
+import static frc.robot.Constants.ClimbConstants.CLIMBER_MOTOR_ID;
+import static frc.robot.Constants.ClimbConstants.CLIMBER_PRECLIMB;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.Constants.ClimbConstatns;
+import frc.robot.Constants.ClimbConstants;
 
 public class ClimberIOReal implements ClimberIO {
     private DutyCycleOut climberMotorrequest = new DutyCycleOut(0).withEnableFOC(false);
@@ -96,7 +96,7 @@ public class ClimberIOReal implements ClimberIO {
     }
 
     public void stop() {
-        setClimberPower(ClimbConstatns.CLIMBER_STOP);
+        setClimberPower(ClimbConstants.CLIMBER_STOP);
         climberMotor.stopMotor();
     }
 }

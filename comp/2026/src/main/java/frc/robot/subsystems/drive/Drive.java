@@ -373,4 +373,12 @@ rawGyroRotation = gyroInputs.odometryYawPositions[i];
   public double getRoll(){
     return gyroIO.getRoll();
   }
+
+  public double getGravityVectorX(){
+    return gyroIO.getGravityVectorX();
+  }
+
+  public double getGravityVectorZ(){
+    return gyroIO.getGravityVectorZ();
+  }
 }

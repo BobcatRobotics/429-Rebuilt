@@ -29,4 +29,12 @@ public interface GyroIO {
   public default double getRoll() {
     return 0.0;
   }
+
+  public default double getGravityVectorX(){
+    return 0.0;
+  }
+
+  public default double getGravityVectorZ(){
+    return 0.0;
+  }
 }

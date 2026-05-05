@@ -23,12 +23,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Acceleration;
+import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.Constants.ClimbConstatns;
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.drive.Drive;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -168,9 +170,9 @@ public class DriveCommands {
     }, drive);
   }
 
-      public static Command driveToPose(Pose2d pose){
+      public static Command driveToPose(Pose2d pose, Double velocity, Double acceleration){
           return AutoBuilder.pathfindToPose(pose, 
-          new PathConstraints(ClimbConstatns.AUTO_CLIMB_VELOCITY, ClimbConstatns.AUTO_CLIMB_ACCEL, Math.toRadians(540), Math.toRadians(720)));
+          new PathConstraints(velocity, acceleration, Math.toRadians(540), Math.toRadians(720)));
       }
 
   /**
