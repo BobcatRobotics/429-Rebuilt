@@ -57,6 +57,7 @@ import frc.robot.subsystems.fuel.FuelIOReal;
 import frc.robot.subsystems.fuel.FuelIOSim;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
+import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.util.AllianceFlipUtil;
 import frc.robot.commands.SimpleAuto;
 import frc.robot.commands.SimpleAuto_Climb_Blue;
@@ -64,6 +65,7 @@ import frc.robot.commands.SimpleAuto_Climb_Red;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.vision.VisionConstants;
+import frc.robot.subsystems.vision.VisionIO;
 
 import static frc.robot.Constants.IntakeConstants.INTAKE_PERCENT;
 
@@ -108,55 +110,59 @@ public class RobotContainer {
         ModuleWrapper newFrontLeft = new ModuleWrapper("FrontLeft.json", "FrontLeft");
         ModuleWrapper newBackLeft = new ModuleWrapper("BackLeft.json", "BackLeft");
         ModuleWrapper newBackRight = new ModuleWrapper("BackRight.json", "BackRight");
+        
         switch (Constants.currentMode) {
-            case REAL:
-                // Real robot, instantiate hardware IO implementations
-                drive = new Drive(new GyroIOPigeon2(),
+      case REAL:
+        // Real robot, instantiate hardware IO implementations
+        drive = new Drive(new GyroIOPigeon2(),
                         new ModuleIOTalonFX(newFrontLeft.addModuleConstants(TunerConstants.FrontLeft)),
                         new ModuleIOTalonFX(newFrontRight.addModuleConstants(TunerConstants.FrontRight)),
                         new ModuleIOTalonFX(newBackLeft.addModuleConstants(TunerConstants.BackLeft)),
                         new ModuleIOTalonFX(newBackRight.addModuleConstants(TunerConstants.BackRight)));
-                fuel = new Fuel(new FuelIOReal());
-                climber = new Climber(new ClimberIOReal());
-                // Vision
-                vision =
-                 new Vision(
-                    drive::addVisionMeasurement,
-                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
-                break;
-            case SIM:
-                // Sim robot, instantiate physics sim IO implementations
-                drive = new Drive(new GyroIO() {
-                }, new ModuleIOSim(TunerConstants.FrontLeft),
-                        new ModuleIOSim(TunerConstants.FrontRight), new ModuleIOSim(TunerConstants.BackLeft),
-                        new ModuleIOSim(TunerConstants.BackRight));
-                fuel = new Fuel(new FuelIOSim());
-                climber = new Climber(new ClimberIOSim());
-                vision =
-                 new Vision(
-                    drive::addVisionMeasurement,
-                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
-                break;
+        fuel = new Fuel(new FuelIOReal());
+        climber = new Climber(new ClimberIOReal());
+        // Vision
+        vision =
+            new Vision(
+            drive::addVisionMeasurement,
+            new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+            new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
+        break;
 
-            default:
-                // Replayed robot, disable IO implementations
-                drive = new Drive(new GyroIO() {
+      case SIM:
+        // Sim robot, instantiate physics sim IO implementations
+        drive = new Drive(new GyroIO() {
+        }, new ModuleIOSim(TunerConstants.FrontLeft),
+                new ModuleIOSim(TunerConstants.FrontRight), new ModuleIOSim(TunerConstants.BackLeft),
+                new ModuleIOSim(TunerConstants.BackRight));
+        fuel = new Fuel(new FuelIOSim());
+        climber = new Climber(new ClimberIOSim());
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+                new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
+        break;
+
+      default:
+        drive = new Drive(new GyroIO() {
                 }, new ModuleIO() {
                 }, new ModuleIO() {
                 }, new ModuleIO() {
                 },
                         new ModuleIO() {
                         });
-                fuel = new Fuel(new FuelIO() {
-                });
-                climber = new Climber(new ClimberIO() {
-                });
-                vision =
-                 new Vision(
-                    drive::addVisionMeasurement,
-                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
-                break;
-        }
+        fuel = new Fuel(new FuelIO() {
+        });
+        climber = new Climber(new ClimberIO() {
+        });
+        vision =
+            new Vision(
+            drive::addVisionMeasurement,
+            new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+            new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
+        break;
+    }
 
         antiTipping = new AntiTipping(() -> drive.getPitch(), () -> drive.getRoll(), 0.04, // kP
                 3.0, // tipping threshold (degrees)
