@@ -16,7 +16,7 @@ public class RobotState {
     private double distanceToHub = 0.0;
     private double shooterVelocity = ShooterConstants.SHOOTER_SPEEDS[0];
 
-    public SingleOutputInterpolator interpolator = new SingleOutputInterpolator(ShooterConstants.SHOOTER_DISTANCES, ShooterConstants.SHOOTER_SPEEDS, false);
+    public SingleOutputInterpolator interpolator = new SingleOutputInterpolator(ShooterConstants.SHOOTER_DISTANCES, ShooterConstants.SHOOTER_SPEEDS, true);
 
     public static RobotState getInstance() {
       if (instance == null)
@@ -58,14 +58,14 @@ public class RobotState {
         }
         if(alliance == Alliance.Blue && isLeftSideTower == true){
           return new Pose2d[]{
-            new Pose2d(2.8, 4.1, new Rotation2d()),
-            new Pose2d(1.6, 4.1, new Rotation2d())
+            new Pose2d(2.8, 4.135, new Rotation2d()),
+            new Pose2d(1.45, 4.135, new Rotation2d())
           };
         }
         if(alliance == Alliance.Blue && isLeftSideTower == false){
           return new Pose2d[]{
-            new Pose2d(2.8, 3.275, new Rotation2d()),
-            new Pose2d(1.6, 3.275, new Rotation2d())
+            new Pose2d(2.8, 3.225, new Rotation2d()),
+            new Pose2d(1.45, 3.225, new Rotation2d())
           };
         }
         return new Pose2d[] {new Pose2d(), new Pose2d()};

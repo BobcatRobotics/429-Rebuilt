@@ -97,8 +97,8 @@ public final class Constants {
     
     public static final double CLIMBER_STOP = 0;
 
-    public static final double AUTO_CLIMB_VELOCITY = 0.5; //3 at comp 2 at doosan
-    public static final double AUTO_CLIMB_ACCEL = 0.5; // 5 at comp 2 at doosan
+    public static final double AUTO_CLIMB_VELOCITY = 1; //3 at comp 2 at doosan
+    public static final double AUTO_CLIMB_ACCEL = 1; // 5 at comp 2 at doosan
   }
 
   public static final class IntakeConstants {

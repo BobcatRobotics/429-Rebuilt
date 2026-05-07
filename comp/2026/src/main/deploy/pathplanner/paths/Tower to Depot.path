@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.503081312410841,
-        "y": 3.9897146932952925
+        "x": 1.3866333808844504,
+        "y": 4.144978601997147
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.379186875896861,
-        "y": 5.270641940085948
+        "x": 4.2590156918687585,
+        "y": 4.753095577746078
       },
       "isLocked": false,
       "linkedName": "Tower Climb Position"
@@ -29,7 +29,21 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.5683760683760705,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
