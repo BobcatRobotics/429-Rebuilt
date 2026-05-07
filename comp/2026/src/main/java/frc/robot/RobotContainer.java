@@ -331,7 +331,7 @@ public class RobotContainer {
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
-        //shoot
+        //shoot w/ vision distance
         operator.rightBumper().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
@@ -345,10 +345,12 @@ public class RobotContainer {
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }))));
 
+        //Cancel shooting when right bumper released
         operator.rightBumper().onFalse(Commands.run(() -> {
             fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
         }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
+        //Manual tower shot
         operator.y().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
@@ -359,10 +361,12 @@ public class RobotContainer {
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         })));
 
+        //Manual tower shot stop
         operator.y().onFalse(Commands.run(() -> {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
         }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
+        //Manual close shot
         operator.x().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
@@ -373,6 +377,7 @@ public class RobotContainer {
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         })));
 
+        //manual close shot stop
         operator.x().onFalse(Commands.run(() -> {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
         }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
@@ -395,6 +400,7 @@ public class RobotContainer {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
+        //start button to ignore motor soft limits
         operator.start().whileTrue(climber.disableLimits());
 
         operator.start().onFalse(climber.enableLimits());

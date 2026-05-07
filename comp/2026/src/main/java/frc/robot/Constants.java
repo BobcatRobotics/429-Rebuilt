@@ -35,71 +35,88 @@ public final class Constants {
     }
 
       public static final class ShooterConstants {
-    // Motor controller IDs for Fuel Mechanism motors
-    public static final int FEEDER_MOTOR_ID = 18;
-    public static final int SHOOTER_LEFT_MOTOR_ID = 16;
-    public static final int SHOOTER_RIGHT_MOTOR_ID = 17;
+        // Motor controller IDs for Fuel Mechanism motors
+        public static final int FEEDER_MOTOR_ID = 18;
+        public static final int SHOOTER_LEFT_MOTOR_ID = 16;
+        public static final int SHOOTER_RIGHT_MOTOR_ID = 17;
 
-    // Current limit for fuel mechanism motors.
-    public static final int FEEDER_MOTOR_CURRENT_LIMIT = 70;
-    public static final int SHOOTER_MOTOR_CURRENT_LIMIT = 70;
-    //public static final int SHOOTER_MOTOR_SUPPLY_LIMIT = 70;
+        // Current limit for fuel mechanism motors.
+        public static final int FEEDER_MOTOR_CURRENT_LIMIT = 70;
+        public static final int SHOOTER_MOTOR_CURRENT_LIMIT = 70;
+        //public static final int SHOOTER_MOTOR_SUPPLY_LIMIT = 70;
 
-    // All values likely need to be tuned based on your robot
-    public static final double FEEDER_INTAKING_PERCENT = -0.40;
-    public static final double FEEDER_EJECT_PERCENT = 0.5;
-    public static final double FEEDER_LAUNCHING_PERCENT = 0.2;
-    public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.2;
+        // All values likely need to be tuned based on your robot
+        public static final double FEEDER_INTAKING_PERCENT = -0.40;
+        public static final double FEEDER_EJECT_PERCENT = 0.5;
+        public static final double FEEDER_LAUNCHING_PERCENT = 0.2;
+        public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.2;
 
-    public static final double SHOOTER_VELOCITY = 104; 
-    public static final double SHOOTER_EJECT_VELOCITY = -85.5;
+        public static final double SHOOTER_VELOCITY = 104; 
+        public static final double SHOOTER_EJECT_VELOCITY = -85.5;
 
-    public static final double SHOOTER_STOP_PERCENT = 0;
-    public static final double INTAKE_STOP_PERCENT = 0;
-    public static final double FEEDER_STOP_PERCENT = 0;
+        public static final double SHOOTER_STOP_PERCENT = 0;
+        public static final double INTAKE_STOP_PERCENT = 0;
+        public static final double FEEDER_STOP_PERCENT = 0;
 
-    public static final double SHOOTER_PERCENT_TOWER = 85.0;
+        public static final double SHOOTER_PERCENT_TOWER = 85.0;
 
-    public static final double SHOOTER_PERCENT_MID = 0.83;
-    public static final double SHOOTER_EJECT_PERCENT_MID = 0.80;
+        public static final double SHOOTER_PERCENT_MID = 0.83;
+        public static final double SHOOTER_EJECT_PERCENT_MID = 0.80;
 
-    public static final double SHOOTER_PERCENT_CLOSE = 0.75;
-    public static final double SHOOTER_EJECT_PERCENT_CLOSE = 0.70;
+        public static final double SHOOTER_PERCENT_CLOSE = 0.75;
+        public static final double SHOOTER_EJECT_PERCENT_CLOSE = 0.70;
 
-    public static final double SHOOTING_DISTANCE_OFFSET = 36.5; //in inches 23.5 for half of hub, 13 for half of robot
+        public static final double SHOOTING_DISTANCE_OFFSET = 36.5; //in inches 23.5 for half of hub, 13 for half of robot
 
-    public static final double SPIN_UP_SECONDS = 1;
+        public static final double SPIN_UP_SECONDS = 1;
 
-    public static final double[] SHOOTER_DISTANCES = {40, 50, 60, 70, 80, 90, 100, 110, 120, 130};
+        public static final double[] SHOOTER_DISTANCES = {40, 50, 60, 70, 80, 90, 100, 110, 120, 130};
 
-    public static final double[] SHOOTER_SPEEDS = {70, 72.5, 75, 81, 84, 88, 91.5, 94, 97, 104};
-  }
+        public static final double[] SHOOTER_SPEEDS = {70, 72.5, 75, 81, 84, 88, 91.5, 94, 97, 104};
+      }
 
     public static final class ClimbConstants {
-    // Motor controller IDs for Climb motor
-    public static final int CLIMBER_MOTOR_ID = 20;
+        // Motor controller IDs for Climb motor
+        public static final int CLIMBER_MOTOR_ID = 20;
 
-    public static final double CLIMBER_CLIMBED_PITCH_L2 = -38;
-    public static final double CLIMBER_CLIMBED_PITCH_L1 = 61;
+        //gyro pitch values
+        public static final double CLIMBER_CLIMBED_PITCH_L2 = -38;
+        public static final double CLIMBER_CLIMBED_PITCH_L1 = 61;
 
-    // Current limit for climb motor
-    public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 30;
-    public static final int CLIMBER_MOTOR_STATOR_LIMIT = 20;
-    public static final int CLIMBER_MOTOR_NEGATIVE_ROTATIONS = -1;
-    public static final int CLIMBER_MOTOR_POSITIVE_ROTATIONS = 1;
-    // Percentage to power the motor both up and down
-    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.7;
-    public static final double CLIMBER_MOTOR_UP_PERCENT = 1;
-    public static final double CLIMBER_AUTO_DOWN_PERCENT = -1;
+        // Current limit for climb motor
+        public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 30;
+        public static final int CLIMBER_MOTOR_STATOR_LIMIT = 20;
+        public static final int CLIMBER_MOTOR_NEGATIVE_ROTATIONS = -1;
+        public static final int CLIMBER_MOTOR_POSITIVE_ROTATIONS = 1;
+        // Percentage to power the motor both up and down
+        public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.7;
+        public static final double CLIMBER_MOTOR_UP_PERCENT = 1;
+        public static final double CLIMBER_AUTO_DOWN_PERCENT = -1;
 
-    public static final double CLIMBER_PRECLIMB = -268;
-    public static final double CLIMBER_CLIMBED = 180;
-    
-    public static final double CLIMBER_STOP = 0;
+        //motor rotations when hooks start vertical = zero
+        //soft limit values TODO: ADJUST VALUES IF HOOK START ANGLE CHANGES FOR CT CHAMPS
+        public static final double CLIMBER_PRECLIMB = -268;
+        public static final double CLIMBER_CLIMBED = 180;
+        
+        //is this a motor velocity of zero? Why not stopMotor or motor.stop, whatever it is ?
+        public static final double CLIMBER_STOP = 0;
 
-    public static final double AUTO_CLIMB_VELOCITY = 0.5; //3 at comp 2 at doosan
-    public static final double AUTO_CLIMB_ACCEL = 0.5; // 5 at comp 2 at doosan
-  }
+        public static final double AUTO_CLIMB_VELOCITY = 0.5; //3 at comp 2 at doosan
+        public static final double AUTO_CLIMB_ACCEL = 0.5; // 5 at comp 2 at doosan
+
+        //climber pid values
+        public static final double kClimbMotorkP = 0;
+        public static final double kClimbMotorkI = 0;
+        public static final double kClimbMotorkD = 0;
+        public static final double kClimbMotorkS = 0;
+        public static final double kClimbMotorkV = 0;
+        public static final double kClimbMotorkA = 0;
+
+        //climb & block setpoints
+        public static final double blockerStowedPosition = 0;
+        public static final double blockerDeployedPosition = 180;
+        public static final double climberPreclimbPosition = -268; //TODO: FIND EXACT VALUES AND UPDATE THESE
+      }
 
   public static final class IntakeConstants {
     // Motor controller IDs for Fuel Mechanism motors
