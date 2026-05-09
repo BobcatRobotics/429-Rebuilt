@@ -16,7 +16,7 @@ public class RobotState {
     private double distanceToHub = 0.0;
     private double shooterVelocity = ShooterConstants.SHOOTER_SPEEDS[0];
 
-    public SingleOutputInterpolator interpolator = new SingleOutputInterpolator(ShooterConstants.SHOOTER_DISTANCES, ShooterConstants.SHOOTER_SPEEDS, true);
+    public SingleOutputInterpolator interpolator = new SingleOutputInterpolator(ShooterConstants.SHOOTER_DISTANCES, ShooterConstants.SHOOTER_SPEEDS, false);
 
     public static RobotState getInstance() {
       if (instance == null)

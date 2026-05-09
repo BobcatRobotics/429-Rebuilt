@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.46798858773708873,
-        "y": 5.956390870185804
+        "x": 5.953980028530669,
+        "y": 5.71055634807418
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5991440798858774,
-        "y": 5.658801711840229
+        "x": 6.031611982881596,
+        "y": 6.422182596291013
       },
       "isLocked": false,
-      "linkedName": "Depot"
+      "linkedName": "End of over left bump"
     },
     {
       "anchor": {
-        "x": 1.3866333808844504,
-        "y": 4.144978601997147
+        "x": 7.105520684736091,
+        "y": 6.176348074179743
       },
       "prevControl": {
-        "x": 1.9171184022824521,
-        "y": 4.170855920114123
+        "x": 6.368017118402282,
+        "y": 6.784465049928674
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Tower Climb Position"
+      "linkedName": "End of start mid"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 1.5,
+    "maxAcceleration": 1.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 1.5,
+    "rotation": 141.63251461513846
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 1.5,
+    "rotation": -136.39718102729628
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

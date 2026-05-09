@@ -3,38 +3,49 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.46798858773708873,
-        "y": 5.956390870185804
+        "x": 3.52151212553495,
+        "y": 4.00265335235378
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5991440798858774,
-        "y": 5.658801711840229
+        "x": 3.2749136445769143,
+        "y": 4.04375309918012
       },
       "isLocked": false,
-      "linkedName": "Depot"
+      "linkedName": "Hub"
     },
     {
       "anchor": {
-        "x": 1.3866333808844504,
-        "y": 4.144978601997147
+        "x": 2.66756062767475,
+        "y": 4.00265335235378
       },
       "prevControl": {
-        "x": 1.9171184022824521,
-        "y": 4.170855920114123
+        "x": 2.910914919758144,
+        "y": 3.945393518922393
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Tower Climb Position"
+      "linkedName": "End of Shoot"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 4.6,
+        "y": 4.0
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 0.6766381766381755,
+      "name": "Point Towards Zone"
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 1.25,
+    "maxAcceleration": 1.25,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

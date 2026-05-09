@@ -69,10 +69,11 @@ public final class Constants {
     public static final double SHOOTING_DISTANCE_OFFSET = 36.5; //in inches 23.5 for half of hub, 13 for half of robot
 
     public static final double SPIN_UP_SECONDS = 1;
+    public static final double SPIN_UP_AUTO_SECONDS = 0.25;
 
-    public static final double[] SHOOTER_DISTANCES = {40, 50, 60, 70, 80, 90, 100, 110, 120, 130};
+    public static final double[] SHOOTER_DISTANCES = {20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130};
 
-    public static final double[] SHOOTER_SPEEDS = {70, 72.5, 75, 81, 84, 88, 91.5, 94, 97, 104};
+    public static final double[] SHOOTER_SPEEDS = {64, 65, 70, 72.5, 75, 81, 84, 88, 91.5, 94, 97, 104};
   }
 
     public static final class ClimbConstants {
@@ -97,8 +98,8 @@ public final class Constants {
     
     public static final double CLIMBER_STOP = 0;
 
-    public static final double AUTO_CLIMB_VELOCITY = 1; //3 at comp 2 at doosan
-    public static final double AUTO_CLIMB_ACCEL = 1; // 5 at comp 2 at doosan
+    public static final double AUTO_CLIMB_VELOCITY = 3; //3 at comp 2 at doosan
+    public static final double AUTO_CLIMB_ACCEL = 5; // 5 at comp 2 at doosan
   }
 
   public static final class IntakeConstants {

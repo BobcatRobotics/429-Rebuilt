@@ -192,7 +192,9 @@ public class RobotContainer {
         autoChooser.addOption("Hub double tower and climb", new PathPlannerAuto("Hub start with double tower shot and climb"));
         autoChooser.addOption("Left bump double tower and climb", new PathPlannerAuto("Left bump start with double tower shot and climb"));
         autoChooser.addOption("Right bump double tower and climb", new PathPlannerAuto("Right bump start with double tower shot and climb"));
-        
+        autoChooser.addOption("Hub to Depot shoot and climb", new PathPlannerAuto("Hub to Depot shoot and climb"));
+        autoChooser.addOption("Over bump test auto", new PathPlannerAuto("New Auto"));
+
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         climbLocationChooser.addOption("left tower climb", true);
@@ -229,17 +231,16 @@ public class RobotContainer {
         }, fuel)
             .withTimeout(3));
 
-        NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_VELOCITY);
+        NamedCommands.registerCommand("Shoot", Commands.run(() -> {
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel)
-            .withTimeout(ShooterConstants.SPIN_UP_SECONDS)
+            .withTimeout(ShooterConstants.SPIN_UP_AUTO_SECONDS)
             .andThen(Commands.run(() -> {
-                fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_VELOCITY);
+                fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
                 fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-            }, fuel))
-                .withTimeout(3.5));
+            }, fuel)));
 
         NamedCommands.registerCommand("Climb down", (Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_AUTO_DOWN_PERCENT);
@@ -275,6 +276,16 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake stop", Commands.runOnce(() -> {
             fuel.stop();
         }));
+
+        NamedCommands.registerCommand("Align to Hub", DriveCommands.joystickDriveAtAngle(
+                    drive,
+                    () -> 0,
+                    () -> 0,
+                    () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), 
+                        RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
+
+     
+        NamedCommands.registerCommand("Auto Climb Left", ClimberCommands.climbToLevel(drive, climber, true, ClimbConstants.CLIMBER_CLIMBED_PITCH_L1));
     }
     /**
      * Use this method to define your button->command mappings. Buttons can be
@@ -338,7 +349,7 @@ public class RobotContainer {
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_VELOCITY);
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }).withTimeout(0.5).andThen(Commands.run(() -> {
             fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());

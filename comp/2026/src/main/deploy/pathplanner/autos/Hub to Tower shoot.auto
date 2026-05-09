@@ -13,20 +13,8 @@
                 "data": {
                   "pathName": "Hub to Tower"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Climb down"
-                }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shooter at tower distance"
           }
         }
       ]
