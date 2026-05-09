@@ -100,8 +100,6 @@ public class RobotContainer {
     // Dashboard inputs
     private final SendableChooser<Command> autoChooser;
     private final SendableChooser<Boolean> climbLocationChooser;
-
-    private final HubUtil hub;
     
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -181,19 +179,9 @@ public class RobotContainer {
         // autoChooser.addOption("Drive back and Shoot Blue Side", new Blue_Simple_Auto(drive));
         // autoChooser.addOption("Drive back and Shoot with Climb Red Side", new SimpleAuto_Climb_Red(drive));
 
-        //23 means 8 shot plus a climb
-        //double tower means go to tower first and shoot then depot and back to tower for another shot
-
-        autoChooser.addOption("Akash Scoot and Shoot", new PathPlannerAuto("Akash Scoot and Shoot"));
-        autoChooser.addOption("Hub to Tower Shoot", new PathPlannerAuto("Hub to Tower shoot"));
-        autoChooser.addOption("Hub 23", new PathPlannerAuto("Hub to Tower Shoot + Climb"));
-        autoChooser.addOption("Left bump 23", new PathPlannerAuto("Left Bump to shoot and climb"));
-        autoChooser.addOption("Right bump 23", new PathPlannerAuto("Right Bump to shoot and climb"));
-        autoChooser.addOption("Hub double tower and climb", new PathPlannerAuto("Hub start with double tower shot and climb"));
-        autoChooser.addOption("Left bump double tower and climb", new PathPlannerAuto("Left bump start with double tower shot and climb"));
-        autoChooser.addOption("Right bump double tower and climb", new PathPlannerAuto("Right bump start with double tower shot and climb"));
+        //autoChooser.addOption("Hub to Tower Shoot", new PathPlannerAuto("Hub to Tower shoot"));
         autoChooser.addOption("Hub to Depot shoot and climb", new PathPlannerAuto("Hub to Depot shoot and climb"));
-        autoChooser.addOption("Over bump test auto", new PathPlannerAuto("New Auto"));
+        autoChooser.addOption("Left Bump Shoot Mid Shoot", new PathPlannerAuto("Left Bump Shoot Mid Shoot"));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -220,37 +208,28 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
-
-        hub = new HubUtil();
     }
 
     private void registerNammedCommands(){
-        NamedCommands.registerCommand("Intake", Commands.run(() -> {
+        NamedCommands.registerCommand("Intake", Commands.runOnce(() -> {
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
-        }, fuel)
-            .withTimeout(3));
+        }, fuel));
 
-        NamedCommands.registerCommand("Shoot", Commands.run(() -> {
+        NamedCommands.registerCommand("Shoot", Commands.runOnce(() -> {
             fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel)
             .withTimeout(ShooterConstants.SPIN_UP_AUTO_SECONDS)
-            .andThen(Commands.run(() -> {
+            .andThen(Commands.runOnce(() -> {
                 fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
                 fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
             }, fuel)));
 
-        NamedCommands.registerCommand("Climb down", (Commands.run(() -> {
+        NamedCommands.registerCommand("Climb down", (Commands.runOnce(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_AUTO_DOWN_PERCENT);
-        }, climber)
-            .withTimeout(0.7)));
-
-        NamedCommands.registerCommand("Pre Climb Auto Set Up", Commands.run(() -> {
-            climber.setClimberPower(ClimbConstants.CLIMBER_AUTO_DOWN_PERCENT);
-        }, climber)
-            .withTimeout(2.3));
+        }, climber)));
 
         NamedCommands.registerCommand("Stop Climber", (Commands.runOnce(() -> {
             climber.stop();
@@ -259,33 +238,12 @@ public class RobotContainer {
         NamedCommands.registerCommand("Stop Shooting", Commands.runOnce(() -> {
             fuel.stop();
         }, fuel));
-
-        NamedCommands.registerCommand("Shooter spin", Commands.run(() -> {
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_VELOCITY);
-            fuel.setShooterLeftVelocity(ShooterConstants.SHOOTER_VELOCITY);
-            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
-        }, fuel)
-            .withTimeout(1));
-
-        NamedCommands.registerCommand("Climb Up", Commands.run(() -> {
-            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT);
-        }, climber)
-            .withTimeout(4));
-
+       
         NamedCommands.registerCommand("Intake stop", Commands.runOnce(() -> {
             fuel.stop();
         }));
 
-        NamedCommands.registerCommand("Align to Hub", DriveCommands.joystickDriveAtAngle(
-                    drive,
-                    () -> 0,
-                    () -> 0,
-                    () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), 
-                        RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
-
-     
-        NamedCommands.registerCommand("Auto Climb Left", ClimberCommands.climbToLevel(drive, climber, true, ClimbConstants.CLIMBER_CLIMBED_PITCH_L1));
+        NamedCommands.registerCommand("Auto Climb", ClimberCommands.climbToLevel(drive, climber, climbLocationChooser.getSelected(), ClimbConstants.CLIMBER_CLIMBED_PITCH_L1));
     }
     /**
      * Use this method to define your button->command mappings. Buttons can be
@@ -426,7 +384,7 @@ public class RobotContainer {
 
     public void teleopPeriodic() {
         antiTipping.calculate();
-        HubData hubData = hub.getHubData();
+        HubData hubData = HubUtil.getHubData();
         Logger.recordOutput("Hub/Status", hubData.owner);
         Logger.recordOutput("Hub/TimeRemaing", hubData.timeRemaining);
     }

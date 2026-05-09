@@ -11,7 +11,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Pre Climb Auto Set Up"
+                  "name": "Climb down"
                 }
               },
               {
@@ -39,12 +39,6 @@
           "type": "named",
           "data": {
             "name": "Stop Shooting"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Climb Up"
           }
         }
       ]
