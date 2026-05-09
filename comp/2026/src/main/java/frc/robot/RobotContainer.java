@@ -255,6 +255,9 @@ public class RobotContainer {
      * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
      * passing it to a
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     * 
+     * The button visual configuration are maintained here. If you update/add buttons, then ensure to change the URL below
+     * https://www.padcrafter.com/index.php?col=%23242424%2C%23606A6E%2C%23FFFFFF&outline=0&templates=Driver%7COperator&plat=0&timestamp=1778345932804&xButton=Set+drivetrain+to+X+mode%7CClose+Distance+Shot&bButton=Reset+gyro+to+zero%7C&rightBumper=Align+to+hub%7CShoot&dpadLeft=Auto+climb+left+side%7C&dpadRight=Auto+climb+right+side%7C&leftBumper=%7CIntake&yButton=Stop+all+commands%7CTower+Distance+Shot&dpadUp=%7CManual+Climb+Up&dpadDown=%7CManual+Climb+Down&startButton=%7CDisable+Soft+Limits&backButton=%7CReset+climb+position+to+zero&aButton=%7CEject%2FOuttake
      */
     private void configureButtonBindings() {
 
@@ -288,12 +291,13 @@ public class RobotContainer {
                     () -> -driver.getLeftX(),
                     () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
 
-        //drive to tower and climb
+        //drive to tower and climb left side
         driver.povLeft().onTrue(ClimberCommands.climbToLevel(drive, climber, true, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
-
+        
+        //drive to tower and climb right side
         driver.povRight().onTrue(ClimberCommands.climbToLevel(drive, climber, false, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
 
-        // for stopping auto climb command
+        // for stopping all commands
         driver.y().onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll())
                 .andThen(Commands.runOnce(() -> climber.stop())));
 
@@ -317,10 +321,12 @@ public class RobotContainer {
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }))));
 
+        // stop shooting after 1 second
         operator.rightBumper().onFalse(Commands.run(() -> {
             fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
         }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
+        // Manual Tower shot
         operator.y().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
@@ -331,10 +337,12 @@ public class RobotContainer {
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         })));
 
+        // Stop Manual Tower shot after 1 second
         operator.y().onFalse(Commands.run(() -> {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
         }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
+        // Manual Close shot
         operator.x().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
@@ -345,6 +353,7 @@ public class RobotContainer {
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         })));
 
+        // Stop Manual Close shot after 1 second
         operator.x().onFalse(Commands.run(() -> {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
         }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
@@ -367,11 +376,14 @@ public class RobotContainer {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
+        // while held ignore climb soft limits
         operator.start().whileTrue(climber.disableLimits());
 
         operator.start().onFalse(climber.enableLimits());
 
+        // set Climber position to 0
         operator.back().onTrue(Commands.runOnce(() -> climber.setClimberZero(), climber).ignoringDisable(true));
+        
     }
 
     /**
