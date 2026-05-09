@@ -105,7 +105,7 @@ public final class Constants {
         public static final double AUTO_CLIMB_ACCEL = 0.5; // 5 at comp 2 at doosan
 
         //climber pid values
-        public static final double kClimbMotorkP = 0;
+        public static final double kClimbMotorkP = 1.0;
         public static final double kClimbMotorkI = 0;
         public static final double kClimbMotorkD = 0;
         public static final double kClimbMotorkS = 0;

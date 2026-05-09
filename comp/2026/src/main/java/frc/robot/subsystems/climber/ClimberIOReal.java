@@ -6,9 +6,11 @@ import static frc.robot.Constants.ClimbConstants.CLIMBER_MOTOR_ID;
 import static frc.robot.Constants.ClimbConstants.CLIMBER_PRECLIMB;
 
 import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -23,7 +25,8 @@ public class ClimberIOReal implements ClimberIO {
     private DutyCycleOut climberMotorrequest = new DutyCycleOut(0).withEnableFOC(false);
     private TalonFX climberMotor;
     private TalonFXConfiguration ClimberConfig = new TalonFXConfiguration();
-
+    private Slot0Configs climberSlot0Config;
+    private final PositionVoltage postionVoltageRequest = new PositionVoltage(0);
     public void updateInputs(ClimberIOInputs inputs) {
 
     }
@@ -50,7 +53,11 @@ public class ClimberIOReal implements ClimberIO {
 
         climberMotor.getConfigurator().apply(ClimberConfig);
 
-
+        climberSlot0Config = new Slot0Configs();
+        climberSlot0Config.kP = ClimbConstants.kClimbMotorkP;
+        climberSlot0Config.kI = ClimbConstants.kClimbMotorkI;
+        climberSlot0Config.kD = ClimbConstants.kClimbMotorkD;
+        climberMotor.getConfigurator().apply(climberSlot0Config);
     }
 
     public Command disableLimits(){
@@ -83,7 +90,7 @@ public class ClimberIOReal implements ClimberIO {
      * @param angleSetPoint
      */
     public void setClimberPosition(double angleSetPoint) {
-
+        climberMotor.setControl(postionVoltageRequest.withPosition(angleSetPoint));
     }
 
     /**

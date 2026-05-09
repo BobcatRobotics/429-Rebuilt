@@ -401,9 +401,10 @@ public class RobotContainer {
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
         //start button to ignore motor soft limits
-        operator.start().whileTrue(climber.disableLimits());
+        operator.start().whileTrue(climber.disableLimits())
+            .onFalse(climber.enableLimits());
 
-        operator.start().onFalse(climber.enableLimits());
+        operator.b().onTrue(Commands.runOnce(() -> climber.setClimberPosition(ClimbConstants.blockerDeployedPosition), climber));
     }
 
     /**
