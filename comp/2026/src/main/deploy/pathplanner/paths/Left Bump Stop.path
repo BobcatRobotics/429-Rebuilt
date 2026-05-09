@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3403708987161194,
-        "y": 5.71055634807418
+        "x": 5.7875134168157425,
+        "y": 5.211341681574241
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4903708987161197,
-        "y": 5.51055634807418
+        "x": 5.511681574239714,
+        "y": 5.438497316636852
       },
       "isLocked": false,
-      "linkedName": "End of left bump spin"
+      "linkedName": "Mikes Left Bump after swipe"
     },
     {
       "anchor": {
-        "x": 5.953980028530669,
-        "y": 5.71055634807418
+        "x": 4.927567084078712,
+        "y": 5.487173524150268
       },
       "prevControl": {
-        "x": 5.695206847360911,
-        "y": 5.71055634807418
+        "x": 5.3169767441860465,
+        "y": 5.503398926654741
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End of over left bump"
+      "linkedName": "Left Bump Stopped"
     }
   ],
   "rotationTargets": [],
@@ -41,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.5,
-    "rotation": -136.39718102729628
+    "velocity": 0,
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Center Dump Auto",
   "idealStartingState": {
-    "velocity": 1.5,
-    "rotation": -141.581944655178
+    "velocity": 2.5,
+    "rotation": -75.0
   },
   "useDefaultConstraints": true
 }

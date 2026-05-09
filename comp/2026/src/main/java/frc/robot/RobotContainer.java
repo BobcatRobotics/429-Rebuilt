@@ -214,6 +214,16 @@ public class RobotContainer {
     }
 
     private void registerNammedCommands(){
+        NamedCommands.registerCommand("Eject", Commands.runOnce(() -> {
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_EJECT_VELOCITY);
+            fuel.setIntakePower(IntakeConstants.INTAKE_EJECT_PERCENT);
+            fuel.setFeederRoller(IntakeConstants.FEEDER_EJECT_PERCENT);
+        }, fuel ));
+
+        NamedCommands.registerCommand("Stop Eject", Commands.runOnce(() -> {
+            fuel.stop();
+        }, fuel ));
+
         NamedCommands.registerCommand("Intake", Commands.runOnce(() -> {
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);

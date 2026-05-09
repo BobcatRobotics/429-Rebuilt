@@ -1,0 +1,68 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.852415026833631,
+        "y": 5.227567084078712
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.306726296958854,
+        "y": 4.757030411449016
+      },
+      "isLocked": false,
+      "linkedName": "Mikes Left Bump End Position after Rotate"
+    },
+    {
+      "anchor": {
+        "x": 5.803738819320215,
+        "y": 2.907334525939177
+      },
+      "prevControl": {
+        "x": 6.420304114490161,
+        "y": 3.458998211091234
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Mikes Right Bump Back to Zone"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Slow Down",
+      "minWaypointRelativePos": 0.25,
+      "maxWaypointRelativePos": 0.75,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 3.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.5,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 2.5,
+    "rotation": 75.0
+  },
+  "reversed": false,
+  "folder": "Mike's Auto Paths",
+  "idealStartingState": {
+    "velocity": 2.5,
+    "rotation": 75.0
+  },
+  "useDefaultConstraints": true
+}

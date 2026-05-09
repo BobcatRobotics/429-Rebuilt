@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3403708987161194,
-        "y": 5.71055634807418
+        "x": 3.4835062611806795,
+        "y": 2.469248658318426
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4903708987161197,
-        "y": 5.51055634807418
+        "x": 4.483506261180686,
+        "y": 2.469248658318426
       },
       "isLocked": false,
-      "linkedName": "End of left bump spin"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.953980028530669,
-        "y": 5.71055634807418
+        "x": 5.7875134168157425,
+        "y": 2.923559928443649
       },
       "prevControl": {
-        "x": 5.695206847360911,
-        "y": 5.71055634807418
+        "x": 5.0735957066189625,
+        "y": 2.469248658318425
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End of over left bump"
+      "linkedName": "Mikes Right Bump to NZ"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.05811623246492988,
+      "rotationDegrees": -35.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -41,14 +46,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.5,
-    "rotation": -136.39718102729628
+    "velocity": 2.5,
+    "rotation": -75.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Mike's Auto Paths",
   "idealStartingState": {
-    "velocity": 1.5,
-    "rotation": -141.581944655178
+    "velocity": 0,
+    "rotation": 45.0
   },
   "useDefaultConstraints": true
 }
