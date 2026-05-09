@@ -58,13 +58,13 @@ public class RobotState {
         }
         if(alliance == Alliance.Blue && isLeftSideTower == true){
           return new Pose2d[]{
-            new Pose2d(2.8, 4.135, new Rotation2d()),
+            new Pose2d(2.5, 4.135, new Rotation2d()),
             new Pose2d(1.45, 4.135, new Rotation2d())
           };
         }
         if(alliance == Alliance.Blue && isLeftSideTower == false){
           return new Pose2d[]{
-            new Pose2d(2.8, 3.225, new Rotation2d()),
+            new Pose2d(2.5, 3.225, new Rotation2d()),
             new Pose2d(1.45, 3.225, new Rotation2d())
           };
         }

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.650898716119829,
-        "y": 5.71055634807418
+        "x": 2.331155492154065,
+        "y": 5.632924393723252
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.400898716119829,
-        "y": 5.71055634807418
+        "x": 2.107548694404086,
+        "y": 5.521120994848262
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End of left bump back up"
     },
     {
       "anchor": {
-        "x": 3.3403708987161194,
-        "y": 5.71055634807418
+        "x": 0.6879457917261056,
+        "y": 4.934236804564907
       },
       "prevControl": {
-        "x": 3.568823785871184,
-        "y": 5.609021731560819
+        "x": 0.9357527668967642,
+        "y": 4.967277734587662
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End bump back up left"
+      "linkedName": "Depot Start of Intake"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.5,
-    "rotation": -49.39870535499565
+    "velocity": 0,
+    "rotation": -46.27303002005661
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -1.7357045889282772
+    "rotation": -31.218402764346227
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

@@ -187,6 +187,7 @@ public class RobotContainer {
         //autoChooser.addOption("Hub to Tower Shoot", new PathPlannerAuto("Hub to Tower shoot"));
         autoChooser.addOption("Hub to Depot shoot and climb", new PathPlannerAuto("Hub to Depot shoot and climb"));
         autoChooser.addOption("Left Bump Shoot Mid Shoot", new PathPlannerAuto("Left Bump Shoot Mid Shoot"));
+        autoChooser.addOption("Left Bump to Depot shoot and climb", new PathPlannerAuto("Left Bump to Depot shoot and climb"));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -245,7 +246,7 @@ public class RobotContainer {
             fuel.stop();
         }));
 
-        NamedCommands.registerCommand("Auto Climb", ClimberCommands.climbToLevel(drive, climber, climbLocationChooser.getSelected(), ClimbConstants.CLIMBER_CLIMBED_PITCH_L1));
+        NamedCommands.registerCommand("Auto Climb", Commands.defer(() -> ClimberCommands.climbToLevel(drive, climber, climbLocationChooser.getSelected(), ClimbConstants.CLIMBER_CLIMBED_PITCH_L1), Set.of(drive)));
     }
     /**
      * Use this method to define your button->command mappings. Buttons can be
