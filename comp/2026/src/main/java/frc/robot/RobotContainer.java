@@ -222,7 +222,7 @@ public class RobotContainer {
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel)
             .withTimeout(ShooterConstants.SPIN_UP_AUTO_SECONDS)
-            .andThen(Commands.runOnce(() -> {
+            .andThen(Commands.run(() -> {
                 fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
                 fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
             }, fuel)));
