@@ -216,13 +216,13 @@ public class RobotContainer {
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel));
 
-        NamedCommands.registerCommand("Shoot", Commands.runOnce(() -> {
+        NamedCommands.registerCommand("Shoot", Commands.run(() -> {
             fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel)
             .withTimeout(ShooterConstants.SPIN_UP_AUTO_SECONDS)
-            .andThen(Commands.run(() -> {
+            .andThen(Commands.runOnce(() -> {
                 fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
                 fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
             }, fuel)));
