@@ -50,6 +50,7 @@ public class ClimberIOReal implements ClimberIO {
         ClimberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
         ClimberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = CLIMBER_PRECLIMB;
         ClimberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+ClimberConfig.Feedback.SensorToMechanismRatio = 900;
 
         climberMotor.getConfigurator().apply(ClimberConfig);
 
