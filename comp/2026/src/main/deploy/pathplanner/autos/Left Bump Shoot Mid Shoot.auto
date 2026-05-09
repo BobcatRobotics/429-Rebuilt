@@ -106,6 +106,12 @@
           "data": {
             "name": "Stop Shooting"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Climb"
+          }
         }
       ]
     }
