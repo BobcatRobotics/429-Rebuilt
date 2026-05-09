@@ -377,9 +377,11 @@ public class RobotContainer {
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
         // while held ignore climb soft limits
-        operator.start().whileTrue(climber.disableLimits());
+        // operator.start().whileTrue(climber.disableLimits());
 
-        operator.start().onFalse(climber.enableLimits());
+        // operator.start().onFalse(climber.enableLimits());
+
+        operator.start().onTrue(Commands.runOnce(() -> climber.setClimberPosition(ClimbConstants.blockerDeployedPosition)));
 
         // set Climber position to 0
         operator.back().onTrue(Commands.runOnce(() -> climber.setClimberZero(), climber).ignoringDisable(true));

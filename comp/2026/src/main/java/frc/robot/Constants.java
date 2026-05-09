@@ -58,13 +58,11 @@ public final class Constants {
     public static final double INTAKE_STOP_PERCENT = 0;
     public static final double FEEDER_STOP_PERCENT = 0;
 
-    public static final double SHOOTER_PERCENT_TOWER = 85.0;
+    public static final double SHOOTER_PERCENT_TOWER = 88;
 
-    public static final double SHOOTER_PERCENT_MID = 0.83;
-    public static final double SHOOTER_EJECT_PERCENT_MID = 0.80;
-
-    public static final double SHOOTER_PERCENT_CLOSE = 0.75;
-    public static final double SHOOTER_EJECT_PERCENT_CLOSE = 0.70;
+    // TODO check numbers for close shoot
+    public static final double SHOOTER_PERCENT_CLOSE = 64;
+    public static final double SHOOTER_EJECT_PERCENT_CLOSE = 64;
 
     public static final double SHOOTING_DISTANCE_OFFSET = 36.5; //in inches 23.5 for half of hub, 13 for half of robot
 
@@ -93,13 +91,17 @@ public final class Constants {
     public static final double CLIMBER_MOTOR_UP_PERCENT = 1;
     public static final double CLIMBER_AUTO_DOWN_PERCENT = -1;
 
-    public static final double CLIMBER_PRECLIMB = -268;
-    public static final double CLIMBER_CLIMBED = 180;
+    public static final double CLIMBER_PRECLIMB = -0.29;
+    public static final double CLIMBER_CLIMBED = 0.23;
     
     public static final double CLIMBER_STOP = 0;
 
     public static final double AUTO_CLIMB_VELOCITY = 3; //3 at comp 2 at doosan
     public static final double AUTO_CLIMB_ACCEL = 5; // 5 at comp 2 at doosan
+
+    public static final double kClimbMotorkP = 1.0;
+
+    public static final double blockerDeployedPosition = 0.23;
   }
 
   public static final class IntakeConstants {

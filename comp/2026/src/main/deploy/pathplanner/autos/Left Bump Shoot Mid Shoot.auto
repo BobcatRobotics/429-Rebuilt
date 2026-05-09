@@ -13,6 +13,12 @@
                 "data": {
                   "pathName": "Left bump back up"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Climb down"
+                }
               }
             ]
           }
@@ -48,15 +54,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Over bump mid to pick up"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Over bump mid to pick up"
           }
         },
         {
@@ -80,7 +86,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Final left sweep over bump"
+            "pathName": "End Over left bump"
           }
         },
         {

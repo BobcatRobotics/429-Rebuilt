@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.2368616262482157,
-        "y": 5.490599144079885
+        "x": 5.876348074179743,
+        "y": 5.529415121255349
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.013254828498237,
-        "y": 5.378795745204895
+        "x": 5.626348074179743,
+        "y": 5.529415121255349
       },
       "isLocked": false,
-      "linkedName": "End of left bump back up"
+      "linkedName": "Final left sweep end"
     },
     {
       "anchor": {
-        "x": 0.6879457917261056,
-        "y": 4.934236804564907
+        "x": 3.2368616262482157,
+        "y": 5.529415121255349
       },
       "prevControl": {
-        "x": 0.9357527668967642,
-        "y": 4.967277734587662
+        "x": 3.4854879894785675,
+        "y": 5.503243925125839
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Depot Start of Intake"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 1.5,
+    "maxAcceleration": 1.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -46.27303002005661
+    "rotation": -44.999999999999964
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -41.18592516570943
+    "rotation": -47.20259816176577
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

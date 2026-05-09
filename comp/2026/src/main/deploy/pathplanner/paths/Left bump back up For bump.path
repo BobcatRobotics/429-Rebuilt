@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.876348074179743,
-        "y": 5.529415121255349
+        "x": 3.63796005706134,
+        "y": 5.490599144079885
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.630380596654767,
-        "y": 5.574136480805348
+        "x": 3.391361576103304,
+        "y": 5.449499397253547
       },
       "isLocked": false,
-      "linkedName": "Final left sweep end"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.2627389443651924,
-        "y": 5.529415121255349
+        "x": 3.2368616262482157,
+        "y": 5.490599144079885
       },
       "prevControl": {
-        "x": 3.486345742115172,
-        "y": 5.417611722380361
+        "x": 3.482006795170946,
+        "y": 5.44157011029534
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End of back up for bump"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.5,
-    "rotation": -45.00000000000006
+    "velocity": 0,
+    "rotation": -41.18592516570943
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 1.5,
-    "rotation": -47.20259816176577
+    "velocity": 0,
+    "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
