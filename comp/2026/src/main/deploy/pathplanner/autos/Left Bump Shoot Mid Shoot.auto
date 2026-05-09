@@ -13,12 +13,6 @@
                 "data": {
                   "pathName": "Left bump back up shoot"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Climb down"
-                }
               }
             ]
           }
@@ -54,15 +48,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Intake"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Over bump mid to pick up"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
           }
         },
         {

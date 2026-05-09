@@ -166,13 +166,18 @@ public class RobotContainer {
                 3.0, // tipping threshold (degrees)
                 2.5 // max correction speed (m/s)
         );
+        
+        climbLocationChooser = new SendableChooser<>();
+        climbLocationChooser.setDefaultOption("left tower climb", true);
+        climbLocationChooser.addOption("right tower climb", false);
+
+        SmartDashboard.putData("Climb Location Chooser", climbLocationChooser);
 
         // Set up auto routines
 
         registerNammedCommands();
 
         autoChooser = new SendableChooser<>();
-        climbLocationChooser = new SendableChooser<>();
 
         // autoChooser.addOption("Drive back and Shoot", new SimpleAuto(drive));
         // autoChooser.addOption("Drive Back Shoot with Climb Blue", new SimpleAuto_Climb_Blue(drive));
@@ -185,10 +190,7 @@ public class RobotContainer {
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
-        climbLocationChooser.addOption("left tower climb", true);
-        climbLocationChooser.addOption("right tower climb", false);
-
-        SmartDashboard.putData("Climb Location Chooser", climbLocationChooser);
+        
 
             // Set up SysId routines
 //     autoChooser.addOption(
@@ -367,6 +369,8 @@ public class RobotContainer {
         operator.start().whileTrue(climber.disableLimits());
 
         operator.start().onFalse(climber.enableLimits());
+
+        operator.back().onTrue(Commands.runOnce(() -> climber.setClimberZero(), climber).ignoringDisable(true));
     }
 
     /**

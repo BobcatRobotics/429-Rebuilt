@@ -86,6 +86,10 @@ public class ClimberIOReal implements ClimberIO {
 
     }
 
+    public void setClimberZero() {
+        climberMotor.setPosition(0);
+    }
+
     /**
      * Sets the output of the climber.
      * This is not PID based and will apply output to the motor.

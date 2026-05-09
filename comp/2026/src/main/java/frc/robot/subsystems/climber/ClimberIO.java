@@ -44,6 +44,10 @@ public interface ClimberIO {
     public default void setClimberPosition(double angleSetPoint){
 
     }
+
+    public default void setClimberZero(){
+        
+    }
     /**
      * Sets the output of the climber.
      * This is not PID based and will apply output to the motor.
