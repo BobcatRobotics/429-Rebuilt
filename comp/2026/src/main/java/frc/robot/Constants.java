@@ -134,11 +134,11 @@ public final class Constants {
     public static final int LED_PORT = 0;
     public static final int LED_LENGTH = 60;
 
-    public static final int LED_START_TOP = 30;
-    public static final int LED_END_TOP = 59;
+    public static final int LED_START_TOP = 35;
+    public static final int LED_END_TOP = 58;
 
-    public static final int LED_START_BOTTOM = 0;
-    public static final int LED_END_BOTTOM = 29;
+    public static final int LED_START_BOTTOM = 1;
+    public static final int LED_END_BOTTOM = 24;
   }
 
 }
