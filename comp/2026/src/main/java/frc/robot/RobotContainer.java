@@ -239,6 +239,18 @@ public class RobotContainer {
                 fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
                 fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
             }, fuel)));
+//not sure if this will work, set a timeout and then using it on a timed zone. need to adjust withtimeout i think.
+        NamedCommands.registerCommand("ShootOnMove", Commands.run(() -> {
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
+        }, fuel)
+            .withTimeout(ShooterConstants.SPIN_UP_AUTO_SECONDS)
+            .andThen(Commands.run(() -> {
+                fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+                fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+            }, fuel)
+            .withTimeout(3)));
 
         NamedCommands.registerCommand("Climb down", (Commands.runOnce(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_AUTO_DOWN_PERCENT);

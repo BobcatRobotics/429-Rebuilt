@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.7875134168157425,
-        "y": 5.211341681574241
+        "x": 3.499731663685152,
+        "y": 5.552075134168158
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.895116279069767,
-        "y": 5.8279069767441865
+        "x": 5.170948121645796,
+        "y": 5.389821109123434
       },
       "isLocked": false,
-      "linkedName": "Mikes Left Bump after swipe"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.477531305903399,
-        "y": 4.043112701252236
+        "x": 5.998443649373882,
+        "y": 7.336869409660108
       },
       "prevControl": {
-        "x": 3.2401252236135956,
-        "y": 5.308694096601073
+        "x": 6.209373881932022,
+        "y": 5.665652951699464
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Trench Wait"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4800995024875621,
+      "rotationDegrees": 125.00000000000001
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Mike's Auto Paths",
+  "folder": "Center Wait",
   "idealStartingState": {
-    "velocity": 2.5,
-    "rotation": -75.0
+    "velocity": 0,
+    "rotation": 125.00000000000001
   },
   "useDefaultConstraints": true
 }

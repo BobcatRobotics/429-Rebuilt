@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.7875134168157425,
-        "y": 5.211341681574241
+        "x": 0.595384615384615,
+        "y": 7.385545617173523
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.895116279069767,
-        "y": 5.8279069767441865
+        "x": 1.779838998211091,
+        "y": 5.811681574239714
       },
       "isLocked": false,
-      "linkedName": "Mikes Left Bump after swipe"
+      "linkedName": "Corner after depot"
     },
     {
       "anchor": {
-        "x": 2.477531305903399,
-        "y": 4.043112701252236
+        "x": 2.3315026833631483,
+        "y": 4.64345259391771
       },
       "prevControl": {
-        "x": 3.2401252236135956,
-        "y": 5.308694096601073
+        "x": 1.3315026833631483,
+        "y": 4.64345259391771
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -18.434948822921996
   },
   "reversed": false,
-  "folder": "Mike's Auto Paths",
+  "folder": "Center Wait",
   "idealStartingState": {
-    "velocity": 2.5,
-    "rotation": -75.0
+    "velocity": 0,
+    "rotation": -69.77514056883196
   },
   "useDefaultConstraints": true
 }
