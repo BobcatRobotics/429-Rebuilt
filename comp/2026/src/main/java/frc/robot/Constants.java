@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.security.PublicKey;
+
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -124,6 +126,17 @@ public final class Constants {
     public static final double INTAKE_STOP_PERCENT = 0;
 
     public static final double SPIN_UP_SECONDS = 0.75;
+  }
+
+  public static final class LedConstants {
+    public static final int LED_PORT = 0;
+    public static final int LED_LENGTH = 60;
+
+    public static final int LED_START_TOP = 30;
+    public static final int LED_END_TOP = 59;
+
+    public static final int LED_START_BOTTOM = 0;
+    public static final int LED_END_BOTTOM = 29;
   }
 
 }

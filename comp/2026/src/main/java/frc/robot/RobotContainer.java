@@ -17,6 +17,8 @@ import org.littletonrobotics.junction.Logger;
 // import frc.robot.subsystems.roller.RollerSubsystem;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import edu.wpi.first.wpilibj.smartdashboard.*;
+import edu.wpi.first.wpilibj.util.Color;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -26,6 +28,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -56,6 +59,7 @@ import frc.robot.subsystems.fuel.Fuel;
 import frc.robot.subsystems.fuel.FuelIO;
 import frc.robot.subsystems.fuel.FuelIOReal;
 import frc.robot.subsystems.fuel.FuelIOSim;
+import frc.robot.subsystems.led.Led;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.util.AllianceFlipUtil;
@@ -92,6 +96,7 @@ public class RobotContainer {
     public final Drive drive;
     private final AntiTipping antiTipping;
     private Vision vision;
+    private final Led led;
 
     // Controller
     private final CommandXboxController driver = new CommandXboxController(0);
@@ -119,6 +124,7 @@ public class RobotContainer {
                         new ModuleIOTalonFX(newBackRight.addModuleConstants(TunerConstants.BackRight)));
                 fuel = new Fuel(new FuelIOReal());
                 climber = new Climber(new ClimberIOReal());
+                led = new Led();
                 // Vision
                 vision =
                  new Vision(
@@ -134,6 +140,7 @@ public class RobotContainer {
                         new ModuleIOSim(TunerConstants.BackRight));
                 fuel = new Fuel(new FuelIOSim());
                 climber = new Climber(new ClimberIOSim());
+                led = new Led();
                 vision =
                  new Vision(
                     drive::addVisionMeasurement,
@@ -154,6 +161,7 @@ public class RobotContainer {
                 });
                 climber = new Climber(new ClimberIO() {
                 });
+                led = new Led();
                 vision =
                  new Vision(
                     drive::addVisionMeasurement,
@@ -257,7 +265,7 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      * 
      * The button visual configuration are maintained here. If you update/add buttons, then ensure to change the URL below
-     * https://www.padcrafter.com/index.php?col=%23242424%2C%23606A6E%2C%23FFFFFF&outline=0&templates=Driver%7COperator&plat=0&timestamp=1778345932804&xButton=Set+drivetrain+to+X+mode%7CClose+Distance+Shot&bButton=Reset+gyro+to+zero%7C&rightBumper=Align+to+hub%7CShoot&dpadLeft=Auto+climb+left+side%7C&dpadRight=Auto+climb+right+side%7C&leftBumper=%7CIntake&yButton=Stop+all+commands%7CTower+Distance+Shot&dpadUp=%7CManual+Climb+Up&dpadDown=%7CManual+Climb+Down&startButton=%7CDisable+Soft+Limits&backButton=%7CReset+climb+position+to+zero&aButton=%7CEject%2FOuttake
+     * https://www.padcrafter.com/index.php?col=%23242424%2C%23606A6E%2C%23FFFFFF&outline=0&templates=Driver%7COperator&plat=0&timestamp=1778379026177&xButton=Set+drivetrain+to+X+mode%7CClose+Distance+Shot&bButton=Reset+gyro+to+zero%7C&rightBumper=Align+to+hub%7CShoot&dpadLeft=Auto+climb+left+side%7C&dpadRight=Auto+climb+right+side%7C&leftBumper=%7CIntake&yButton=Stop+all+commands%7CTower+Distance+Shot&dpadUp=%7CManual+Climb+Up&dpadDown=%7CManual+Climb+Down&startButton=%7C&backButton=%7CReset+climb+position+to+zero&aButton=%7CEject%2FOuttake
      */
     private void configureButtonBindings() {
 
@@ -285,11 +293,13 @@ public class RobotContainer {
 
         //align to hub
         driver.rightBumper().whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                    drive,
-                    () -> -driver.getLeftY(),
-                    () -> -driver.getLeftX(),
-                    () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
+            Commands.runOnce(() -> RobotState.getInstance().setIsAutoAligning(true)).alongWith( 
+                DriveCommands.joystickDriveAtAngle(
+                        drive,
+                        () -> -driver.getLeftY(),
+                        () -> -driver.getLeftX(),
+                        () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY()))))
+            .onFalse(Commands.runOnce(() -> RobotState.getInstance().setIsAutoAligning(false)));
 
         //drive to tower and climb left side
         driver.povLeft().onTrue(ClimberCommands.climbToLevel(drive, climber, true, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
@@ -357,7 +367,6 @@ public class RobotContainer {
         operator.x().onFalse(Commands.run(() -> {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
         }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
-            
 
         //eject through intake
        operator.a().whileTrue(Commands.run(() -> {
@@ -383,7 +392,6 @@ public class RobotContainer {
 
         // set Climber position to 0
         operator.back().onTrue(Commands.runOnce(() -> climber.setClimberZero(), climber).ignoringDisable(true));
-        
     }
 
     /**

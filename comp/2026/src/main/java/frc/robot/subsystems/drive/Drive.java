@@ -35,6 +35,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.RobotState;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -380,5 +381,12 @@ rawGyroRotation = gyroInputs.odometryYawPositions[i];
 
   public double getGravityVectorZ(){
     return gyroIO.getGravityVectorZ();
+  }
+
+  public void isAlignedToHub(){
+    double targetAngle = new Rotation2d(RobotState.getInstance().hubLocation.getX()-this.getPose().getX(), RobotState.getInstance().hubLocation.getY()-this.getPose().getY()).getDegrees();
+    double RobotAngle = this.getPose().getRotation().getDegrees();
+
+    RobotState.getInstance().setIsAligned(RobotAngle >= targetAngle -2 && RobotAngle <= targetAngle +2);
   }
 }

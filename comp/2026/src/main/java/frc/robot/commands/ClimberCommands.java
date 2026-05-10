@@ -18,7 +18,10 @@ public class ClimberCommands {
             DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(isLeftSideTower)[0], ClimbConstants.AUTO_CLIMB_VELOCITY, ClimbConstants.AUTO_CLIMB_ACCEL)
                 .andThen(DriveCommands.driveToPose(RobotState.getInstance().getTowerLocation(isLeftSideTower)[1], ClimbConstants.AUTO_CLIMB_VELOCITY, ClimbConstants.AUTO_CLIMB_ACCEL))
                 .andThen(new ActionFactory().singleAction("Straight-Command", () -> drive.stopWithStraight(), drive))
-                .andThen(Commands.run(() -> climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT), climber)
+                .andThen(Commands.run(() -> {                    
+                    RobotState.getInstance().setIsAutoDriving(false);
+                    climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT);
+                }, climber)
                     .until(() -> Units.radiansToDegrees(Math.atan2(drive.getGravityVectorZ(), drive.getGravityVectorX())) <= level))
         ,Set.of(drive));
     }

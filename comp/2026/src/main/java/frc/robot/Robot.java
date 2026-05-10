@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.subsystems.drive.Drive;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -124,6 +125,8 @@ if (Constants.currentMode == Constants.Mode.REAL) {
         Math.sqrt(Math.pow(robotState.hubLocation.getX()-m_robotContainer.drive.getPose().getX(), 2) +
         Math.pow(robotState.hubLocation.getY()-m_robotContainer.drive.getPose().getY(), 2))
       ) - ShooterConstants.SHOOTING_DISTANCE_OFFSET);
+
+    m_robotContainer.drive.isAlignedToHub();
      
     Logger.recordOutput("Distance to Hub", robotState.getDistanceToHub());
 
