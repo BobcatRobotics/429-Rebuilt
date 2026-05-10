@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3403708987161194,
-        "y": 5.71055634807418
+        "x": 1.48778175313059,
+        "y": 5.146440071556351
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4903708987161197,
-        "y": 5.51055634807418
+        "x": 0.5791592128801426,
+        "y": 5.42227191413238
       },
       "isLocked": false,
-      "linkedName": "End of left bump spin"
+      "linkedName": "Depot Start 2"
     },
     {
       "anchor": {
-        "x": 5.953980028530669,
-        "y": 5.71055634807418
+        "x": 0.595384615384615,
+        "y": 7.385545617173523
       },
       "prevControl": {
-        "x": 5.695206847360911,
-        "y": 5.71055634807418
+        "x": 0.5304830053667257,
+        "y": 6.055062611806798
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End of over left bump"
+      "linkedName": "Corner after depot"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.5,
-    "maxAcceleration": 3.5,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.5,
-    "rotation": -136.39718102729628
+    "velocity": 0,
+    "rotation": -69.77514056883196
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Center Wait",
   "idealStartingState": {
-    "velocity": 1.5,
-    "rotation": -141.581944655178
+    "velocity": 2.0,
+    "rotation": -49.635463426902724
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

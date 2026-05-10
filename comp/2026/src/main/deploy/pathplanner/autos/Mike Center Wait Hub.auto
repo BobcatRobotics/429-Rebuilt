@@ -5,52 +5,27 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left bump back up"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Climb down"
-                }
-              }
-            ]
+            "name": "Eject"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Bump to Hub NZ"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Stop Eject"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Shooting"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "End of back up left bump spin"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Over left bump"
+            "waitTime": 2.5
           }
         },
         {
@@ -62,19 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Over bump mid to pick up"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left path through mid"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left mid sweep over bump"
+            "pathName": "Center Swipe after Wait Hub"
           }
         },
         {
@@ -86,7 +49,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "End Over left bump"
+            "pathName": "Mike Left bump to AZ"
           }
         },
         {
@@ -98,7 +61,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 4.0
+            "waitTime": 3.0
           }
         },
         {
@@ -116,7 +79,7 @@
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3403708987161194,
-        "y": 5.71055634807418
+        "x": 5.803738819320215,
+        "y": 2.907334525939177
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4903708987161197,
-        "y": 5.51055634807418
+        "x": 4.943792486583184,
+        "y": 2.4854740608228973
       },
       "isLocked": false,
-      "linkedName": "End of left bump spin"
+      "linkedName": "Mikes Right Bump Back to Zone"
     },
     {
       "anchor": {
-        "x": 5.953980028530669,
-        "y": 5.71055634807418
+        "x": 3.4835062611806795,
+        "y": 2.469248658318426
       },
       "prevControl": {
-        "x": 5.695206847360911,
-        "y": 5.71055634807418
+        "x": 4.4894812164579605,
+        "y": 2.4854740608228973
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End of over left bump"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -41,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.5,
-    "rotation": -136.39718102729628
+    "velocity": 0.0,
+    "rotation": 55.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Mike's Auto Paths",
   "idealStartingState": {
     "velocity": 1.5,
-    "rotation": -141.581944655178
+    "rotation": 75.0
   },
   "useDefaultConstraints": true
 }

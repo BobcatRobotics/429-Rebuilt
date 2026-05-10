@@ -5,22 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left bump back up"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Climb down"
-                }
-              }
-            ]
+            "name": "Climb down"
           }
         },
         {
@@ -44,67 +31,73 @@
         {
           "type": "path",
           "data": {
-            "pathName": "End of back up left bump spin"
+            "pathName": "Mike Rotate + Cross Left Bump to NZ"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Over left bump"
+            "pathName": "Mike Swipe back of Hub Left to Right"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Bump Stop"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Over bump mid to pick up"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left path through mid"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left mid sweep over bump"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake stop"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "End Over left bump"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "name": "Eject"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 4.0
+            "waitTime": 2.5
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Stop Shooting"
+            "name": "Stop Eject"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Bump to NZ Way"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mike Swipe back of Hub Right to Left"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Bump Stop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Eject"
           }
         },
         {
@@ -116,7 +109,7 @@
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }

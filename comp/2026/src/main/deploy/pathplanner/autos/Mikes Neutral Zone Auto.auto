@@ -5,22 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left bump back up"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Climb down"
-                }
-              }
-            ]
+            "name": "Climb down"
           }
         },
         {
@@ -32,7 +19,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 1.5
           }
         },
         {
@@ -42,15 +29,21 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "End of back up left bump spin"
+            "name": "Eject"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Over left bump"
+            "pathName": "Mike Rotate + Cross Left Bump to NZ"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Eject"
           }
         },
         {
@@ -62,31 +55,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Over bump mid to pick up"
+            "pathName": "Mike Swipe back of Hub Left to Right"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left path through mid"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left mid sweep over bump"
+            "pathName": "Mike Cross Right Bump to AZ"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Intake stop"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "End Over left bump"
           }
         },
         {
@@ -98,7 +79,67 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 4.0
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooting"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mike Rotate + Cross Right Bump to NZ"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Eject"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mike Swipe back of Hub Right to Left"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mike Left bump to AZ"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake stop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
           }
         },
         {

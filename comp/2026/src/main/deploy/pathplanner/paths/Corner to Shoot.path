@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3403708987161194,
-        "y": 5.71055634807418
+        "x": 0.595384615384615,
+        "y": 7.385545617173523
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4903708987161197,
-        "y": 5.51055634807418
+        "x": 1.779838998211091,
+        "y": 5.811681574239714
       },
       "isLocked": false,
-      "linkedName": "End of left bump spin"
+      "linkedName": "Corner after depot"
     },
     {
       "anchor": {
-        "x": 5.953980028530669,
-        "y": 5.71055634807418
+        "x": 2.3315026833631483,
+        "y": 4.64345259391771
       },
       "prevControl": {
-        "x": 5.695206847360911,
-        "y": 5.71055634807418
+        "x": 1.3315026833631483,
+        "y": 4.64345259391771
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End of over left bump"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -41,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.5,
-    "rotation": -136.39718102729628
+    "velocity": 0,
+    "rotation": -18.434948822921996
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Center Wait",
   "idealStartingState": {
-    "velocity": 1.5,
-    "rotation": -141.581944655178
+    "velocity": 0,
+    "rotation": -69.77514056883196
   },
   "useDefaultConstraints": true
 }

@@ -222,6 +222,16 @@ public class RobotContainer {
     }
 
     private void registerNammedCommands(){
+        NamedCommands.registerCommand("Eject", Commands.runOnce(() -> {
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_EJECT_VELOCITY);
+            fuel.setIntakePower(IntakeConstants.INTAKE_EJECT_PERCENT);
+            fuel.setFeederRoller(IntakeConstants.FEEDER_EJECT_PERCENT);
+        }, fuel ));
+
+        NamedCommands.registerCommand("Stop Eject", Commands.runOnce(() -> {
+            fuel.stop();
+        }, fuel ));
+
         NamedCommands.registerCommand("Intake", Commands.runOnce(() -> {
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
@@ -237,6 +247,18 @@ public class RobotContainer {
                 fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
                 fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
             }, fuel)));
+//not sure if this will work, set a timeout and then using it on a timed zone. need to adjust withtimeout i think.
+        NamedCommands.registerCommand("ShootOnMove", Commands.run(() -> {
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
+        }, fuel)
+            .withTimeout(ShooterConstants.SPIN_UP_AUTO_SECONDS)
+            .andThen(Commands.run(() -> {
+                fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+                fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+            }, fuel)
+            .withTimeout(3)));
 
         NamedCommands.registerCommand("Climb down", (Commands.runOnce(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_AUTO_DOWN_PERCENT);
@@ -386,9 +408,11 @@ public class RobotContainer {
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
         // while held ignore climb soft limits
-        operator.start().whileTrue(climber.disableLimits());
+        // operator.start().whileTrue(climber.disableLimits());
 
-        operator.start().onFalse(climber.enableLimits());
+        // operator.start().onFalse(climber.enableLimits());
+
+        operator.start().onTrue(Commands.runOnce(() -> climber.setClimberPosition(ClimbConstants.blockerDeployedPosition)));
 
         // set Climber position to 0
         operator.back().onTrue(Commands.runOnce(() -> climber.setClimberZero(), climber).ignoringDisable(true));
