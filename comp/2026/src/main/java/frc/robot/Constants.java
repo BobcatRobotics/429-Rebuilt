@@ -99,7 +99,8 @@ public final class Constants {
     public static final double AUTO_CLIMB_VELOCITY = 3; //3 at comp 2 at doosan
     public static final double AUTO_CLIMB_ACCEL = 5; // 5 at comp 2 at doosan
 
-    public static final double kClimbMotorkP = 1.0;
+    public static final double kClimbMotorkP = 2.0;
+    public static final double kClimbMotorkV = 0.11;
 
     public static final double blockerDeployedPosition = 0.23;
   }

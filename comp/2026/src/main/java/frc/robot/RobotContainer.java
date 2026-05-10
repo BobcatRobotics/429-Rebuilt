@@ -405,7 +405,9 @@ public class RobotContainer {
 
         // operator.start().onFalse(climber.enableLimits());
 
-        operator.start().onTrue(Commands.runOnce(() -> climber.setClimberPosition(ClimbConstants.blockerDeployedPosition)));
+        operator.start().onTrue(Commands.run(() -> climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT), climber)
+            .until(() -> climber.getClimberMotorPosition().getValueAsDouble() >= ClimbConstants.blockerDeployedPosition)
+            .andThen(Commands.runOnce(() -> climber.stop(), climber)));
 
         // set Climber position to 0
         operator.back().onTrue(Commands.runOnce(() -> climber.setClimberZero(), climber).ignoringDisable(true));
