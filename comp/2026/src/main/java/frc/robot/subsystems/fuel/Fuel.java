@@ -42,12 +42,12 @@ public class Fuel extends SubsystemBase {
      * 
      * @param velSetpoint
      */
-    public void setShooterRightPower(double velSetpoint) {
-        io.setShooterRightPower(velSetpoint);
+    public void setShooterRightVelocity(double velSetpoint) {
+        io.setShooterRightVelocity(velSetpoint);
     }
 
-    public void setShooterLeftPower(double velSetpoint) {
-        io.setShooterLeftPower(velSetpoint);
+    public void setShooterLeftVelocity(double velSetpoint) {
+        io.setShooterLeftVelocity(velSetpoint);
     }
 
     public void setIntakePower(double velSetpoint) {
@@ -96,6 +96,10 @@ public class Fuel extends SubsystemBase {
         return io.getRightShooterMotorVelocity();
     }
 
+    public StatusSignal<AngularVelocity> getFeederMotorVelocity() {
+        return io.getFeederMotorVelocity();
+    }
+
     public void stop() {
         io.stop();
     }
@@ -105,5 +109,6 @@ public class Fuel extends SubsystemBase {
         Logger.processInputs("Fuel", inputs);
         Logger.recordOutput("Fuel/velocityOfLeftShooterMotor", getLeftShooterMotorVelocity().getValueAsDouble());
         Logger.recordOutput("Fuel/velocityOfRightShooterMotor", getRightShooterMotorVelocity().getValueAsDouble());
+        Logger.recordOutput("Fuel/velocityOfFeederMotor", getFeederMotorVelocity().getValueAsDouble());
     }
 }

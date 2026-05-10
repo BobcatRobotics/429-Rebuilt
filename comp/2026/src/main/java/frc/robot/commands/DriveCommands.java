@@ -23,11 +23,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Acceleration;
+import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.drive.Drive;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -36,6 +39,9 @@ import java.util.List;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.bobcatrobotics.Subsystems.AntiTippingLib.AntiTipping;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
 
 public class DriveCommands {
   private static final double DEADBAND = 0.1; //% of joystick movement i believe. 
@@ -163,6 +169,11 @@ public class DriveCommands {
 
     }, drive);
   }
+
+      public static Command driveToPose(Pose2d pose, Double velocity, Double acceleration){
+          return AutoBuilder.pathfindToPose(pose, 
+          new PathConstraints(velocity, acceleration, Math.toRadians(540), Math.toRadians(720)));
+      }
 
   /**
    * Measures the velocity feedforward constants for the drive motors.

@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.2368616262482157,
+        "y": 5.490599144079885
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.013254828498237,
+        "y": 5.378795745204895
+      },
+      "isLocked": false,
+      "linkedName": "End of left bump back up"
+    },
+    {
+      "anchor": {
+        "x": 0.6879457917261056,
+        "y": 4.934236804564907
+      },
+      "prevControl": {
+        "x": 0.9357527668967642,
+        "y": 4.967277734587662
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Depot Start of Intake"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -46.27303002005661
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -41.18592516570943
+  },
+  "useDefaultConstraints": false
+}

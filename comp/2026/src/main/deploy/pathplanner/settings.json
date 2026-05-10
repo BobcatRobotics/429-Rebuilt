@@ -1,11 +1,20 @@
 {
   "robotWidth": 0.9,
-  "robotLength": 0.9,
+  "robotLength": 0.832,
   "holonomicMode": true,
-  "pathFolders": [],
+  "pathFolders": [
+    "Akash Scoot and Shoot",
+    "Center Dump Auto",
+    "Depot Clean Sweep",
+    "Mike's Auto Paths",
+    "Center Wait",
+    "Outpost Clean Sweep",
+    "Trench Depot Sweep",
+    "Trench Outpost Sweep"
+  ],
   "autoFolders": [],
-  "defaultMaxVel": 0.5,
-  "defaultMaxAccel": 0.5,
+  "defaultMaxVel": 2.5,
+  "defaultMaxAccel": 3.5,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,
@@ -19,14 +28,16 @@
   "driveCurrentLimit": 60.0,
   "wheelCOF": 1.2,
   "flModuleX": 0.273,
-  "flModuleY": 0.273,
+  "flModuleY": 0.32,
   "frModuleX": 0.273,
-  "frModuleY": -0.273,
+  "frModuleY": -0.32,
   "blModuleX": -0.273,
-  "blModuleY": 0.273,
+  "blModuleY": 0.32,
   "brModuleX": -0.273,
-  "brModuleY": -0.273,
+  "brModuleY": -0.32,
   "bumperOffsetX": 0.0,
   "bumperOffsetY": 0.0,
-  "robotFeatures": []
+  "robotFeatures": [
+    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":-0.37,\"y\":0.0},\"size\":{\"width\":0.45,\"length\":0.1},\"borderRadius\":0.0,\"strokeWidth\":0.01,\"filled\":false}}"
+  ]
 }

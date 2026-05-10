@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
+
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -42,34 +46,40 @@ public final class Constants {
     //public static final int SHOOTER_MOTOR_SUPPLY_LIMIT = 70;
 
     // All values likely need to be tuned based on your robot
-    public static final double FEEDER_INTAKING_PERCENT = -0.35;
+    public static final double FEEDER_INTAKING_PERCENT = -0.40;
     public static final double FEEDER_EJECT_PERCENT = 0.5;
     public static final double FEEDER_LAUNCHING_PERCENT = 0.2;
     public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.2;
 
-    public static final double SHOOTER_PERCENT = 0.90; //0.9 for comp, 0.8 for doosan
-    public static final double SHOOTER_LONG_PERCENT = 0.92;
-    public static final double SHOOTER_EJECT_PERCENT = -0.9;
+    public static final double SHOOTER_VELOCITY = 104; 
+    public static final double SHOOTER_EJECT_VELOCITY = -85.5;
 
     public static final double SHOOTER_STOP_PERCENT = 0;
     public static final double INTAKE_STOP_PERCENT = 0;
     public static final double FEEDER_STOP_PERCENT = 0;
 
-    public static final double SHOOTER_PERCENT_MID = 0.83;
-    public static final double SHOOTER_EJECT_PERCENT_MID = 0.80;
+    public static final double SHOOTER_PERCENT_TOWER = 88;
 
-    public static final double SHOOTER_PERCENT_CLOSE = 0.75;
-    public static final double SHOOTER_EJECT_PERCENT_CLOSE = 0.70;
+    // TODO check numbers for close shoot
+    public static final double SHOOTER_PERCENT_CLOSE = 64;
+    public static final double SHOOTER_EJECT_PERCENT_CLOSE = 64;
 
-
-    //put shooter precents for shooting to 90%
+    public static final double SHOOTING_DISTANCE_OFFSET = 36.5; //in inches 23.5 for half of hub, 13 for half of robot
 
     public static final double SPIN_UP_SECONDS = 1;
+    public static final double SPIN_UP_AUTO_SECONDS = 0.50;
+
+    public static final double[] SHOOTER_DISTANCES = {20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130};
+
+    public static final double[] SHOOTER_SPEEDS = {64, 65, 70, 72.5, 75, 81, 84, 88, 91.5, 94, 97, 104};
   }
 
-    public static final class ClimbConstatns {
+    public static final class ClimbConstants {
     // Motor controller IDs for Climb motor
     public static final int CLIMBER_MOTOR_ID = 20;
+
+    public static final double CLIMBER_CLIMBED_PITCH_L2 = -38;
+    public static final double CLIMBER_CLIMBED_PITCH_L1 = 61;
 
     // Current limit for climb motor
     public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 30;
@@ -81,10 +91,18 @@ public final class Constants {
     public static final double CLIMBER_MOTOR_UP_PERCENT = 1;
     public static final double CLIMBER_AUTO_DOWN_PERCENT = -1;
 
-    public static final double CLIMBER_PRECLIMB = -268;
-    public static final double CLIMBER_CLIMBED = 180;
+    public static final double CLIMBER_PRECLIMB = -0.29;
+    public static final double CLIMBER_CLIMBED = 0.23;
     
     public static final double CLIMBER_STOP = 0;
+
+    public static final double AUTO_CLIMB_VELOCITY = 3; //3 at comp 2 at doosan
+    public static final double AUTO_CLIMB_ACCEL = 5; // 5 at comp 2 at doosan
+
+    public static final double kClimbMotorkP = 2.0;
+    public static final double kClimbMotorkV = 0.11;
+
+    public static final double blockerDeployedPosition = 0.23;
   }
 
   public static final class IntakeConstants {
@@ -100,11 +118,13 @@ public final class Constants {
     // All values likely need to be tuned based on your robot
     public static final double FEEDER_INTAKING_PERCENT = -0.4;
     public static final double FEEDER_EJECT_PERCENT = 0.4;
+    public static final double FEEDER_STOP_PERCENT = 0;
     public static final double FEEDER_LAUNCHING_PERCENT = 0.3;
     public static final double FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.3;
 
     public static final double INTAKE_PERCENT = 0.6;
     public static final double INTAKE_EJECT_PERCENT = -0.6;
+    public static final double INTAKE_STOP_PERCENT = 0;
 
     public static final double SPIN_UP_SECONDS = 0.75;
   }

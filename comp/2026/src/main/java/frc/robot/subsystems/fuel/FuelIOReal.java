@@ -12,14 +12,17 @@ import static frc.robot.Constants.IntakeConstants.INTAKE_MOTOR_SUPPLY_LIMIT;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.StrictFollower;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.measure.AngularVelocity;
+import frc.robot.Constants.ShooterConstants;
 
 
 public class FuelIOReal implements FuelIO {
@@ -32,6 +35,8 @@ public class FuelIOReal implements FuelIO {
     private DutyCycleOut feederMotorRequest = new DutyCycleOut(0).withEnableFOC(false);
     private DutyCycleOut shooterMotorLeftRequest = new DutyCycleOut(0).withEnableFOC(false);
     private DutyCycleOut intakeMotorRequest = new DutyCycleOut(0).withEnableFOC(false);
+    final VelocityVoltage shooterMotorPIDRequest = new VelocityVoltage(0).withSlot(0).withEnableFOC(false);
+    
     public void updateInputs(FuelIOInputs inputs) {
 
     }
@@ -41,6 +46,8 @@ public class FuelIOReal implements FuelIO {
      * The configuration MUST set up and have the following configurations ; stator
      * current limit, neutral mode , inverted
      */
+        
+
     public void configureShooterRight() {
         shooterMotorRight = new TalonFX(SHOOTER_RIGHT_MOTOR_ID, new CANBus("rio"));
         var shooterConfigure = new TalonFXConfiguration();
@@ -51,8 +58,16 @@ public class FuelIOReal implements FuelIO {
         // shooterConfigure.CurrentLimits.SupplyCurrentLimit = SHOOTER_MOTOR_SUPPLY_LIMIT;
         // shooterConfigure.CurrentLimits.SupplyCurrentLimitEnable = true;
         shooterMotorRight.getConfigurator().apply(shooterConfigure);
+
+        var slot0Configs = new Slot0Configs();
+            slot0Configs.kV = 0.11; // A velocity target of 1 rps results in 0.12 V output
+            slot0Configs.kP = 2.8; // An error of 1 rps results in 0.11 V output
+            slot0Configs.kI = 0.0; // no output for integrated error
+            slot0Configs.kD = 0.0; // no output for error derivative
+        shooterMotorRight.getConfigurator().apply(slot0Configs);
         shooterMotorRight.setControl(new StrictFollower(SHOOTER_LEFT_MOTOR_ID));
     }
+    
     public void configureShooterLeft() {
         shooterMotorLeft = new TalonFX(SHOOTER_LEFT_MOTOR_ID, new CANBus("rio"));
         var shooterConfigure = new TalonFXConfiguration();
@@ -108,12 +123,14 @@ public class FuelIOReal implements FuelIO {
         intakeMotor.setControl(intakeMotorRequest.withOutput(power)); // positive for shooting
     }
 
-    public void setShooterRightPower(double power) {
-        shooterMotorRight.setControl(shooterMotorRightRequest.withOutput(power));
+    public void setShooterRightVelocity(double velocity) {
+        //shooterMotorRight.setControl(shooterMotorRightRequest.withOutput(power));
+        shooterMotorRight.setControl(shooterMotorPIDRequest.withVelocity(velocity));
     }
 
-    public void setShooterLeftPower(double power) {
-        shooterMotorLeft.setControl(shooterMotorLeftRequest.withOutput(power));
+    public void setShooterLeftVelocity(double velocity) {
+        //shooterMotorLeft.setControl(shooterMotorLeftRequest.withOutput(power));
+        shooterMotorLeft.setControl(shooterMotorPIDRequest.withVelocity(velocity));
     }
 
     /**
@@ -157,8 +174,16 @@ public class FuelIOReal implements FuelIO {
         return shooterMotorRight.getVelocity();
     }
 
-    public void stop() {
+    public StatusSignal<AngularVelocity> getFeederMotorVelocity() {
+        return feedMotor.getVelocity();
+    }
+
+    public void stop() {        
+        setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT);
+        setIntakePower(ShooterConstants.INTAKE_STOP_PERCENT);
+        setFeederRoller(ShooterConstants.FEEDER_STOP_PERCENT);
         feedMotor.stopMotor();
         intakeMotor.stopMotor();
+        shooterMotorRight.stopMotor();
     }
 }

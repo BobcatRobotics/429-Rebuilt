@@ -19,6 +19,8 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -26,18 +28,19 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.Constants.ClimbConstatns;
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.Blue_Simple_Auto;
+import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.ShooterCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.climber.ClimberIO;
@@ -59,8 +62,12 @@ import frc.robot.util.AllianceFlipUtil;
 import frc.robot.commands.SimpleAuto;
 import frc.robot.commands.SimpleAuto_Climb_Blue;
 import frc.robot.commands.SimpleAuto_Climb_Red;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
+import frc.robot.subsystems.vision.VisionConstants;
 
-import static frc.robot.Constants.IntakeConstants.INTAKE_PERCENT;
+import java.util.Set;
 
 import org.bobcatrobotics.Commands.ActionFactory;
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubData;
@@ -79,17 +86,10 @@ import org.bobcatrobotics.Subsystems.Swerve.ModuleWrapper;
  */
 public class RobotContainer {
 
-//         public void resetFieldOrientation(boolean isRed) {
-//     drive.setPose(new Pose2d(
-//         drive.getPose().getTranslation(),
-//         isRed ? new Rotation2d(Math.PI) : Rotation2d.kZero
-//     ));
-//          }
-
     // Subsystems
     private final Fuel fuel;
     private final Climber climber;
-    private final Drive drive;
+    public final Drive drive;
     private final AntiTipping antiTipping;
     private Vision vision;
 
@@ -99,14 +99,13 @@ public class RobotContainer {
 
     // Dashboard inputs
     private final SendableChooser<Command> autoChooser;
-
-    private final HubUtil hub;
+    private final SendableChooser<Boolean> climbLocationChooser;
     
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-                ModuleWrapper newFrontRight = new ModuleWrapper("FrontRight.json", "FrontRight");
+        ModuleWrapper newFrontRight = new ModuleWrapper("FrontRight.json", "FrontRight");
         ModuleWrapper newFrontLeft = new ModuleWrapper("FrontLeft.json", "FrontLeft");
         ModuleWrapper newBackLeft = new ModuleWrapper("BackLeft.json", "BackLeft");
         ModuleWrapper newBackRight = new ModuleWrapper("BackRight.json", "BackRight");
@@ -121,7 +120,11 @@ public class RobotContainer {
                 fuel = new Fuel(new FuelIOReal());
                 climber = new Climber(new ClimberIOReal());
                 // Vision
-                vision = new Vision(drive::addVisionMeasurement, new VisionIOLimelight("", drive::getRotation));
+                vision =
+                 new Vision(
+                    drive::addVisionMeasurement,
+                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+                    new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
                 break;
             case SIM:
                 // Sim robot, instantiate physics sim IO implementations
@@ -131,6 +134,11 @@ public class RobotContainer {
                         new ModuleIOSim(TunerConstants.BackRight));
                 fuel = new Fuel(new FuelIOSim());
                 climber = new Climber(new ClimberIOSim());
+                vision =
+                 new Vision(
+                    drive::addVisionMeasurement,
+                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+                    new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
                 break;
 
             default:
@@ -146,6 +154,11 @@ public class RobotContainer {
                 });
                 climber = new Climber(new ClimberIO() {
                 });
+                vision =
+                 new Vision(
+                    drive::addVisionMeasurement,
+                    new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+                    new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
                 break;
         }
 
@@ -153,18 +166,34 @@ public class RobotContainer {
                 3.0, // tipping threshold (degrees)
                 2.5 // max correction speed (m/s)
         );
+        
+        climbLocationChooser = new SendableChooser<>();
+        climbLocationChooser.setDefaultOption("left tower climb", true);
+        climbLocationChooser.addOption("right tower climb", false);
+
+        SmartDashboard.putData("Climb Location Chooser", climbLocationChooser);
 
         // Set up auto routines
 
         registerNammedCommands();
 
-        autoChooser = AutoBuilder.buildAutoChooser();
-        autoChooser.addOption("Drive back and Shoot", new SimpleAuto(drive));
-        autoChooser.addOption("Drive Back Shoot with Climb Blue", new SimpleAuto_Climb_Blue(drive));
-        autoChooser.addOption("Drive back and Shoot Blue Side", new Blue_Simple_Auto(drive));
-        autoChooser.addOption("Drive back and Shoot with Climb Red Side", new SimpleAuto_Climb_Red(drive));
+        autoChooser = new SendableChooser<>();
+
+        // autoChooser.addOption("Drive back and Shoot", new SimpleAuto(drive));
+        // autoChooser.addOption("Drive Back Shoot with Climb Blue", new SimpleAuto_Climb_Blue(drive));
+        // autoChooser.addOption("Drive back and Shoot Blue Side", new Blue_Simple_Auto(drive));
+        // autoChooser.addOption("Drive back and Shoot with Climb Red Side", new SimpleAuto_Climb_Red(drive));
+
+        //autoChooser.addOption("Hub to Tower Shoot", new PathPlannerAuto("Hub to Tower shoot"));
+        autoChooser.addOption("Hub to Depot shoot and climb", new PathPlannerAuto("Hub to Depot shoot and climb"));
+        autoChooser.addOption("Left Bump Shoot Mid Shoot", new PathPlannerAuto("Left Bump Shoot Mid Shoot"));
+        autoChooser.addOption("Left Bump to Depot shoot and climb", new PathPlannerAuto("Left Bump to Depot shoot and climb"));
+        autoChooser.addOption("Left Double Swipe Shoot", new PathPlannerAuto("Mikes Neutral Zone Auto"));
+        autoChooser.addOption("Left Double Swipe Dump", new PathPlannerAuto("Mikes Dump Auto"));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
+
+        
 
             // Set up SysId routines
 //     autoChooser.addOption(
@@ -184,66 +213,64 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
-
-        hub = new HubUtil();
     }
 
     private void registerNammedCommands(){
-        NamedCommands.registerCommand("Intake", Commands.run(() -> {
+        NamedCommands.registerCommand("Eject", Commands.runOnce(() -> {
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_EJECT_VELOCITY);
+            fuel.setIntakePower(IntakeConstants.INTAKE_EJECT_PERCENT);
+            fuel.setFeederRoller(IntakeConstants.FEEDER_EJECT_PERCENT);
+        }, fuel ));
+
+        NamedCommands.registerCommand("Stop Eject", Commands.runOnce(() -> {
+            fuel.stop();
+        }, fuel ));
+
+        NamedCommands.registerCommand("Intake", Commands.runOnce(() -> {
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel));
 
-        NamedCommands.registerCommand("Set Pose",   Commands.runOnce(
-                () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                drive)
-            .ignoringDisable(true));
-
-                NamedCommands.registerCommand("Shooter at tower distance", Commands.run(() -> {
-            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
+        NamedCommands.registerCommand("Shoot", Commands.run(() -> {
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
-        }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
-            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }, fuel)).withTimeout(3));
+        }, fuel)
+            .withTimeout(ShooterConstants.SPIN_UP_AUTO_SECONDS)
+            .andThen(Commands.runOnce(() -> {
+                fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+                fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+            }, fuel)));
+//not sure if this will work, set a timeout and then using it on a timed zone. need to adjust withtimeout i think.
+        NamedCommands.registerCommand("ShootOnMove", Commands.run(() -> {
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
+        }, fuel)
+            .withTimeout(ShooterConstants.SPIN_UP_AUTO_SECONDS)
+            .andThen(Commands.run(() -> {
+                fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+                fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+            }, fuel)
+            .withTimeout(3)));
 
-                NamedCommands.registerCommand("Climb down", (Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_AUTO_DOWN_PERCENT);
-        }, climber).withTimeout(0.7).andThen(Commands.runOnce(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_STOP)))));
+        NamedCommands.registerCommand("Climb down", (Commands.runOnce(() -> {
+            climber.setClimberPower(ClimbConstants.CLIMBER_AUTO_DOWN_PERCENT);
+        }, climber)));
 
-
-                NamedCommands.registerCommand(("Pre Climb Auto Set Up"), Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_AUTO_DOWN_PERCENT);
-        }, climber).withTimeout(2.3).andThen(Commands.runOnce(() -> climber.setClimberPower(ClimbConstatns.CLIMBER_STOP))));
-
-        NamedCommands.registerCommand("Stop Climber", (Commands.run(() -> {
+        NamedCommands.registerCommand("Stop Climber", (Commands.runOnce(() -> {
             climber.stop();
         }, climber)));
 
+        NamedCommands.registerCommand("Stop Shooting", Commands.runOnce(() -> {
+            fuel.stop();
+        }, fuel));
+       
+        NamedCommands.registerCommand("Intake stop", Commands.runOnce(() -> {
+            fuel.stop();
+        }));
 
-            NamedCommands.registerCommand("Stop Shooting", Commands.runOnce(() -> {
-                fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT);
-                fuel.setIntakePower(ShooterConstants.INTAKE_STOP_PERCENT);
-                fuel.setFeederRoller(ShooterConstants.FEEDER_STOP_PERCENT);
-            }, fuel));
-
-
-                NamedCommands.registerCommand("Shooter spin", Commands.run(() -> {
-                fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
-                fuel.setShooterLeftPower(ShooterConstants.SHOOTER_PERCENT);
-                fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-                fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
-            }, fuel).withTimeout(1));
-
-        // //for SHOOTING, NOT CLIMBING
-        //         NamedCommands.registerCommand("PreShootClimberSetPosition", (Commands.run(() -> {
-        //     climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-        // }, climber)).withTimeout(2));
-
-                NamedCommands.registerCommand("Climb Up", Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
-        }, climber));
+        NamedCommands.registerCommand("Auto Climb", Commands.defer(() -> ClimberCommands.climbToLevel(drive, climber, climbLocationChooser.getSelected(), ClimbConstants.CLIMBER_CLIMBED_PITCH_L1), Set.of(drive)));
     }
     /**
      * Use this method to define your button->command mappings. Buttons can be
@@ -252,32 +279,51 @@ public class RobotContainer {
      * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
      * passing it to a
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     * 
+     * The button visual configuration are maintained here. If you update/add buttons, then ensure to change the URL below
+     * https://www.padcrafter.com/index.php?col=%23242424%2C%23606A6E%2C%23FFFFFF&outline=0&templates=Driver%7COperator&plat=0&timestamp=1778430193262&xButton=Set+drivetrain+to+X+mode%7CClose+Distance+Shot&bButton=Reset+gyro+to+zero%7C&rightBumper=Align+to+hub%7CShoot&dpadLeft=Auto+climb+left+side%7C&dpadRight=Auto+climb+right+side%7C&leftBumper=%7CIntake&yButton=Stop+all+commands%7CTower+Distance+Shot&dpadUp=%7CManual+Climb+Up&dpadDown=%7CManual+Climb+Down&startButton=%7CDeploy+blocker&backButton=%7CReset+climb+position+to+zero&aButton=%7CEject%2FOuttake
      */
     private void configureButtonBindings() {
 
         // Default command, normal field-relative drive
         drive.setDefaultCommand(
                 DriveCommands.joystickDrive(
-                        drive,                                      // red                  //blue
-                        () -> AllianceFlipUtil.shouldFlip() ? -driver.getLeftY() : driver.getLeftY(),
-                        () -> AllianceFlipUtil.shouldFlip() ? -driver.getLeftX() : driver.getLeftX(),
-                        () -> AllianceFlipUtil.shouldFlip() ? driver.getRightX() : 
-                        driver.back().getAsBoolean() ? -driver.getRightX() : driver.getRightX()));
+                        drive,
+                        () -> -driver.getLeftY(),
+                        () -> -driver.getLeftX(),
+                        () -> -driver.getRightX()));
 
         fuel.setDefaultCommand(fuel.run(() -> fuel.stop()));
         climber.setDefaultCommand(climber.run(() -> climber.stop()));
 
         // Switch to X pattern when X button is pressed
         driver.x()
-                .onTrue(new ActionFactory().singleAction("X-Command", () -> drive.stopWithX(), drive));
+            .onTrue(new ActionFactory().singleAction("X-Command", () -> drive.stopWithX(), drive));
 
         // Reset gyro / field orientation when B button is pressed
-        //THIS CODE IS THE EXACT BUTTON COMMAND FROM 429 2025 CODE - Mike L March 9th
-        driver.b().onTrue(
-                Commands.runOnce(
-                () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                drive)
-            .ignoringDisable(true));
+        driver.b()
+            .onTrue(new ActionFactory().singleAction("ZeroGyroCommand",
+                            () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(),
+                                            AllianceFlipUtil.apply(Rotation2d.kZero))),
+                            drive).ignoringDisable(true));
+
+        //align to hub
+        driver.rightBumper().whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                    drive,
+                    () -> -driver.getLeftY(),
+                    () -> -driver.getLeftX(),
+                    () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
+
+        //drive to tower and climb left side
+        driver.povLeft().onTrue(ClimberCommands.climbToLevel(drive, climber, true, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
+        
+        //drive to tower and climb right side
+        driver.povRight().onTrue(ClimberCommands.climbToLevel(drive, climber, false, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
+
+        // for stopping all commands
+        driver.y().onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll())
+                .andThen(Commands.runOnce(() -> climber.stop())));
 
         //intake
         operator.leftBumper().whileTrue(Commands.run(() -> {
@@ -286,76 +332,85 @@ public class RobotContainer {
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
         //shoot
-          operator.rightBumper().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
+        operator.rightBumper().whileTrue(Commands.run(() -> {
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }).withTimeout(0.5).andThen(Commands.run(() -> {
-            fuel.setShooterRightPower(ShooterConstants.SHOOTER_LONG_PERCENT);
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }))));
 
-            operator.rightBumper().onFalse(Commands.run(() -> {
-                fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT);
-            }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
+        // stop shooting after 1 second
+        operator.rightBumper().onFalse(Commands.run(() -> {
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+        }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
+        // Manual Tower shot
         operator.y().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_MID);
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_MID);
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         })));
 
+        // Stop Manual Tower shot after 1 second
         operator.y().onFalse(Commands.run(() -> {
-                fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_MID);
-            }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
+        }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
+        // Manual Close shot
         operator.x().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
-            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_CLOSE);
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_CLOSE);
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         })));
 
+        // Stop Manual Close shot after 1 second
         operator.x().onFalse(Commands.run(() -> {
-                fuel.setShooterRightPower(ShooterConstants.SHOOTER_PERCENT_CLOSE);
-            }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightPower(ShooterConstants.SHOOTER_STOP_PERCENT))));
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
+        }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
             
 
         //eject through intake
        operator.a().whileTrue(Commands.run(() -> {
-            fuel.setShooterRightPower(ShooterConstants.SHOOTER_EJECT_PERCENT);
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_EJECT_VELOCITY);
             fuel.setIntakePower(IntakeConstants.INTAKE_EJECT_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_EJECT_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
         //climb up
         operator.povUp().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT);
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
         //climb down
         operator.povDown().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_DOWN_PERCENT);
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
-        operator.start().whileTrue(climber.disableLimits());
+        // while held ignore climb soft limits
+        // operator.start().whileTrue(climber.disableLimits());
 
-        operator.start().onFalse(climber.enableLimits());
+        // operator.start().onFalse(climber.enableLimits());
 
-        // operator.back().onFalse(climber.enableLimits().andThen(Commands.run(() -> {
-        //     climber.setClimberPower(ClimbConstatns.CLIMBER_MOTOR_UP_PERCENT);
-        // })));
+        operator.start().onTrue(Commands.run(() -> climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT), climber)
+            .until(() -> climber.getClimberMotorPosition().getValueAsDouble() >= ClimbConstants.blockerDeployedPosition)
+            .andThen(Commands.runOnce(() -> climber.stop(), climber)));
+
+        // set Climber position to 0
+        operator.back().onTrue(Commands.runOnce(() -> climber.setClimberZero(), climber).ignoringDisable(true));
         
     }
 
@@ -374,7 +429,7 @@ public class RobotContainer {
 
     public void teleopPeriodic() {
         antiTipping.calculate();
-        HubData hubData = hub.getHubData();
+        HubData hubData = HubUtil.getHubData();
         Logger.recordOutput("Hub/Status", hubData.owner);
         Logger.recordOutput("Hub/TimeRemaing", hubData.timeRemaining);
     }

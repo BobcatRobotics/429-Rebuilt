@@ -2,6 +2,10 @@ package frc.robot.subsystems.climber;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.ctre.phoenix6.StatusSignal;
+
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -25,13 +29,13 @@ public interface ClimberIO {
 
     }
 
-    public default Command disableLimits(){
-        return Commands.none();
-    }
+    // public default Command disableLimits(){
+    //     return Commands.none();
+    // }
 
-    public default Command enableLimits(){
-        return Commands.none();
-    }
+    // public default Command enableLimits(){
+    //     return Commands.none();
+    // }
 
 
 
@@ -44,6 +48,10 @@ public interface ClimberIO {
     public default void setClimberPosition(double angleSetPoint){
 
     }
+
+    public default void setClimberZero(){
+        
+    }
     /**
      * Sets the output of the climber.
      * This is not PID based and will apply output to the motor.
@@ -54,5 +62,9 @@ public interface ClimberIO {
     }
     public default void stop(){
 
+    }
+
+    public default StatusSignal<Angle> getClimberMotorPosition() {
+        return new StatusSignal<>(null, null, null);
     }
 }
