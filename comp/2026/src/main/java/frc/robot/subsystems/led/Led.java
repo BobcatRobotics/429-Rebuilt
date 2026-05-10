@@ -71,6 +71,8 @@ public class Led extends SubsystemBase {
         else 
             setSeekingAlign();
     }
+    else if (RobotState.getInstance().getIsBlockerDeployed())
+        setBlockerDeployed();
     else
         turnOffTop();
 
@@ -87,8 +89,7 @@ public class Led extends SubsystemBase {
   }
 
   private void setAutoDriving()  {    
-    LEDPattern autoDrivingColorPattern = LEDPattern.solid(Color.kYellow);
-    LEDPattern autoDrivingBlinkingPattern = autoDrivingColorPattern.blink(Seconds.of(0.25), Seconds.of(0.25));
+    LEDPattern autoDrivingBlinkingPattern = LEDPattern.solid(Color.kYellow).blink(Seconds.of(0.25), Seconds.of(0.25));
     autoDrivingBlinkingPattern.applyTo(m_top);
   }
 
@@ -101,7 +102,12 @@ public class Led extends SubsystemBase {
     LEDPattern alignedSolidColorPattern = LEDPattern.solid(Color.kWhite);
     alignedSolidColorPattern.applyTo(m_top);
   }
-  
+
+  private void setBlockerDeployed() {
+    LEDPattern blockerDeployedBlinkingPattern = LEDPattern.solid(Color.kOrange).blink(Seconds.of(2), Seconds.of(0.5));
+    blockerDeployedBlinkingPattern.applyTo(m_top);
+  }
+
   public void setAllianceColor() {
     LEDPattern allianceColor = LEDPattern.solid(RobotState.getInstance().getAlliance() == Alliance.Red ? Color.kRed: Color.kBlue);
     allianceColor.applyTo(m_bottom);

@@ -404,6 +404,7 @@ public class RobotContainer {
 
         //climb down
         operator.povDown().whileTrue(Commands.run(() -> {
+            RobotState.getInstance().setIsBlockerDeployed(false);
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
         }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
@@ -412,7 +413,10 @@ public class RobotContainer {
 
         // operator.start().onFalse(climber.enableLimits());
 
-        operator.start().onTrue(Commands.runOnce(() -> climber.setClimberPosition(ClimbConstants.blockerDeployedPosition)));
+        operator.start().onTrue(Commands.runOnce(() -> {
+            RobotState.getInstance().setIsBlockerDeployed(true);
+            climber.setClimberPosition(ClimbConstants.blockerDeployedPosition);
+        }));
 
         // set Climber position to 0
         operator.back().onTrue(Commands.runOnce(() -> climber.setClimberZero(), climber).ignoringDisable(true));
