@@ -315,7 +315,11 @@ public class RobotContainer {
 
         //align to hub
         driver.rightBumper().whileTrue(
-            Commands.runOnce(() -> RobotState.getInstance().setIsAutoAligning(true)).alongWith( 
+            Commands.runOnce(() ->  {
+                RobotState robotState = RobotState.getInstance();
+                robotState.setIsAutoAligning(true);                
+                robotState.setIsAutoDriving(false);
+            }).alongWith( 
                 DriveCommands.joystickDriveAtAngle(
                         drive,
                         () -> -driver.getLeftY(),
@@ -330,7 +334,13 @@ public class RobotContainer {
         driver.povRight().onTrue(ClimberCommands.climbToLevel(drive, climber, false, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
 
         // for stopping all commands
-        driver.y().onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll())
+        driver.y().onTrue(Commands.runOnce(() -> {
+                CommandScheduler.getInstance().cancelAll();
+                RobotState robotState = RobotState.getInstance();
+                robotState.setIsAligned(false);
+                robotState.setIsAutoAligning(false);
+                robotState.setIsAutoDriving(false);
+        })
                 .andThen(Commands.runOnce(() -> climber.stop())));
 
         //intake
