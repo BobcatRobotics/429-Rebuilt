@@ -2,9 +2,12 @@ package frc.robot.subsystems.led;
 
 import static edu.wpi.first.units.Units.Seconds;
 
+import java.util.Optional;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.AddressableLEDBufferView;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
@@ -22,6 +25,8 @@ public class Led extends SubsystemBase {
 
   private final AddressableLEDBufferView m_top;
   private final AddressableLEDBufferView m_bottom;
+  private final AddressableLEDBufferView m_wonAutoStart;
+  private final AddressableLEDBufferView m_wonAutoEnd;
 
   private final LEDPattern offPattern = LEDPattern.solid(Color.kBlack);
 
@@ -32,7 +37,9 @@ public class Led extends SubsystemBase {
     
     m_top = m_buffer.createView(LedConstants.LED_START_TOP, LedConstants.LED_END_TOP);
     m_bottom = m_buffer.createView(LedConstants.LED_START_BOTTOM, LedConstants.LED_END_BOTTOM);
-
+    m_wonAutoStart = m_buffer.createView(LedConstants.LED_START_BOTTOM, LedConstants.LED_START_BOTTOM + 3);
+    m_wonAutoEnd = m_buffer.createView(LedConstants.LED_END_BOTTOM, LedConstants.LED_END_BOTTOM - 3);
+    
     turnOffTop();
     turnOffBottom();
 
@@ -76,6 +83,8 @@ public class Led extends SubsystemBase {
     else
         turnOffTop();
 
+    handleAllianceShift();
+
     // Periodically send the latest LED color data to the LED strip for it to display
     m_led.setData(m_buffer);
   }
@@ -108,22 +117,96 @@ public class Led extends SubsystemBase {
     blockerDeployedBlinkingPattern.applyTo(m_top);
   }
 
-  public void setAllianceColor() {
-    LEDPattern allianceColor = LEDPattern.solid(RobotState.getInstance().getAlliance() == Alliance.Red ? Color.kRed: Color.kBlue);
-    allianceColor.applyTo(m_bottom);
+  private void handleAllianceShift() {
+    Alliance alliance = RobotState.getInstance().getAlliance();
+
+    if (DriverStation.isAutonomousEnabled()) {
+        turnOffBottom();
+        return;
+    }
+
+    if (DriverStation.isTeleopEnabled()) { 
+        // We're teleop enabled, compute.
+        String gameData = DriverStation.getGameSpecificMessage();
+        // If we have no game data, we cannot compute, assume hub is active, as its likely early in teleop.
+        if (gameData.isEmpty()) {
+            setAllianceHubActive();
+            return;
+        }
+
+        boolean redInactiveFirst = false;
+        switch (gameData.charAt(0)) {
+            case 'R' -> redInactiveFirst = true;
+            case 'B' -> redInactiveFirst = false;
+            default -> {
+            // If we have invalid game data, assume hub is active.
+                setAllianceHubActive();
+                return;
+            }
+        }
+        
+        double matchTime = DriverStation.getMatchTime();
+
+        // Shift was is active for blue if red won auto, or red if blue won auto.
+        boolean shift1Active = alliance == Alliance.Red ? !redInactiveFirst :  redInactiveFirst;
+
+         if (matchTime > 130) {
+             // Transition shift, hub is active.
+            setAllianceHubActive();
+            if (!shift1Active)
+                setWonAuto();
+            return;
+         } 
+        else if (matchTime > 105) {
+           // Shift 1
+            if (shift1Active)
+                setAllianceHubActive();
+            else
+                turnOffBottom();
+
+            return;
+        } 
+        else if (matchTime > 80) {
+            // Shift 2
+            if (shift1Active)
+                turnOffBottom();
+            else
+                setAllianceHubActive();
+            return;
+        } 
+        else if (matchTime > 55) {
+            // Shift 3
+            if (shift1Active)
+                setAllianceHubActive();
+            else
+                turnOffBottom();
+
+            return;
+        } 
+        else if (matchTime > 30) {
+            // Shift 4
+            if (shift1Active)
+                turnOffBottom();
+            else
+                setAllianceHubActive();
+
+            return;
+        } 
+        else {
+            // End game, hub always active.
+            setAllianceHubActive();
+            return;
+        }
+    }
+  }
+  private void setAllianceHubActive() {
+    LEDPattern allianceColorSolidPattern = LEDPattern.solid(RobotState.getInstance().getAlliance() == Alliance.Red ? Color.kRed : Color.kBlue);
+    allianceColorSolidPattern.applyTo(m_bottom);
   }
 
-  public void enableAutoriveMode(){
-    LEDPattern base = LEDPattern.solid(Color.kYellow);
-
-    LEDPattern pattern = base.blink(Seconds.of(2));
-
-    pattern.applyTo(m_top);
-  }
-  
-  public void disableAutoDriveMode(){
-    LEDPattern base = LEDPattern.solid(Color.kBlack);
-
-    base.applyTo(m_top);
+  private void setWonAuto() {
+    LEDPattern wonAutoSolidPattern = LEDPattern.solid(Color.kGreen);
+    wonAutoSolidPattern.applyTo(m_wonAutoStart);
+    wonAutoSolidPattern.applyTo(m_wonAutoEnd);
   }
 }
