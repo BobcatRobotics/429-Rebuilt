@@ -3,37 +3,42 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.803738819320215,
-        "y": 2.907334525939177
+        "x": 5.009457917261056,
+        "y": 5.503537803138374
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.943792486583184,
-        "y": 2.4854740608228973
+        "x": 3.5991440798858774,
+        "y": 5.555292439372327
       },
       "isLocked": false,
-      "linkedName": "Mikes Right Bump Back to Zone"
+      "linkedName": "Left Bump Stopped"
     },
     {
       "anchor": {
-        "x": 3.4835062611806795,
-        "y": 2.469248658318426
+        "x": 2.719315263908701,
+        "y": 4.377874465049929
       },
       "prevControl": {
-        "x": 4.4894812164579605,
-        "y": 2.4854740608228973
+        "x": 3.2368616262482157,
+        "y": 4.481383737517832
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.06648575305291633,
+      "rotationDegrees": 45.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
+    "maxVelocity": 2.5,
     "maxAcceleration": 3.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -41,14 +46,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 55.0
+    "velocity": 2.5,
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Mike's Auto Paths",
+  "folder": "Center Dump Auto",
   "idealStartingState": {
-    "velocity": 1.5,
-    "rotation": 75.0
+    "velocity": 0,
+    "rotation": 0.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
