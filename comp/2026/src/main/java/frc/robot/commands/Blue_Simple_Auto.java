@@ -14,16 +14,16 @@ public class Blue_Simple_Auto extends SequentialCommandGroup{
 
         //negative 0.5 for blue, positive 0.5 for red
 
-      DriveCommands.joystickDrive(drive, () -> 0.5, () -> 0, () -> 0.0)
+      DriveCommands.joystickDrive(drive, () -> -0.5, () -> 0, () -> 0.0)
                    .withTimeout(2.0),
 
       DriveCommands.joystickDrive(drive, () -> 0.0, () -> 0.0, () -> 0.0)
                    .withTimeout(0.02),
  
       NamedCommands.getCommand("Shooter at tower distance")
-                    .withTimeout(5),
+                    .withTimeout(5)
+                    .andThen(() -> NamedCommands.getCommand("Stop Shooting"))
 
-      NamedCommands.getCommand("Shooter spin")
  
     );
   }

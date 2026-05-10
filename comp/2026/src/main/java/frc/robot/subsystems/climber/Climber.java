@@ -2,6 +2,10 @@ package frc.robot.subsystems.climber;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.StatusSignal;
+
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -24,6 +28,10 @@ public class Climber extends SubsystemBase {
         io.setClimberPosition(angleSetPoint);
     }
 
+    public void setClimberZero(){
+        io.setClimberZero();
+    }
+
     /**
      * Sets the output of the climber.
      * This is not PID based and will apply output to the motor.
@@ -33,13 +41,17 @@ public class Climber extends SubsystemBase {
         io.setClimberPower(power);
     }
 
-    public Command disableLimits(){
-        return io.disableLimits();
+    public StatusSignal<Angle> getClimberMotorPosition() {
+        return io.getClimberMotorPosition();
     }
 
-    public Command enableLimits(){
-        return io.enableLimits();
-    }
+    // public Command disableLimits(){
+    //     return io.disableLimits();
+    // }
+
+    // public Command enableLimits(){
+    //     return io.enableLimits();
+    // }
 
     public void stop() {
         io.stop();
@@ -49,5 +61,6 @@ public class Climber extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Climber", inputs);
+        Logger.recordOutput("Climber_Position", getClimberMotorPosition().getValueAsDouble());
     }
 }

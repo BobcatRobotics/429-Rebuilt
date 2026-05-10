@@ -60,11 +60,11 @@ public interface FuelIO {
      * 
      * 
      */
-    public default void setShooterRightPower(double power) {
+    public default void setShooterRightVelocity(double velocity) {
 
     }
 
-    public default void setShooterLeftPower(double power){
+    public default void setShooterLeftVelocity(double velocity){
 
     }
 
@@ -107,6 +107,10 @@ public interface FuelIO {
     }
 
     public default StatusSignal<AngularVelocity> getRightShooterMotorVelocity() {
+        return new StatusSignal<>(null, null, null);
+    }
+
+    public default StatusSignal<AngularVelocity> getFeederMotorVelocity() {
         return new StatusSignal<>(null, null, null);
     }
 

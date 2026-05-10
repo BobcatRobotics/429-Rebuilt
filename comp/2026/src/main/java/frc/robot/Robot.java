@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -13,10 +14,14 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -34,9 +39,11 @@ public class Robot extends LoggedRobot {
    */
   public Robot() {
 
+if (Constants.currentMode == Constants.Mode.REAL) {
     UsbCamera intakeCamera = CameraServer.startAutomaticCapture(0);
     intakeCamera.setFPS(15);
     intakeCamera.setResolution(160, 120);
+}
     
     // UsbCamera frontCamera = CameraServer.startAutomaticCapture(1);
     // frontCamera.setFPS(5);
@@ -104,6 +111,25 @@ public class Robot extends LoggedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    var robotState = RobotState.getInstance();
+
+    if (DriverStation.getAlliance().isPresent()){
+      robotState.setAlliance(DriverStation.getAlliance().get());
+      robotState.hubLocation = HubUtil.getMyHubCoordinates(DriverStation.getAlliance().get()).toPose2d().getTranslation();
+    }
+
+    robotState.setDistanceToHub(
+      Units.metersToInches(
+        Math.sqrt(Math.pow(robotState.hubLocation.getX()-m_robotContainer.drive.getPose().getX(), 2) +
+        Math.pow(robotState.hubLocation.getY()-m_robotContainer.drive.getPose().getY(), 2))
+      ) - ShooterConstants.SHOOTING_DISTANCE_OFFSET);
+     
+    Logger.recordOutput("Distance to Hub", robotState.getDistanceToHub());
+
+    Logger.recordOutput("Shooter Velocity", robotState.getShooterVelocity());
+
+    Logger.recordOutput("pitch", m_robotContainer.drive.getPitch());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

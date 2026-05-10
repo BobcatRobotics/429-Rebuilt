@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.7877318116975744,
-        "y": 3.8862054208273893
+        "x": 3.560328102710413,
+        "y": 3.9897146932952925
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.505950227170394,
-        "y": 3.8601929317452064
+        "x": 3.310759509416664,
+        "y": 3.9750341878074247
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.560328102710413,
-        "y": 3.8862054208273893
+        "x": 1.3866333808844504,
+        "y": 4.144978601997147
       },
       "prevControl": {
-        "x": 2.4303719849115835,
-        "y": 3.9027771772451727
+        "x": 1.6366333808844504,
+        "y": 4.144978601997147
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Tower Climb Position"
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.5,
+    "maxVelocity": 1.0,
     "maxAcceleration": 0.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -50,5 +50,5 @@
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

@@ -261,6 +261,12 @@ rawGyroRotation = gyroInputs.odometryYawPositions[i];
     stop();
   }
 
+  public void stopWithStraight() {
+    Rotation2d[] headings = new Rotation2d[]{new Rotation2d(), new Rotation2d(), new Rotation2d(), new Rotation2d()};
+    kinematics.resetHeadings(headings);
+    stop();
+  }
+
   /** Returns a command to run a quasistatic test in the specified direction. */
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
     return run(() -> runCharacterization(0.0))
@@ -361,10 +367,18 @@ rawGyroRotation = gyroInputs.odometryYawPositions[i];
     };
   }
 
-    public double getPitch(){
+  public double getPitch(){
     return gyroIO.getPitch();
   }
   public double getRoll(){
     return gyroIO.getRoll();
+  }
+
+  public double getGravityVectorX(){
+    return gyroIO.getGravityVectorX();
+  }
+
+  public double getGravityVectorZ(){
+    return gyroIO.getGravityVectorZ();
   }
 }

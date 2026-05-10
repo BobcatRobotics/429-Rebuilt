@@ -67,4 +67,12 @@ public class GyroIOPigeon2 implements GyroIO {
   public double getRoll() {
     return pigeon.getRoll().getValueAsDouble();
   }
+
+  public double getGravityVectorX(){
+    return pigeon.getGravityVectorX().getValueAsDouble();
+  }
+
+  public double getGravityVectorZ(){
+    return pigeon.getGravityVectorZ().getValueAsDouble();
+  }
 }

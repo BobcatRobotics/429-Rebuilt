@@ -1,0 +1,79 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Bump to Trench NZ"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center Swipe After Wait Trench"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake stop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Bump Cross SOTM"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Depot Swipe 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Corner to Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooting"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": null,
+  "choreoAuto": false
+}
