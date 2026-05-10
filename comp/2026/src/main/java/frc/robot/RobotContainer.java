@@ -281,7 +281,7 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      * 
      * The button visual configuration are maintained here. If you update/add buttons, then ensure to change the URL below
-     * https://www.padcrafter.com/index.php?col=%23242424%2C%23606A6E%2C%23FFFFFF&outline=0&templates=Driver%7COperator&plat=0&timestamp=1778345932804&xButton=Set+drivetrain+to+X+mode%7CClose+Distance+Shot&bButton=Reset+gyro+to+zero%7C&rightBumper=Align+to+hub%7CShoot&dpadLeft=Auto+climb+left+side%7C&dpadRight=Auto+climb+right+side%7C&leftBumper=%7CIntake&yButton=Stop+all+commands%7CTower+Distance+Shot&dpadUp=%7CManual+Climb+Up&dpadDown=%7CManual+Climb+Down&startButton=%7CDisable+Soft+Limits&backButton=%7CReset+climb+position+to+zero&aButton=%7CEject%2FOuttake
+     * https://www.padcrafter.com/index.php?col=%23242424%2C%23606A6E%2C%23FFFFFF&outline=0&templates=Driver%7COperator&plat=0&timestamp=1778430193262&xButton=Set+drivetrain+to+X+mode%7CClose+Distance+Shot&bButton=Reset+gyro+to+zero%7C&rightBumper=Align+to+hub%7CShoot&dpadLeft=Auto+climb+left+side%7C&dpadRight=Auto+climb+right+side%7C&leftBumper=%7CIntake&yButton=Stop+all+commands%7CTower+Distance+Shot&dpadUp=%7CManual+Climb+Up&dpadDown=%7CManual+Climb+Down&startButton=%7CDeploy+blocker&backButton=%7CReset+climb+position+to+zero&aButton=%7CEject%2FOuttake
      */
     private void configureButtonBindings() {
 
