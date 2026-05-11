@@ -137,6 +137,8 @@ if (Constants.currentMode == Constants.Mode.REAL) {
 
     Logger.recordOutput("Shooter Velocity", robotState.getShooterVelocity());
 
+    Logger.recordOutput("Distance to Pass", robotState.getDistanceToPass());
+
     Logger.recordOutput("pitch", m_robotContainer.drive.getPitch());
   }
 
