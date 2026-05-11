@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.RobotState;
 import frc.robot.subsystems.drive.Drive;
 import edu.wpi.first.math.geometry.Pose2d;
 
@@ -18,6 +19,8 @@ import static edu.wpi.first.units.Units.Inches;
 
 import java.io.IOException;
 import java.util.Optional;
+
+import org.littletonrobotics.junction.Logger;
 
 /**
  * Minimal helper to determine hub ownership and remaining active time.
@@ -175,15 +178,21 @@ public final class HubUtil {
         return hubPose;
     }
 
-        public static Pose3d getMyPassingCoordinates(Alliance alliance, Drive drive) {
-        Pose3d passPose = new Pose3d();
-        Translation2d pass = passPosition(alliance, drive);
-        passPose = new Pose3d(
-                    pass.getX(),
-                    pass.getY(),
-                    0,
-                    new Rotation3d());
-        return passPose;
+    public static Pose3d getMyPassingCoordinates(Alliance alliance, Drive drive) {
+        Translation2d hub = hubPosition(alliance);
+        Pose3d passingLocation = new Pose3d();
+        double xCoordinate = 0;
+        if(alliance == Alliance.Red){
+            xCoordinate =  Units.inchesToMeters( 560.165);
+        }else{
+            xCoordinate = Units.inchesToMeters(91.055);
+        }
+        if(drive.getPose().getY() > hub.getY() ){
+            passingLocation = new Pose3d(xCoordinate,Units.inchesToMeters(238.26),0,new Rotation3d());
+        }else{
+            passingLocation = new Pose3d(xCoordinate,Units.inchesToMeters(79.42),0,new Rotation3d());
+        }
+        return passingLocation;
     }
 
     //for welded field, andymark field is slightly short by an inch. doesnt matter for this stuff

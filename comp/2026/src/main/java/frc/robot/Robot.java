@@ -140,6 +140,13 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     Logger.recordOutput("Distance to Pass", robotState.getDistanceToPass());
 
     Logger.recordOutput("pitch", m_robotContainer.drive.getPitch());
+
+    // Handles setting and logging the passing location
+    RobotState.getInstance()
+        .setPassingLocation(HubUtil.getMyPassingCoordinates(DriverStation.getAlliance().get(), m_robotContainer.drive)
+            .toPose2d().getTranslation());
+    Logger.recordOutput("PassingLocationX", Units.metersToInches(robotState.getPassingCoordinate().getX()));
+    Logger.recordOutput("PassingLocationY", Units.metersToInches(robotState.getPassingCoordinate().getY()));
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

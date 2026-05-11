@@ -15,7 +15,7 @@ public class RobotState {
     private static RobotState instance;
     private Alliance alliance = Alliance.Red;
     public Translation2d hubLocation = HubUtil.getMyHubCoordinates(alliance).toPose2d().getTranslation();
-    public Translation2d passLocation;
+    public Translation2d passLocation = new Translation2d();
     private double distanceToHub = 0.0;
     private double distanceToPass = 0.0;
     private double shooterVelocity = ShooterConstants.SHOOTER_SPEEDS[0];
@@ -33,6 +33,10 @@ public class RobotState {
       }
       return instance;
     }
+
+    private RobotState(){
+
+    };
 
     public void setAlliance(Alliance alliance) {
       this.alliance = alliance;
@@ -87,5 +91,11 @@ public class RobotState {
           };
         }
         return new Pose2d[] {new Pose2d(), new Pose2d()};
+    }
+    public void setPassingLocation(Translation2d loc){
+      passLocation = loc;
+    }
+    public Translation2d getPassingCoordinate(){
+      return passLocation;
     }
 }
