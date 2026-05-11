@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.drive.Drive;
+import edu.wpi.first.math.geometry.Pose2d;
 
 import static edu.wpi.first.units.Units.Inches;
 
@@ -173,12 +175,46 @@ public final class HubUtil {
         return hubPose;
     }
 
-    public static Translation2d hubPosition(Alliance allianceGet ) {
+        public static Pose3d getMyPassingCoordinates(Alliance alliance, Drive drive) {
+        Pose3d passPose = new Pose3d();
+        Translation2d pass = passPosition(alliance, drive);
+        passPose = new Pose3d(
+                    pass.getX(),
+                    pass.getY(),
+                    0,
+                    new Rotation3d());
+        return passPose;
+    }
+
+    //for welded field, andymark field is slightly short by an inch. doesnt matter for this stuff
+    //field width is 317.68 in
+    //field length is 651.22 in
+    //alliance zone is 182.11 in
+    //neutral zone is 287 in
+    //blue outpost pass location X: 91.055 Y: 79.42
+    //blue depot pass location X: 91.055 Y: 238.26
+    //red depot pass location X: 560.165 Y: 79.42
+    //red outpost pass location X: 560.165 Y: 238.26
+
+    public static final double halfFieldY = Units.inchesToMeters(158.84);
+
+    public static Translation2d hubPosition(Alliance allianceGet) {
         if (allianceGet == Alliance.Blue) {
             return new Translation2d(Units.inchesToMeters(182.105), Units.inchesToMeters(158.845));
         }
         return new Translation2d(Units.inchesToMeters(469.115), Units.inchesToMeters(158.845));
     }
 
-    
+    public static Translation2d passPosition(Alliance allianceGet, Drive drive){
+        if (allianceGet == Alliance.Blue && drive.getPose().getY() < halfFieldY){
+            return new Translation2d(Units.inchesToMeters(91.055), Units.inchesToMeters(79.42));
+        } else if(allianceGet == Alliance.Blue && drive.getPose().getY() > halfFieldY){
+            return new Translation2d(Units.inchesToMeters(91.055), Units.inchesToMeters(238.26));
+        } else if(allianceGet == Alliance.Red && drive.getPose().getY() < halfFieldY){
+            return new Translation2d(Units.inchesToMeters(560.165), Units.inchesToMeters(79.42));
+        }else if (allianceGet == Alliance.Red && drive.getPose().getY() > halfFieldY){
+            return new Translation2d(Units.inchesToMeters(560.165), Units.inchesToMeters(238.26));
+        }
+        return new Translation2d(Units.inchesToMeters(560.165), Units.inchesToMeters(238.26));
+    }
 }

@@ -8,13 +8,21 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.DriveCommands;
+import frc.robot.subsystems.drive.Drive;
 
 public class RobotState {
     private static RobotState instance;
     private Alliance alliance = Alliance.Red;
     public Translation2d hubLocation = HubUtil.getMyHubCoordinates(alliance).toPose2d().getTranslation();
+    public Translation2d passLocation;
     private double distanceToHub = 0.0;
+    private double distanceToPass = 0.0;
     private double shooterVelocity = ShooterConstants.SHOOTER_SPEEDS[0];
+
+    private RobotState(Drive drive){
+      passLocation = HubUtil.getMyPassingCoordinates(alliance, drive).toPose2d().getTranslation();
+    }
 
     public SingleOutputInterpolator interpolator = new SingleOutputInterpolator(ShooterConstants.SHOOTER_DISTANCES, ShooterConstants.SHOOTER_SPEEDS, false);
 
@@ -29,6 +37,16 @@ public class RobotState {
     public void setAlliance(Alliance alliance) {
       this.alliance = alliance;
     }
+
+    public double getDistanceToPass() {
+      return distanceToPass;
+    }
+
+    public void setDistanceToPass(double passDistance) { 
+      distanceToPass = passDistance; 
+      shooterVelocity = interpolator.getAsList(distanceToPass).get(0);
+    }
+
 
     public double getDistanceToHub() { 
       return distanceToHub; 

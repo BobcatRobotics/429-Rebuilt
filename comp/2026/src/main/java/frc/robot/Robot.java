@@ -125,6 +125,14 @@ if (Constants.currentMode == Constants.Mode.REAL) {
         Math.pow(robotState.hubLocation.getY()-m_robotContainer.drive.getPose().getY(), 2))
       ) - ShooterConstants.SHOOTING_DISTANCE_OFFSET);
      
+
+    robotState.setDistanceToPass(
+      Units.metersToInches(
+        Math.sqrt(Math.pow(robotState.passLocation.getX()-m_robotContainer.drive.getPose().getX(), 2) +
+        Math.pow(robotState.passLocation.getY()-m_robotContainer.drive.getPose().getY(), 2))
+      ) - ShooterConstants.SHOOTING_DISTANCE_OFFSET);
+
+
     Logger.recordOutput("Distance to Hub", robotState.getDistanceToHub());
 
     Logger.recordOutput("Shooter Velocity", robotState.getShooterVelocity());
