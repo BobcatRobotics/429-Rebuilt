@@ -321,7 +321,7 @@ public class RobotContainer {
                     drive,
                     () -> -driver.getLeftY(),
                     () -> -driver.getLeftX(),
-                    () -> new Rotation2d(RobotState.getInstance().passLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY())));
+                    () -> new Rotation2d(RobotState.getInstance().passLocation.getX()-drive.getPose().getX(), RobotState.getInstance().passLocation.getY()-drive.getPose().getY())));
 
         //drive to tower and climb left side
         driver.povLeft().onTrue(ClimberCommands.climbToLevel(drive, climber, true, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
