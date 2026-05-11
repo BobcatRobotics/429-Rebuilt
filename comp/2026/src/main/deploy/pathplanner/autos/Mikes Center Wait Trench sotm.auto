@@ -41,9 +41,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Depot Swipe 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake stop"
           }
         },
         {

@@ -35,6 +35,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Mike Swipe back of Hub Left to Right"
@@ -44,6 +50,12 @@
           "type": "path",
           "data": {
             "pathName": "Right Bump Stop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake stop"
           }
         },
         {
@@ -71,6 +83,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Mike Swipe back of Hub Right to Left"
@@ -80,6 +98,12 @@
           "type": "path",
           "data": {
             "pathName": "Left Bump Stop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake stop"
           }
         },
         {
@@ -98,6 +122,12 @@
           "type": "named",
           "data": {
             "name": "Stop Eject"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Bump to Preclimb"
           }
         },
         {

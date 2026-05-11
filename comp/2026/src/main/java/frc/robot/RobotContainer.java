@@ -196,6 +196,8 @@ public class RobotContainer {
         autoChooser.addOption("Hub to Depot shoot and climb", new PathPlannerAuto("Hub to Depot shoot and climb"));
         autoChooser.addOption("Left Bump Shoot Mid Shoot", new PathPlannerAuto("Left Bump Shoot Mid Shoot"));
         autoChooser.addOption("Left Bump to Depot shoot and climb", new PathPlannerAuto("Left Bump to Depot shoot and climb"));
+        autoChooser.addOption("Left Double Swipe Shoot", new PathPlannerAuto("Mikes Neutral Zone Auto"));
+        autoChooser.addOption("Left Double Swipe Dump", new PathPlannerAuto("Mikes Dump Auto"));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -287,7 +289,7 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      * 
      * The button visual configuration are maintained here. If you update/add buttons, then ensure to change the URL below
-     * https://www.padcrafter.com/index.php?col=%23242424%2C%23606A6E%2C%23FFFFFF&outline=0&templates=Driver%7COperator&plat=0&timestamp=1778379026177&xButton=Set+drivetrain+to+X+mode%7CClose+Distance+Shot&bButton=Reset+gyro+to+zero%7C&rightBumper=Align+to+hub%7CShoot&dpadLeft=Auto+climb+left+side%7C&dpadRight=Auto+climb+right+side%7C&leftBumper=%7CIntake&yButton=Stop+all+commands%7CTower+Distance+Shot&dpadUp=%7CManual+Climb+Up&dpadDown=%7CManual+Climb+Down&startButton=%7C&backButton=%7CReset+climb+position+to+zero&aButton=%7CEject%2FOuttake
+     * https://www.padcrafter.com/index.php?col=%23242424%2C%23606A6E%2C%23FFFFFF&outline=0&templates=Driver%7COperator&plat=0&timestamp=1778430193262&xButton=Set+drivetrain+to+X+mode%7CClose+Distance+Shot&bButton=Reset+gyro+to+zero%7C&rightBumper=Align+to+hub%7CShoot&dpadLeft=Auto+climb+left+side%7C&dpadRight=Auto+climb+right+side%7C&leftBumper=%7CIntake&yButton=Stop+all+commands%7CTower+Distance+Shot&dpadUp=%7CManual+Climb+Up&dpadDown=%7CManual+Climb+Down&startButton=%7CDeploy+blocker&backButton=%7CReset+climb+position+to+zero&aButton=%7CEject%2FOuttake
      */
     private void configureButtonBindings() {
 
@@ -422,11 +424,12 @@ public class RobotContainer {
         // operator.start().whileTrue(climber.disableLimits());
 
         // operator.start().onFalse(climber.enableLimits());
-
-        operator.start().onTrue(Commands.runOnce(() -> {
+        operator.start().onTrue(Commands.run(() -> { 
             RobotState.getInstance().setIsBlockerDeployed(true);
-            climber.setClimberPosition(ClimbConstants.blockerDeployedPosition);
-        }));
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT);
+        }, climber)
+            .until(() -> climber.getClimberMotorPosition().getValueAsDouble() >= ClimbConstants.blockerDeployedPosition)
+            .andThen(Commands.runOnce(() -> climber.stop(), climber)));
 
         // set Climber position to 0
         operator.back().onTrue(Commands.runOnce(() -> climber.setClimberZero(), climber).ignoringDisable(true));

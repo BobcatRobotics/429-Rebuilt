@@ -69,7 +69,7 @@ public final class Constants {
     public static final double SHOOTING_DISTANCE_OFFSET = 36.5; //in inches 23.5 for half of hub, 13 for half of robot
 
     public static final double SPIN_UP_SECONDS = 1;
-    public static final double SPIN_UP_AUTO_SECONDS = 0.25;
+    public static final double SPIN_UP_AUTO_SECONDS = 0.50;
 
     public static final double[] SHOOTER_DISTANCES = {20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130};
 
@@ -89,7 +89,7 @@ public final class Constants {
     public static final int CLIMBER_MOTOR_NEGATIVE_ROTATIONS = -1;
     public static final int CLIMBER_MOTOR_POSITIVE_ROTATIONS = 1;
     // Percentage to power the motor both up and down
-    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.7;
+    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.8;
     public static final double CLIMBER_MOTOR_UP_PERCENT = 1;
     public static final double CLIMBER_AUTO_DOWN_PERCENT = -1;
 
@@ -101,7 +101,8 @@ public final class Constants {
     public static final double AUTO_CLIMB_VELOCITY = 3; //3 at comp 2 at doosan
     public static final double AUTO_CLIMB_ACCEL = 5; // 5 at comp 2 at doosan
 
-    public static final double kClimbMotorkP = 1.0;
+    public static final double kClimbMotorkP = 2.0;
+    public static final double kClimbMotorkV = 0.11;
 
     public static final double blockerDeployedPosition = 0.23;
   }
