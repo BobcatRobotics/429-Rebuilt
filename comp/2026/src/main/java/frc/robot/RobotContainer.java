@@ -342,20 +342,20 @@ public class RobotContainer {
         //passing
         operator.leftTrigger().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
-            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+            fuel.setShooterRightVelocity(RobotState.getInstance().getPassingVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+            fuel.setShooterRightVelocity(RobotState.getInstance().getPassingVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }).withTimeout(0.5).andThen(Commands.run(() -> {
-            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+            fuel.setShooterRightVelocity(RobotState.getInstance().getPassingVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }))));
 
         // stop passing after 0.5 seconds
         operator.leftTrigger().onFalse(Commands.run(() -> {
-            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+            fuel.setShooterRightVelocity(RobotState.getInstance().getPassingVelocity());
         }, fuel).withTimeout(0.5).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
 

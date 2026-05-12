@@ -133,11 +133,14 @@ if (Constants.currentMode == Constants.Mode.REAL) {
       ) - ShooterConstants.SHOOTING_DISTANCE_OFFSET);
 
 
-    Logger.recordOutput("Distance to Hub", robotState.getDistanceToHub());
+    Logger.recordOutput("Distance to Hub", Math.rint(robotState.getDistanceToHub()));
 
-    Logger.recordOutput("Shooter Velocity", robotState.getShooterVelocity());
+    Logger.recordOutput("Shooter Velocity", Math.rint(robotState.getShooterVelocity()));
 
-    Logger.recordOutput("Distance to Pass", robotState.getDistanceToPass());
+    Logger.recordOutput("Distance to Pass", Math.rint(robotState.getDistanceToPass()));
+
+    Logger.recordOutput("Passing Velocity", Math.rint(robotState.getPassingVelocity()));
+
 
     Logger.recordOutput("pitch", m_robotContainer.drive.getPitch());
 
@@ -145,8 +148,8 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     RobotState.getInstance()
         .setPassingLocation(HubUtil.getMyPassingCoordinates(DriverStation.getAlliance().get(), m_robotContainer.drive)
             .toPose2d().getTranslation());
-    Logger.recordOutput("PassingLocationX", Units.metersToInches(robotState.getPassingCoordinate().getX()));
-    Logger.recordOutput("PassingLocationY", Units.metersToInches(robotState.getPassingCoordinate().getY()));
+    Logger.recordOutput("PassingLocationX", Math.rint(Units.metersToInches(robotState.getPassingCoordinate().getX())));
+    Logger.recordOutput("PassingLocationY", Math.rint(Units.metersToInches(robotState.getPassingCoordinate().getY())));
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
