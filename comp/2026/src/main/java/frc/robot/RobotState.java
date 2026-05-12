@@ -19,6 +19,7 @@ public class RobotState {
     private boolean isAutoDriving = false;
     private boolean isAutoAligning = false;
     private boolean isBlockerDeployed = false;
+    private boolean isAllianceShiftActive = false;
 
     public SingleOutputInterpolator interpolator = new SingleOutputInterpolator(ShooterConstants.SHOOTER_DISTANCES, ShooterConstants.SHOOTER_SPEEDS, false);
 
@@ -109,5 +110,13 @@ public class RobotState {
     
     public void setIsBlockerDeployed(boolean value) {
       isBlockerDeployed = value;
+    }
+    
+    public boolean getIsAllianceShiftActive() {
+      return isAllianceShiftActive;
+    }
+    
+    public void setIsAllianceShiftActive(boolean value) {
+      isAllianceShiftActive = value;
     }
 }

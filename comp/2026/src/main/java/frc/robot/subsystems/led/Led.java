@@ -94,6 +94,7 @@ public class Led extends SubsystemBase {
   }
 
   private void turnOffBottom() {
+    RobotState.getInstance().setIsAllianceShiftActive(false);
     offPattern.applyTo(m_bottom);
   }
 
@@ -218,6 +219,7 @@ public class Led extends SubsystemBase {
     }
   }
   private void setAllianceHubActive() {
+    RobotState.getInstance().setIsAllianceShiftActive(true);
     LEDPattern allianceColorSolidPattern = LEDPattern.solid(RobotState.getInstance().getAlliance() == Alliance.Red ? Color.kRed : Color.kBlue)
         .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     allianceColorSolidPattern.applyTo(m_bottom);
