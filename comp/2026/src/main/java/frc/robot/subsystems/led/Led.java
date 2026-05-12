@@ -5,6 +5,8 @@ import static edu.wpi.first.units.Units.Seconds;
 
 import java.util.Optional;
 
+import com.ctre.phoenix6.configs.LEDConfigs;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.AddressableLEDBufferView;
@@ -17,9 +19,6 @@ import frc.robot.Constants.LedConstants;
 import frc.robot.RobotState;
 
 public class Led extends SubsystemBase {
-  private static final int kPort = LedConstants.LED_PORT;
-  private static final int kLength = LedConstants.LED_LENGTH;
-
   private final AddressableLED m_led;
   private final AddressableLEDBuffer m_buffer;
 
@@ -30,10 +29,11 @@ public class Led extends SubsystemBase {
 
   private final LEDPattern offPattern = LEDPattern.solid(Color.kBlack);
 
+
   public Led() {
-    m_led = new AddressableLED(kPort);
-    m_buffer = new AddressableLEDBuffer(kLength);
-    m_led.setLength(kLength);
+    m_led = new AddressableLED(LedConstants.LED_PORT);
+    m_buffer = new AddressableLEDBuffer(LedConstants.LED_LENGTH);
+    m_led.setLength(LedConstants.LED_LENGTH);
     
     m_top = m_buffer.createView(LedConstants.LED_START_TOP, LedConstants.LED_END_TOP);
     m_bottom = m_buffer.createView(LedConstants.LED_START_BOTTOM, LedConstants.LED_END_BOTTOM);
@@ -156,43 +156,55 @@ public class Led extends SubsystemBase {
         // Shift was is active for blue if red won auto, or red if blue won auto.
         boolean shift1Active = alliance == Alliance.Red ? !redInactiveFirst :  redInactiveFirst;
 
-         if (matchTime > 130) {
+         if (matchTime > LedConstants.END_TRANSITION_PERIOD_SECONDS) {
              // Transition shift, hub is active.
             setAllianceHubActive();
-            if (!shift1Active)
+            if (!shift1Active) {
                 setWonAuto();
+            }
             return;
          } 
-        else if (matchTime > 105) {
+        else if (matchTime > LedConstants.END_FIRST_SHIFT_SECONDS) {
            // Shift 1
             if (shift1Active)
                 setAllianceHubActive();
+            else if (matchTime < LedConstants.END_FIRST_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS)
+                setShiftStartWarning();
             else
                 turnOffBottom();
 
             return;
         } 
-        else if (matchTime > 80) {
+        else if (matchTime > LedConstants.END_SECOND_SHIFT_SECONDS) {
             // Shift 2
-            if (shift1Active)
-                turnOffBottom();
+            if (shift1Active) {
+                if (matchTime < LedConstants.END_SECOND_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS)
+                    setShiftStartWarning();
+                else
+                    turnOffBottom();
+            }
             else
                 setAllianceHubActive();
             return;
         } 
-        else if (matchTime > 55) {
+        else if (matchTime > LedConstants.END_THIRD_SHIFT_SECONDS) {
             // Shift 3
             if (shift1Active)
                 setAllianceHubActive();
+            else if (matchTime < LedConstants.END_THIRD_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS)
+                setShiftStartWarning();
             else
                 turnOffBottom();
 
             return;
         } 
-        else if (matchTime > 30) {
+        else if (matchTime > LedConstants.END_FOURTH_SHIFT_SECONDS) {
             // Shift 4
             if (shift1Active)
-                turnOffBottom();
+                if (matchTime < LedConstants.END_FOURTH_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS)
+                    setShiftStartWarning();
+                else
+                    turnOffBottom();
             else
                 setAllianceHubActive();
 
@@ -207,6 +219,13 @@ public class Led extends SubsystemBase {
   }
   private void setAllianceHubActive() {
     LEDPattern allianceColorSolidPattern = LEDPattern.solid(RobotState.getInstance().getAlliance() == Alliance.Red ? Color.kRed : Color.kBlue)
+        .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
+    allianceColorSolidPattern.applyTo(m_bottom);
+  }
+
+  private void setShiftStartWarning() {
+    LEDPattern allianceColorSolidPattern = LEDPattern.solid(RobotState.getInstance().getAlliance() == Alliance.Red ? Color.kRed : Color.kBlue)
+        .blink(Seconds.of(0.75), Seconds.of(0.25))
         .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     allianceColorSolidPattern.applyTo(m_bottom);
   }

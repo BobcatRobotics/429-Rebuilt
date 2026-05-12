@@ -142,6 +142,13 @@ public final class Constants {
     public static final int LED_END_BOTTOM = 24;
 
     public static final double LED_BRIGHTNESS_PERCENT = 50;
+    
+    public static  final int SHIFT_START_WARNING_SECONDS = 7;
+    public static  final int END_TRANSITION_PERIOD_SECONDS = 130;
+    public static  final int END_FIRST_SHIFT_SECONDS = 105;
+    public static  final int END_SECOND_SHIFT_SECONDS = 80;
+    public static  final int END_THIRD_SHIFT_SECONDS = 55;
+    public static  final int END_FOURTH_SHIFT_SECONDS = 30;
   }
 
 }
