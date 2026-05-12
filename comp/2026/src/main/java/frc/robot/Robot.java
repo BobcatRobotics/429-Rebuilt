@@ -126,11 +126,13 @@ if (Constants.currentMode == Constants.Mode.REAL) {
         Math.pow(robotState.hubLocation.getY()-m_robotContainer.drive.getPose().getY(), 2))
       ) - ShooterConstants.SHOOTING_DISTANCE_OFFSET);
 
+    RobotState.getInstance().isTargetShooterVelocityReached(actualShooterVelocity = fuel.getRightShooterMotorVelocity().getValueAsDouble());
+
     m_robotContainer.drive.isAlignedToHub();
      
     Logger.recordOutput("Distance to Hub", robotState.getDistanceToHub());
 
-    Logger.recordOutput("Shooter Velocity", robotState.getShooterVelocity());
+    Logger.recordOutput("Target Shooter Velocity", robotState.getShooterVelocity());
 
     Logger.recordOutput("pitch", m_robotContainer.drive.getPitch());
   }

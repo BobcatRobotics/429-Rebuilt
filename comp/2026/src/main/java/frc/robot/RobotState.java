@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.subsystems.fuel.Fuel;
 
 public class RobotState {
     private static RobotState instance;
@@ -20,6 +21,8 @@ public class RobotState {
     private boolean isAutoAligning = false;
     private boolean isBlockerDeployed = false;
     private boolean isAllianceShiftActive = false;
+    public boolean isTargetShooterVelocityReached = false;
+    private double actualShooterVelocity = 0.0;
 
     public SingleOutputInterpolator interpolator = new SingleOutputInterpolator(ShooterConstants.SHOOTER_DISTANCES, ShooterConstants.SHOOTER_SPEEDS, false);
 
@@ -29,6 +32,10 @@ public class RobotState {
         instance = new RobotState();
       }
       return instance;
+    }
+
+    private RobotState(Fuel fuel){
+      actualShooterVelocity = fuel.getRightShooterMotorVelocity().getValueAsDouble();
     }
 
     public Alliance getAlliance() {
@@ -46,6 +53,13 @@ public class RobotState {
     public void setDistanceToHub(double distance) { 
       distanceToHub = distance; 
       shooterVelocity = interpolator.getAsList(distanceToHub).get(0);
+    }
+
+    public boolean targetShooterVelocityReached(double shooterVelocity, double actualShooterVelocity){
+      if(actualShooterVelocity > (shooterVelocity - 2) && actualShooterVelocity < (shooterVelocity + 2)){
+        return isTargetShooterVelocityReached = true;
+      }
+      return isTargetShooterVelocityReached = false;
     }
 
     public double getShooterVelocity() { 

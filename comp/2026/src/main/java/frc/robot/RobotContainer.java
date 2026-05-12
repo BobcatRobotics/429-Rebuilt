@@ -330,12 +330,28 @@ public class RobotContainer {
             .onFalse(Commands.runOnce(() -> RobotState.getInstance().setIsAutoAligning(false)));
 
         //drive to tower and climb left side
-        driver.povLeft().onTrue(ClimberCommands.climbToLevel(drive, climber, true, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
+        driver.povLeft().onTrue(ClimberCommands.climbToLevel(drive, climber, true, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2))
+                .onFalse(Commands.runOnce(() -> {
+                CommandScheduler.getInstance().cancelAll();
+                RobotState robotState = RobotState.getInstance();
+                robotState.setIsAligned(false);
+                robotState.setIsAutoAligning(false);
+                robotState.setIsAutoDriving(false);
+        })
+                .andThen(Commands.runOnce(() -> climber.stop())));
         
         //drive to tower and climb right side
-        driver.povRight().onTrue(ClimberCommands.climbToLevel(drive, climber, false, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
+        driver.povRight().onTrue(ClimberCommands.climbToLevel(drive, climber, false, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2))
+        .onFalse(Commands.runOnce(() -> {
+                CommandScheduler.getInstance().cancelAll();
+                RobotState robotState = RobotState.getInstance();
+                robotState.setIsAligned(false);
+                robotState.setIsAutoAligning(false);
+                robotState.setIsAutoDriving(false);
+        })
+                .andThen(Commands.runOnce(() -> climber.stop())));
 
-        // for stopping all commands
+        //for stopping all commands
         driver.y().onTrue(Commands.runOnce(() -> {
                 CommandScheduler.getInstance().cancelAll();
                 RobotState robotState = RobotState.getInstance();
@@ -351,57 +367,60 @@ public class RobotContainer {
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
-        //shoot
-        operator.rightBumper().whileTrue(Commands.run(() -> {
+
+        //getRightShooterMotorVelocity().getValueAsDouble()
+        //spool up shooter
+        operator.rightTrigger().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
-            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setFeederRoller(ShooterConstants.FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
-        }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
-            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }).withTimeout(0.5).andThen(Commands.run(() -> {
-            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
-            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-        }))));
+        }));
 
-        // stop shooting after 1 second
+        //shoot
+        operator.rightBumper().whileTrue(Commands.run(() -> {
+            
+            fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
+            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+        }));
+
+        // stop shooting after 0.5s
         operator.rightBumper().onFalse(Commands.run(() -> {
             fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
-        }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
+        }, fuel).withTimeout(0.5).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_IDLE_VELOCITY))));
 
         // Manual Tower shot
         operator.y().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
-            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_TOWER_SPEED);
+            fuel.setFeederRoller(ShooterConstants.FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_TOWER_SPEED);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         })));
 
-        // Stop Manual Tower shot after 1 second
+        // Stop Manual Tower shot after 0.5s
         operator.y().onFalse(Commands.run(() -> {
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
-        }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_TOWER_SPEED);
+        }, fuel).withTimeout(0.5).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_IDLE_VELOCITY))));
 
         // Manual Close shot
         operator.x().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
-            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_CLOSE_SPEED);
+            fuel.setFeederRoller(ShooterConstants.FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_CLOSE_SPEED);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         })));
 
-        // Stop Manual Close shot after 1 second
+        // Stop Manual Close shot after 0.5s
         operator.x().onFalse(Commands.run(() -> {
-            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
-        }, fuel).withTimeout(1)
-            .andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
+            fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_CLOSE_SPEED);
+        }, fuel).withTimeout(0.5)
+            .andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_IDLE_VELOCITY))));
 
         //eject through intake
        operator.a().whileTrue(Commands.run(() -> {
@@ -423,6 +442,8 @@ public class RobotContainer {
         // operator.start().whileTrue(climber.disableLimits());
 
         // operator.start().onFalse(climber.enableLimits());
+
+        //set climber to blocker deploy position
         operator.start().onTrue(Commands.run(() -> { 
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT);
         }, climber)
