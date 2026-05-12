@@ -140,6 +140,7 @@ public final class Constants {
 
     public static final int LED_START_BOTTOM = 1;
     public static final int LED_END_BOTTOM = 24;
+    public static final int LED_WON_AUTO_COUNT = 3;
 
     public static final double LED_BRIGHTNESS_PERCENT = 50;
     
@@ -152,6 +153,10 @@ public final class Constants {
     public static final int END_SECOND_SHIFT_SECONDS = 80;
     public static final int END_THIRD_SHIFT_SECONDS = 55;
     public static final int END_FOURTH_SHIFT_SECONDS = 30;
+
+    public static final int TRANSITION_COUNTDOWN_SECONDS = 5;
+    public static final int SHIFT_COUNTDOWN_SECONDS = 10;
+    public static final int ENDGAME_COUNTDOWN_SECONDS = 7;
   }
 
 }

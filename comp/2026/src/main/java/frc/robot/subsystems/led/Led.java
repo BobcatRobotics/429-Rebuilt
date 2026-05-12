@@ -29,7 +29,9 @@ public class Led extends SubsystemBase {
 
   private final LEDPattern offPattern = LEDPattern.solid(Color.kBlack);
 
-
+  private final int wonAutoStartLastIndex = LedConstants.LED_START_BOTTOM + LedConstants.LED_WON_AUTO_COUNT;
+  private final int wonAutoEndLastIndex = LedConstants.LED_END_BOTTOM -  LedConstants.LED_WON_AUTO_COUNT;
+  
   public Led() {
     m_led = new AddressableLED(LedConstants.LED_PORT);
     m_buffer = new AddressableLEDBuffer(LedConstants.LED_LENGTH);
@@ -37,8 +39,8 @@ public class Led extends SubsystemBase {
     
     m_top = m_buffer.createView(LedConstants.LED_START_TOP, LedConstants.LED_END_TOP);
     m_bottom = m_buffer.createView(LedConstants.LED_START_BOTTOM, LedConstants.LED_END_BOTTOM);
-    m_wonAutoStart = m_buffer.createView(LedConstants.LED_START_BOTTOM, LedConstants.LED_START_BOTTOM + 3);
-    m_wonAutoEnd = m_buffer.createView(LedConstants.LED_END_BOTTOM, LedConstants.LED_END_BOTTOM - 3);
+    m_wonAutoStart = m_buffer.createView(LedConstants.LED_START_BOTTOM, wonAutoStartLastIndex);
+    m_wonAutoEnd = m_buffer.createView(LedConstants.LED_END_BOTTOM, wonAutoEndLastIndex);
     
     turnOffTop();
     turnOffBottom();
@@ -155,20 +157,23 @@ public class Led extends SubsystemBase {
         double matchTime = DriverStation.getMatchTime();
 
         // Shift was is active for blue if red won auto, or red if blue won auto.
-        boolean shift1Active = alliance == Alliance.Red ? !redInactiveFirst :  redInactiveFirst;
+        boolean shift1Active = alliance == Alliance.Red ? !redInactiveFirst : redInactiveFirst;
 
          if (matchTime > LedConstants.END_TRANSITION_PERIOD_SECONDS) {
              // Transition shift, hub is active.
             setAllianceHubActive();
             if (!shift1Active) {
                 setWonAuto();
+                countdown(wonAutoStartLastIndex, wonAutoEndLastIndex - 1, LedConstants.TRANSITION_COUNTDOWN_SECONDS, matchTime, LedConstants.END_TRANSITION_PERIOD_SECONDS);
             }
             return;
-         } 
+        } 
         else if (matchTime > LedConstants.END_FIRST_SHIFT_SECONDS) {
            // Shift 1
-            if (shift1Active)
+            if (shift1Active) {
                 setAllianceHubActive();
+                countdown(LedConstants.LED_START_BOTTOM-1, LedConstants.LED_END_BOTTOM, LedConstants.SHIFT_COUNTDOWN_SECONDS, matchTime, LedConstants.END_FIRST_SHIFT_SECONDS);
+            }
             else if (matchTime < LedConstants.END_FIRST_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS)
                 setShiftStartWarning();
             else
@@ -184,14 +189,18 @@ public class Led extends SubsystemBase {
                 else
                     turnOffBottom();
             }
-            else
+            else {
                 setAllianceHubActive();
+                countdown(LedConstants.LED_START_BOTTOM-1, LedConstants.LED_END_BOTTOM, LedConstants.SHIFT_COUNTDOWN_SECONDS, matchTime, LedConstants.END_SECOND_SHIFT_SECONDS);
+            }
             return;
         } 
         else if (matchTime > LedConstants.END_THIRD_SHIFT_SECONDS) {
             // Shift 3
-            if (shift1Active)
+            if (shift1Active) {
                 setAllianceHubActive();
+                countdown(LedConstants.LED_START_BOTTOM-1, LedConstants.LED_END_BOTTOM, LedConstants.SHIFT_COUNTDOWN_SECONDS, matchTime, LedConstants.END_THIRD_SHIFT_SECONDS);
+            }
             else if (matchTime < LedConstants.END_THIRD_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS)
                 setShiftStartWarning();
             else
@@ -206,7 +215,7 @@ public class Led extends SubsystemBase {
                     setShiftStartWarning();
                 else
                     turnOffBottom();
-            else
+            else 
                 setAllianceHubActive();
 
             return;
@@ -214,10 +223,12 @@ public class Led extends SubsystemBase {
         else {
             // End game, hub always active.
             setAllianceHubActive();
+            countdown(LedConstants.LED_START_BOTTOM-1, LedConstants.LED_END_BOTTOM, LedConstants.ENDGAME_COUNTDOWN_SECONDS, matchTime, 0);
             return;
         }
     }
   }
+
   private void setAllianceHubActive() {
     RobotState.getInstance().setIsAllianceShiftActive(true);
     LEDPattern allianceColorSolidPattern = LEDPattern.solid(RobotState.getInstance().getAlliance() == Alliance.Red ? Color.kRed : Color.kBlue)
@@ -230,6 +241,31 @@ public class Led extends SubsystemBase {
         .blink(Seconds.of(0.75), Seconds.of(0.25))
         .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     allianceColorSolidPattern.applyTo(m_bottom);
+  }
+
+  private void countdown(int countdownIndexStart, int countdownIndexEnd, int countDownSeconds, double matchTime, int periodEnd) {
+        int diffInTime = (int)Math.ceil(matchTime - periodEnd);
+        if (diffInTime > countDownSeconds)
+            return;
+
+        int numLeds = countdownIndexEnd - countdownIndexStart;
+        numLeds -= numLeds % 2 == 0 ? 2 : 1;
+
+        int elapsedSeconds = countDownSeconds - diffInTime;
+        int numOneSideLeds = numLeds / 2 - elapsedSeconds;
+
+        if (numOneSideLeds < diffInTime)
+            return;
+
+        int firstLedIndex = countdownIndexStart + elapsedSeconds + (numOneSideLeds > diffInTime ? numOneSideLeds - diffInTime : 0);
+        
+        for (int i = countdownIndexStart; i <= firstLedIndex; i++ )
+            m_bottom.setRGB(i, 0, 0, 0);
+            
+        int lastLedIndex = countdownIndexEnd - elapsedSeconds - (numOneSideLeds > diffInTime ? numOneSideLeds - diffInTime : 0);
+
+        for (int i = countdownIndexEnd; i >= lastLedIndex; i-- )
+            m_bottom.setRGB(i, 0, 0, 0);
   }
 
   private void setWonAuto() {
