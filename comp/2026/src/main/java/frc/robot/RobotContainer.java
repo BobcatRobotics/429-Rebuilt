@@ -400,32 +400,30 @@ public class RobotContainer {
         // Stop Manual Close shot after 1 second
         operator.x().onFalse(Commands.run(() -> {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
-        }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
+        }, fuel).withTimeout(1)
+            .andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         //eject through intake
        operator.a().whileTrue(Commands.run(() -> {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_EJECT_VELOCITY);
             fuel.setIntakePower(IntakeConstants.INTAKE_EJECT_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_EJECT_PERCENT);
-        }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+        }, fuel))
+            .onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
         //climb up
-        operator.povUp().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT);
-        }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
+        operator.povUp().whileTrue(Commands.run(() -> climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT), climber))
+            .onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
         //climb down
-        operator.povDown().whileTrue(Commands.run(() -> {
-            RobotState.getInstance().setIsBlockerDeployed(false);
-            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
-        }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
+        operator.povDown().whileTrue(Commands.run(() -> climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT), climber))
+            .onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
         // while held ignore climb soft limits
         // operator.start().whileTrue(climber.disableLimits());
 
         // operator.start().onFalse(climber.enableLimits());
         operator.start().onTrue(Commands.run(() -> { 
-            RobotState.getInstance().setIsBlockerDeployed(true);
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT);
         }, climber)
             .until(() -> climber.getClimberMotorPosition().getValueAsDouble() >= ClimbConstants.blockerDeployedPosition)

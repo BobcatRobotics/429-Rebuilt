@@ -1,5 +1,6 @@
 package frc.robot.subsystems.led;
 
+import static edu.wpi.first.units.Units.Percent;
 import static edu.wpi.first.units.Units.Seconds;
 
 import java.util.Optional;
@@ -11,7 +12,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LedConstants;
 import frc.robot.RobotState;
@@ -98,22 +98,28 @@ public class Led extends SubsystemBase {
   }
 
   private void setAutoDriving()  {    
-    LEDPattern autoDrivingBlinkingPattern = LEDPattern.solid(Color.kYellow).blink(Seconds.of(0.25), Seconds.of(0.25));
+    LEDPattern autoDrivingBlinkingPattern = LEDPattern.solid(Color.kYellow)
+        .blink(Seconds.of(0.25), Seconds.of(0.25))
+        .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     autoDrivingBlinkingPattern.applyTo(m_top);
   }
 
   private void setAligned() {
-    LEDPattern alignedSolidColorPattern = LEDPattern.solid(Color.kBlue);
+    LEDPattern alignedSolidColorPattern = LEDPattern.solid(Color.kBlue)
+        .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     alignedSolidColorPattern.applyTo(m_top);
   }
 
   private void setSeekingAlign() {
-    LEDPattern alignedSolidColorPattern = LEDPattern.solid(Color.kWhite);
+    LEDPattern alignedSolidColorPattern = LEDPattern.solid(Color.kWhite)
+        .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     alignedSolidColorPattern.applyTo(m_top);
   }
 
   private void setBlockerDeployed() {
-    LEDPattern blockerDeployedBlinkingPattern = LEDPattern.solid(Color.kOrange).blink(Seconds.of(2), Seconds.of(0.5));
+    LEDPattern blockerDeployedBlinkingPattern = LEDPattern.solid(Color.kOrange)
+        .blink(Seconds.of(2), Seconds.of(0.5))
+        .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     blockerDeployedBlinkingPattern.applyTo(m_top);
   }
 
@@ -200,12 +206,14 @@ public class Led extends SubsystemBase {
     }
   }
   private void setAllianceHubActive() {
-    LEDPattern allianceColorSolidPattern = LEDPattern.solid(RobotState.getInstance().getAlliance() == Alliance.Red ? Color.kRed : Color.kBlue);
+    LEDPattern allianceColorSolidPattern = LEDPattern.solid(RobotState.getInstance().getAlliance() == Alliance.Red ? Color.kRed : Color.kBlue)
+        .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     allianceColorSolidPattern.applyTo(m_bottom);
   }
 
   private void setWonAuto() {
-    LEDPattern wonAutoSolidPattern = LEDPattern.solid(Color.kGreen);
+    LEDPattern wonAutoSolidPattern = LEDPattern.solid(Color.kGreen)
+        .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     wonAutoSolidPattern.applyTo(m_wonAutoStart);
     wonAutoSolidPattern.applyTo(m_wonAutoEnd);
   }

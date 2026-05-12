@@ -140,6 +140,8 @@ public final class Constants {
 
     public static final int LED_START_BOTTOM = 1;
     public static final int LED_END_BOTTOM = 24;
+
+    public static final double LED_BRIGHTNESS_PERCENT = 50;
   }
 
 }
