@@ -26,6 +26,9 @@ public class Led extends SubsystemBase {
   private final AddressableLEDBufferView m_bottom;
   private final AddressableLEDBufferView m_wonAutoStart;
   private final AddressableLEDBufferView m_wonAutoEnd;
+  public boolean halfRumbleStatus = false;
+  public boolean fullRumbleStatus = false;
+
 
   private final LEDPattern offPattern = LEDPattern.solid(Color.kBlack);
 
@@ -120,7 +123,7 @@ public class Led extends SubsystemBase {
   }
 
   private void setBlockerDeployed() {
-    LEDPattern blockerDeployedBlinkingPattern = LEDPattern.solid(Color.kOrange)
+    LEDPattern blockerDeployedBlinkingPattern = LEDPattern.solid(Color.kYellow)
         .blink(Seconds.of(1.5), Seconds.of(0.5))
         .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     blockerDeployedBlinkingPattern.applyTo(m_top);
@@ -168,26 +171,41 @@ public class Led extends SubsystemBase {
             }
             return;
         } 
+        // Shift 1
         else if (matchTime > LedConstants.END_FIRST_SHIFT_SECONDS) {
-           // Shift 1
+           // if shift 1 is active, set alliance color full and begin countdown logic for end of shift
             if (shift1Active) {
                 setAllianceHubActive();
                 countdown(LedConstants.LED_START_BOTTOM-1, LedConstants.LED_END_BOTTOM, LedConstants.SHIFT_COUNTDOWN_SECONDS, matchTime, LedConstants.END_FIRST_SHIFT_SECONDS);
             }
-            else if (matchTime < LedConstants.END_FIRST_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS)
+            //if not active, begin 7 second shift start warning
+            else if (matchTime < LedConstants.END_FIRST_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS && matchTime > LedConstants.END_FIRST_SHIFT_SECONDS + LedConstants.SHIFT_START_IMMINENT_SECONDS)
                 setShiftStartWarning();
-            else
+            //if not active and less than 3 seconds, begin shift imminent warning
+            else if (matchTime < LedConstants.END_FIRST_SHIFT_SECONDS + LedConstants.SHIFT_START_IMMINENT_SECONDS){
+                setShiftImminentWarning();
+                fullRumbleStatus = true;
+            }
+            //turn off LEDs
+            else {
                 turnOffBottom();
-
+                fullRumbleStatus = false;
+            }
             return;
         } 
         else if (matchTime > LedConstants.END_SECOND_SHIFT_SECONDS) {
             // Shift 2
             if (shift1Active) {
-                if (matchTime < LedConstants.END_SECOND_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS)
+                if (matchTime < LedConstants.END_SECOND_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS && matchTime > LedConstants.END_SECOND_SHIFT_SECONDS + LedConstants.SHIFT_START_IMMINENT_SECONDS)
                     setShiftStartWarning();
-                else
+                else if (matchTime < LedConstants.END_SECOND_SHIFT_SECONDS + LedConstants.SHIFT_START_IMMINENT_SECONDS){
+                    setShiftImminentWarning();
+                    fullRumbleStatus = true;
+                }
+                else {
                     turnOffBottom();
+                    fullRumbleStatus = false;
+                }
             }
             else {
                 setAllianceHubActive();
@@ -201,23 +219,33 @@ public class Led extends SubsystemBase {
                 setAllianceHubActive();
                 countdown(LedConstants.LED_START_BOTTOM-1, LedConstants.LED_END_BOTTOM, LedConstants.SHIFT_COUNTDOWN_SECONDS, matchTime, LedConstants.END_THIRD_SHIFT_SECONDS);
             }
-            else if (matchTime < LedConstants.END_THIRD_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS)
+            else if (matchTime < LedConstants.END_THIRD_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS && matchTime > LedConstants.END_THIRD_SHIFT_SECONDS + LedConstants.SHIFT_START_IMMINENT_SECONDS)
                 setShiftStartWarning();
-            else
+            else if (matchTime < LedConstants.END_THIRD_SHIFT_SECONDS + LedConstants.SHIFT_START_IMMINENT_SECONDS){
+                setShiftImminentWarning();
+                fullRumbleStatus = true;
+            }
+            else {
                 turnOffBottom();
-
+                fullRumbleStatus = false;
+            }
             return;
         } 
         else if (matchTime > LedConstants.END_FOURTH_SHIFT_SECONDS) {
             // Shift 4
             if (shift1Active)
-                if (matchTime < LedConstants.END_FOURTH_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS)
+                if (matchTime < LedConstants.END_FOURTH_SHIFT_SECONDS + LedConstants.SHIFT_START_WARNING_SECONDS && matchTime > LedConstants.END_FOURTH_SHIFT_SECONDS + LedConstants.SHIFT_START_IMMINENT_SECONDS)
                     setShiftStartWarning();
-                else
+                else if (matchTime < LedConstants.END_FOURTH_SHIFT_SECONDS + LedConstants.SHIFT_START_IMMINENT_SECONDS){
+                    setShiftImminentWarning();
+                    fullRumbleStatus = true;
+                }
+                else {
                     turnOffBottom();
+                    fullRumbleStatus = false;
+                }
             else 
                 setAllianceHubActive();
-
             return;
         } 
         else {
@@ -238,7 +266,14 @@ public class Led extends SubsystemBase {
 
   private void setShiftStartWarning() {
     LEDPattern allianceColorSolidPattern = LEDPattern.solid(RobotState.getInstance().getAlliance() == Alliance.Red ? Color.kRed : Color.kBlue)
-        .blink(Seconds.of(0.75), Seconds.of(0.25))
+        .blink(Seconds.of(0.5), Seconds.of(0.5))
+        .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
+    allianceColorSolidPattern.applyTo(m_bottom);
+  }
+
+    private void setShiftImminentWarning() {
+    LEDPattern allianceColorSolidPattern = LEDPattern.solid(RobotState.getInstance().getAlliance() == Alliance.Red ? Color.kRed : Color.kBlue)
+        .blink(Seconds.of(0.25), Seconds.of(0.25))
         .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     allianceColorSolidPattern.applyTo(m_bottom);
   }

@@ -38,6 +38,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.IntakeConstants;
@@ -67,9 +69,11 @@ import frc.robot.commands.SimpleAuto;
 import frc.robot.commands.SimpleAuto_Climb_Blue;
 import frc.robot.commands.SimpleAuto_Climb_Red;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.subsystems.vision.VisionConstants;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import java.util.Set;
 
@@ -223,6 +227,27 @@ public class RobotContainer {
 //         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
 //     autoChooser.addOption(
 //         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
+
+        //end of shift rumble on both controllers
+        for (int i = 1; i <= Constants.LedConstants.SHIFT_START_IMMINENT_SECONDS; i++) {
+            Trigger shiftAboutToEnd =
+                new Trigger(() -> (led.fullRumbleStatus));
+            shiftAboutToEnd
+                .onTrue(
+                    Commands.parallel(
+                        Commands.runEnd(
+                            () -> driver.setRumble(RumbleType.kRightRumble, 1.0),
+                            () -> driver.setRumble(RumbleType.kBothRumble, 0.0)
+                        ).withTimeout(0.25),
+                        Commands.runEnd(
+                            () -> operator.setRumble(RumbleType.kRightRumble, 1.0),
+                            () -> operator.setRumble(RumbleType.kBothRumble, 0.0)
+                        ).withTimeout(0.25)
+                    )
+                );
+        }
+
 
         // Configure the button bindings
         configureButtonBindings();
