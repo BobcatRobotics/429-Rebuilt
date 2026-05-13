@@ -231,8 +231,9 @@ public class RobotContainer {
 
         //end of shift rumble on both controllers
         for (int i = 1; i <= Constants.LedConstants.SHIFT_START_IMMINENT_SECONDS; i++) {
+            double time = i;
             Trigger shiftAboutToEnd =
-                new Trigger(() -> (led.fullRumbleStatus));
+                new Trigger(() -> (led.rumbleTimer < time));
             shiftAboutToEnd
                 .onTrue(
                     Commands.parallel(
@@ -247,7 +248,6 @@ public class RobotContainer {
                     )
                 );
         }
-
 
         // Configure the button bindings
         configureButtonBindings();

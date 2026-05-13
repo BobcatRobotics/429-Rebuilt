@@ -28,6 +28,7 @@ public class Led extends SubsystemBase {
   private final AddressableLEDBufferView m_wonAutoEnd;
   public boolean halfRumbleStatus = false;
   public boolean fullRumbleStatus = false;
+  public double rumbleTimer = Double.MAX_VALUE;
 
 
   private final LEDPattern offPattern = LEDPattern.solid(Color.kBlack);
@@ -184,12 +185,12 @@ public class Led extends SubsystemBase {
             //if not active and less than 3 seconds, begin shift imminent warning
             else if (matchTime < LedConstants.END_FIRST_SHIFT_SECONDS + LedConstants.SHIFT_START_IMMINENT_SECONDS){
                 setShiftImminentWarning();
-                fullRumbleStatus = true;
+                rumbleTimer = matchTime - LedConstants.END_FIRST_SHIFT_SECONDS;
             }
             //turn off LEDs
             else {
                 turnOffBottom();
-                fullRumbleStatus = false;
+                rumbleTimer = Double.MAX_VALUE;
             }
             return;
         } 
@@ -200,11 +201,11 @@ public class Led extends SubsystemBase {
                     setShiftStartWarning();
                 else if (matchTime < LedConstants.END_SECOND_SHIFT_SECONDS + LedConstants.SHIFT_START_IMMINENT_SECONDS){
                     setShiftImminentWarning();
-                    fullRumbleStatus = true;
+                    rumbleTimer = matchTime - LedConstants.END_FIRST_SHIFT_SECONDS;
                 }
                 else {
                     turnOffBottom();
-                    fullRumbleStatus = false;
+                    rumbleTimer = Double.MAX_VALUE;
                 }
             }
             else {
@@ -223,11 +224,11 @@ public class Led extends SubsystemBase {
                 setShiftStartWarning();
             else if (matchTime < LedConstants.END_THIRD_SHIFT_SECONDS + LedConstants.SHIFT_START_IMMINENT_SECONDS){
                 setShiftImminentWarning();
-                fullRumbleStatus = true;
+                rumbleTimer = matchTime - LedConstants.END_FIRST_SHIFT_SECONDS;
             }
             else {
                 turnOffBottom();
-                fullRumbleStatus = false;
+                rumbleTimer = Double.MAX_VALUE;
             }
             return;
         } 
@@ -238,11 +239,11 @@ public class Led extends SubsystemBase {
                     setShiftStartWarning();
                 else if (matchTime < LedConstants.END_FOURTH_SHIFT_SECONDS + LedConstants.SHIFT_START_IMMINENT_SECONDS){
                     setShiftImminentWarning();
-                    fullRumbleStatus = true;
+                    rumbleTimer = matchTime - LedConstants.END_FIRST_SHIFT_SECONDS;
                 }
                 else {
                     turnOffBottom();
-                    fullRumbleStatus = false;
+                    rumbleTimer = Double.MAX_VALUE;
                 }
             else 
                 setAllianceHubActive();
