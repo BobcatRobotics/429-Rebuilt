@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.security.PublicKey;
+
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -132,6 +134,34 @@ public final class Constants {
     public static final double INTAKE_STOP_PERCENT = 0;
 
     public static final double SPIN_UP_SECONDS = 0.75;
+  }
+
+  public static final class LedConstants {
+    public static final int LED_PORT = 0;
+    public static final int LED_LENGTH = 60;
+
+    public static final int LED_START_TOP = 35;
+    public static final int LED_END_TOP = 58;
+
+    public static final int LED_START_BOTTOM = 1;
+    public static final int LED_END_BOTTOM = 24;
+    public static final int LED_WON_AUTO_COUNT = 3;
+
+    public static final double LED_BRIGHTNESS_PERCENT = 50;
+    
+    public static final int SHIFT_START_WARNING_SECONDS = 10;
+    public static final int SHIFT_END_COUNTDOWN_SECONDS = 10;
+    public static final int TRANSITION_END_COUNTDOWN_SECONDS = 5;
+    
+    public static final int END_TRANSITION_PERIOD_SECONDS = 130;
+    public static final int END_FIRST_SHIFT_SECONDS = 105;
+    public static final int END_SECOND_SHIFT_SECONDS = 80;
+    public static final int END_THIRD_SHIFT_SECONDS = 55;
+    public static final int END_FOURTH_SHIFT_SECONDS = 30;
+
+    public static final int TRANSITION_COUNTDOWN_SECONDS = 5;
+    public static final int SHIFT_COUNTDOWN_SECONDS = 10;
+    public static final int ENDGAME_COUNTDOWN_SECONDS = 7;
   }
 
 }

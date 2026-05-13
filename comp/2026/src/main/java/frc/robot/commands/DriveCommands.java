@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.RobotState;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.drive.Drive;
 import java.text.DecimalFormat;
@@ -171,6 +172,7 @@ public class DriveCommands {
   }
 
       public static Command driveToPose(Pose2d pose, Double velocity, Double acceleration){
+          RobotState.getInstance().setIsAutoDriving(true);
           return AutoBuilder.pathfindToPose(pose, 
           new PathConstraints(velocity, acceleration, Math.toRadians(540), Math.toRadians(720)));
       }

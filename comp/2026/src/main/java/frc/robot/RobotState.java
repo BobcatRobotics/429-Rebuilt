@@ -20,6 +20,11 @@ public class RobotState {
     private double distanceToPass = 0.0;
     private double passingVelocity = ShooterConstants.PASSING_SPEEDS[0];
     private double shooterVelocity = ShooterConstants.SHOOTER_SPEEDS[0];
+    private boolean isAligned = false;
+    private boolean isAutoDriving = false;
+    private boolean isAutoAligning = false;
+    private boolean isBlockerDeployed = false;
+    private boolean isAllianceShiftActive = false;
 
     private RobotState(Drive drive){
       passLocation = HubUtil.getMyPassingCoordinates(alliance, drive).toPose2d().getTranslation();
@@ -38,6 +43,9 @@ public class RobotState {
       return instance;
     }
 
+    public Alliance getAlliance() {
+      return alliance;
+    }
     private RobotState(){
 
     };
@@ -100,6 +108,45 @@ public class RobotState {
         }
         return new Pose2d[] {new Pose2d(), new Pose2d()};
     }
+
+    public boolean getIsAutoDriving() {
+      return isAutoDriving;
+    }
+    
+    public void setIsAutoDriving(boolean value) {
+      isAutoDriving = value;
+    }
+    
+    public boolean getIsAutoAligning() {
+      return isAutoAligning;
+    }
+    
+    public void setIsAutoAligning(boolean value) {
+      isAutoAligning = value;
+    }
+    
+    public boolean getIsAligned() {
+      return isAligned;
+    }
+    
+    public void setIsAligned(boolean value) {
+      isAligned = value;
+    }
+    
+    public boolean getIsBlockerDeployed() {
+      return isBlockerDeployed;
+    }
+    
+    public void setIsBlockerDeployed(boolean value) {
+      isBlockerDeployed = value;
+    }
+    
+    public boolean getIsAllianceShiftActive() {
+      return isAllianceShiftActive;
+    }
+    
+    public void setIsAllianceShiftActive(boolean value) {
+      isAllianceShiftActive = value;
     public void setPassingLocation(Translation2d loc){
       passLocation = loc;
     }

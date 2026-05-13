@@ -8,6 +8,8 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ClimbConstants;
+import frc.robot.RobotState;
 
 public class Climber extends SubsystemBase {
     private final ClimberIO io;
@@ -60,7 +62,9 @@ public class Climber extends SubsystemBase {
     @Override
     public void periodic() {
         io.updateInputs(inputs);
+        Double climberPosition = getClimberMotorPosition().getValueAsDouble();
+        RobotState.getInstance().setIsBlockerDeployed(climberPosition >= ClimbConstants.blockerDeployedPosition);
         Logger.processInputs("Climber", inputs);
-        Logger.recordOutput("Climber_Position", getClimberMotorPosition().getValueAsDouble());
+        Logger.recordOutput("Climber_Position", climberPosition);
     }
 }
