@@ -11,6 +11,18 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Climb down"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Left Bump to Hub NZ"
@@ -43,6 +55,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Stop Climber"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Intake stop"
           }
         },
@@ -61,7 +79,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 3.0
+            "waitTime": 2.75
           }
         },
         {
