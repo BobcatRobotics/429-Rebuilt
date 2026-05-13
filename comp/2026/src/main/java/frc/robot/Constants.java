@@ -144,7 +144,7 @@ public final class Constants {
 
     public static final double LED_BRIGHTNESS_PERCENT = 50;
     
-    public static final int SHIFT_START_WARNING_SECONDS = 7;
+    public static final int SHIFT_START_WARNING_SECONDS = 10;
     public static final int SHIFT_END_COUNTDOWN_SECONDS = 10;
     public static final int TRANSITION_END_COUNTDOWN_SECONDS = 5;
     

@@ -101,7 +101,7 @@ public class Led extends SubsystemBase {
   }
 
   private void setAutoDriving()  {    
-    LEDPattern autoDrivingBlinkingPattern = LEDPattern.solid(Color.kYellow)
+    LEDPattern autoDrivingBlinkingPattern = LEDPattern.solid(Color.kPurple)
         .blink(Seconds.of(0.25), Seconds.of(0.25))
         .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     autoDrivingBlinkingPattern.applyTo(m_top);
@@ -121,7 +121,7 @@ public class Led extends SubsystemBase {
 
   private void setBlockerDeployed() {
     LEDPattern blockerDeployedBlinkingPattern = LEDPattern.solid(Color.kOrange)
-        .blink(Seconds.of(2), Seconds.of(0.5))
+        .blink(Seconds.of(1.5), Seconds.of(0.5))
         .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     blockerDeployedBlinkingPattern.applyTo(m_top);
   }
