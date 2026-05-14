@@ -147,9 +147,12 @@ public class RobotState {
     
     public void setIsAllianceShiftActive(boolean value) {
       isAllianceShiftActive = value;
+    }
+
     public void setPassingLocation(Translation2d loc){
       passLocation = loc;
     }
+
     public Translation2d getPassingCoordinate(){
       return passLocation;
     }
