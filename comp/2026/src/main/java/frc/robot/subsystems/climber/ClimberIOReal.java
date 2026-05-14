@@ -29,7 +29,7 @@ public class ClimberIOReal implements ClimberIO {
     private TalonFX climberMotor;
     private TalonFXConfiguration ClimberConfig = new TalonFXConfiguration();
     private Slot0Configs climberSlot0Config;
-    private final PositionVoltage postionVoltageRequest = new PositionVoltage(0);
+    private final PositionVoltage postionVoltageRequest = new PositionVoltage(0).withEnableFOC(false);
 
     public void updateInputs(ClimberIOInputs inputs) {
 
@@ -62,6 +62,7 @@ public class ClimberIOReal implements ClimberIO {
         climberSlot0Config.kP = ClimbConstants.kClimbMotorkP;
         climberSlot0Config.kI = 0;
         climberSlot0Config.kD = 0;
+        climberSlot0Config.kV = ClimbConstants.kClimbMotorkV;
         climberMotor.getConfigurator().apply(climberSlot0Config);
 
     }

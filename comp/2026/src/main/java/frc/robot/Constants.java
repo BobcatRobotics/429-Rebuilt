@@ -68,12 +68,17 @@ public final class Constants {
 
     public static final double SHOOTING_DISTANCE_OFFSET = 36.5; //in inches 23.5 for half of hub, 13 for half of robot
 
-    public static final double SPIN_UP_SECONDS = 1;
-    public static final double SPIN_UP_AUTO_SECONDS = 0.25;
+    public static final double SPIN_UP_SECONDS = 0.5;
+    public static final double SPIN_UP_AUTO_SECONDS = 0.50;
 
     public static final double[] SHOOTER_DISTANCES = {20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130};
 
     public static final double[] SHOOTER_SPEEDS = {64, 65, 70, 72.5, 75, 81, 84, 88, 91.5, 94, 97, 104};
+
+    public static final double[] PASSING_DISTANCES = {20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130};
+
+    public static final double[] PASSING_SPEEDS = {64, 65, 70, 72.5, 75, 81, 84, 88, 91.5, 94, 97, 104};
+
   }
 
     public static final class ClimbConstants {
@@ -89,7 +94,7 @@ public final class Constants {
     public static final int CLIMBER_MOTOR_NEGATIVE_ROTATIONS = -1;
     public static final int CLIMBER_MOTOR_POSITIVE_ROTATIONS = 1;
     // Percentage to power the motor both up and down
-    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -0.7;
+    public static final double CLIMBER_MOTOR_DOWN_PERCENT = -1;
     public static final double CLIMBER_MOTOR_UP_PERCENT = 1;
     public static final double CLIMBER_AUTO_DOWN_PERCENT = -1;
 
@@ -101,7 +106,8 @@ public final class Constants {
     public static final double AUTO_CLIMB_VELOCITY = 3; //3 at comp 2 at doosan
     public static final double AUTO_CLIMB_ACCEL = 5; // 5 at comp 2 at doosan
 
-    public static final double kClimbMotorkP = 1.0;
+    public static final double kClimbMotorkP = 2.0;
+    public static final double kClimbMotorkV = 0.11;
 
     public static final double blockerDeployedPosition = 0.23;
   }
@@ -139,6 +145,24 @@ public final class Constants {
 
     public static final int LED_START_BOTTOM = 1;
     public static final int LED_END_BOTTOM = 24;
+    public static final int LED_WON_AUTO_COUNT = 3;
+
+    public static final double LED_BRIGHTNESS_PERCENT = 50;
+    
+    public static final int SHIFT_START_WARNING_SECONDS = 8;
+    public static final int SHIFT_START_IMMINENT_SECONDS = 4;
+    public static final int SHIFT_END_COUNTDOWN_SECONDS = 10;
+    public static final int TRANSITION_END_COUNTDOWN_SECONDS = 5;
+    
+    public static final int END_TRANSITION_PERIOD_SECONDS = 130;
+    public static final int END_FIRST_SHIFT_SECONDS = 105;
+    public static final int END_SECOND_SHIFT_SECONDS = 80;
+    public static final int END_THIRD_SHIFT_SECONDS = 55;
+    public static final int END_FOURTH_SHIFT_SECONDS = 30;
+
+    public static final int TRANSITION_COUNTDOWN_SECONDS = 5;
+    public static final int SHIFT_COUNTDOWN_SECONDS = 10;
+    public static final int ENDGAME_COUNTDOWN_SECONDS = 7;
   }
 
 }

@@ -38,6 +38,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.IntakeConstants;
@@ -67,9 +69,11 @@ import frc.robot.commands.SimpleAuto;
 import frc.robot.commands.SimpleAuto_Climb_Blue;
 import frc.robot.commands.SimpleAuto_Climb_Red;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.subsystems.vision.VisionConstants;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import java.util.Set;
 
@@ -193,9 +197,16 @@ public class RobotContainer {
         // autoChooser.addOption("Drive back and Shoot with Climb Red Side", new SimpleAuto_Climb_Red(drive));
 
         //autoChooser.addOption("Hub to Tower Shoot", new PathPlannerAuto("Hub to Tower shoot"));
+        autoChooser.addOption("Hub to Depot shoot and climb", new PathPlannerAuto("Do Nothing"));
         autoChooser.addOption("Hub to Depot shoot and climb", new PathPlannerAuto("Hub to Depot shoot and climb"));
         autoChooser.addOption("Left Bump Shoot Mid Shoot", new PathPlannerAuto("Left Bump Shoot Mid Shoot"));
         autoChooser.addOption("Left Bump to Depot shoot and climb", new PathPlannerAuto("Left Bump to Depot shoot and climb"));
+        autoChooser.addOption("Left Double Swipe Shoot", new PathPlannerAuto("Mikes Neutral Zone Auto"));
+        autoChooser.addOption("Left Double Swipe Dump", new PathPlannerAuto("Mikes Dump Auto"));
+        autoChooser.addOption("Trench Wait SOTM", new PathPlannerAuto("Mikes Center Wait Trench sotm"));
+        autoChooser.addOption("Center Wait", new PathPlannerAuto("Mike Center Wait Hub"));
+
+
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -287,7 +298,7 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      * 
      * The button visual configuration are maintained here. If you update/add buttons, then ensure to change the URL below
-     * https://www.padcrafter.com/index.php?col=%23242424%2C%23606A6E%2C%23FFFFFF&outline=0&templates=Driver%7COperator&plat=0&timestamp=1778379026177&xButton=Set+drivetrain+to+X+mode%7CClose+Distance+Shot&bButton=Reset+gyro+to+zero%7C&rightBumper=Align+to+hub%7CShoot&dpadLeft=Auto+climb+left+side%7C&dpadRight=Auto+climb+right+side%7C&leftBumper=%7CIntake&yButton=Stop+all+commands%7CTower+Distance+Shot&dpadUp=%7CManual+Climb+Up&dpadDown=%7CManual+Climb+Down&startButton=%7C&backButton=%7CReset+climb+position+to+zero&aButton=%7CEject%2FOuttake
+     * https://www.padcrafter.com/index.php?col=%23242424%2C%23606A6E%2C%23FFFFFF&outline=0&templates=Driver%7COperator&plat=0&timestamp=1778430193262&xButton=Set+drivetrain+to+X+mode%7CClose+Distance+Shot&bButton=Reset+gyro+to+zero%7C&rightBumper=Align+to+hub%7CShoot&dpadLeft=Auto+climb+left+side%7C&dpadRight=Auto+climb+right+side%7C&leftBumper=%7CIntake&yButton=Stop+all+commands%7CTower+Distance+Shot&dpadUp=%7CManual+Climb+Up&dpadDown=%7CManual+Climb+Down&startButton=%7CDeploy+blocker&backButton=%7CReset+climb+position+to+zero&aButton=%7CEject%2FOuttake
      */
     private void configureButtonBindings() {
 
@@ -327,6 +338,14 @@ public class RobotContainer {
                         () -> new Rotation2d(RobotState.getInstance().hubLocation.getX()-drive.getPose().getX(), RobotState.getInstance().hubLocation.getY()-drive.getPose().getY()))))
             .onFalse(Commands.runOnce(() -> RobotState.getInstance().setIsAutoAligning(false)));
 
+        //passing alignment based on robot position on the field
+        driver.rightTrigger().whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                    drive,
+                    () -> -driver.getLeftY(),
+                    () -> -driver.getLeftX(),
+                    () -> new Rotation2d(RobotState.getInstance().passLocation.getX()-drive.getPose().getX(), RobotState.getInstance().passLocation.getY()-drive.getPose().getY())));
+
         //drive to tower and climb left side
         driver.povLeft().onTrue(ClimberCommands.climbToLevel(drive, climber, true, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
         
@@ -349,11 +368,31 @@ public class RobotContainer {
             fuel.setFeederRoller(IntakeConstants.FEEDER_INTAKING_PERCENT);
         }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
+        //passing
+        operator.leftTrigger().whileTrue(Commands.run(() -> {
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
+            fuel.setShooterRightVelocity(RobotState.getInstance().getPassingVelocity());
+            fuel.setFeederRoller(ShooterConstants.FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
+        }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
+            fuel.setShooterRightVelocity(RobotState.getInstance().getPassingVelocity());
+            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+        }).withTimeout(0.5).andThen(Commands.run(() -> {
+            fuel.setShooterRightVelocity(RobotState.getInstance().getPassingVelocity());
+            fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+        }))));
+
+        // stop passing after 0.5 seconds
+        operator.leftTrigger().onFalse(Commands.run(() -> {
+            fuel.setShooterRightVelocity(RobotState.getInstance().getPassingVelocity());
+        }, fuel).withTimeout(0.5).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
+
+
         //shoot
         operator.rightBumper().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
-            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setFeederRoller(ShooterConstants.FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
@@ -363,74 +402,96 @@ public class RobotContainer {
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         }))));
 
-        // stop shooting after 1 second
+        // stop shooting after 0.5 seconds
         operator.rightBumper().onFalse(Commands.run(() -> {
             fuel.setShooterRightVelocity(RobotState.getInstance().getShooterVelocity());
-        }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
+        }, fuel).withTimeout(0.5).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         // Manual Tower shot
         operator.y().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
-            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setFeederRoller(ShooterConstants.FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         })));
 
-        // Stop Manual Tower shot after 1 second
+        // Stop Manual Tower shot after 0.5 seconds
         operator.y().onFalse(Commands.run(() -> {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_TOWER);
-        }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
+        }, fuel).withTimeout(0.5).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
 
         // Manual Close shot
         operator.x().whileTrue(Commands.run(() -> {
             climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
-            fuel.setFeederRoller(ShooterConstants.FEEDER_INTAKING_PERCENT);
+            fuel.setFeederRoller(ShooterConstants.FEEDER_SPIN_UP_PRE_LAUNCH_PERCENT);
             fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
         })));
 
-        // Stop Manual Close shot after 1 second
+        // Stop Manual Close shot after 0.5 seconds
         operator.x().onFalse(Commands.run(() -> {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_PERCENT_CLOSE);
-        }, fuel).withTimeout(1).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
+        }, fuel).withTimeout(0.5).andThen(Commands.runOnce(() -> fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_STOP_PERCENT))));
+            
 
         //eject through intake
        operator.a().whileTrue(Commands.run(() -> {
             fuel.setShooterRightVelocity(ShooterConstants.SHOOTER_EJECT_VELOCITY);
             fuel.setIntakePower(IntakeConstants.INTAKE_EJECT_PERCENT);
             fuel.setFeederRoller(IntakeConstants.FEEDER_EJECT_PERCENT);
-        }, fuel)).onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
+        }, fuel))
+            .onFalse(Commands.runOnce(() -> fuel.stop(), fuel));
 
         //climb up
-        operator.povUp().whileTrue(Commands.run(() -> {
-            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT);
-        }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
+        operator.povUp().whileTrue(Commands.run(() -> climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT), climber))
+            .onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
         //climb down
-        operator.povDown().whileTrue(Commands.run(() -> {
-            RobotState.getInstance().setIsBlockerDeployed(false);
-            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT);
-        }, climber)).onFalse(Commands.runOnce(() -> climber.stop(), climber));
+        operator.povDown().whileTrue(Commands.run(() -> climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_DOWN_PERCENT), climber))
+            .onFalse(Commands.runOnce(() -> climber.stop(), climber));
 
         // while held ignore climb soft limits
         // operator.start().whileTrue(climber.disableLimits());
 
         // operator.start().onFalse(climber.enableLimits());
-
-        operator.start().onTrue(Commands.runOnce(() -> {
-            RobotState.getInstance().setIsBlockerDeployed(true);
-            climber.setClimberPosition(ClimbConstants.blockerDeployedPosition);
-        }));
+        operator.start().onTrue(Commands.run(() -> { 
+            climber.setClimberPower(ClimbConstants.CLIMBER_MOTOR_UP_PERCENT);
+        }, climber)
+            .until(() -> climber.getClimberMotorPosition().getValueAsDouble() >= ClimbConstants.blockerDeployedPosition)
+            .andThen(Commands.runOnce(() -> climber.stop(), climber)));
 
         // set Climber position to 0
         operator.back().onTrue(Commands.runOnce(() -> climber.setClimberZero(), climber).ignoringDisable(true));
+    
+            //end of shift rumble on both controllers
+        for (int i = 1; i <= Constants.LedConstants.SHIFT_START_IMMINENT_SECONDS; i++) {
+            double time = i;
+            Trigger shiftAboutToEnd =
+                new Trigger(() -> (led.rumbleTimer < time));
+            shiftAboutToEnd
+                .onTrue(
+                    Commands.parallel(
+                        Commands.runEnd(
+                            () -> driver.setRumble(RumbleType.kRightRumble, 1.0),
+                            () -> driver.setRumble(RumbleType.kBothRumble, 0.0)
+                        ).withTimeout(0.25),
+                        Commands.runEnd(
+                            () -> operator.setRumble(RumbleType.kRightRumble, 1.0),
+                            () -> operator.setRumble(RumbleType.kBothRumble, 0.0)
+                        ).withTimeout(0.25)
+                    )
+                );
+        }
+    
     }
+
+    
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
