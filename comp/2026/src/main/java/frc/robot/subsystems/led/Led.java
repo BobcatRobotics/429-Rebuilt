@@ -2,6 +2,7 @@ package frc.robot.subsystems.led;
 
 import static edu.wpi.first.units.Units.Seconds;
 
+import java.net.PortUnreachableException;
 import java.util.Optional;
 
 import edu.wpi.first.wpilibj.AddressableLED;
@@ -28,7 +29,7 @@ public class Led extends SubsystemBase {
   private final AddressableLEDBufferView m_wonAutoStart;
   private final AddressableLEDBufferView m_wonAutoEnd;
 
-  private final LEDPattern offPattern = LEDPattern.solid(Color.kBlack);
+  public final LEDPattern offPattern = LEDPattern.solid(Color.kBlack);
 
   public Led() {
     m_led = new AddressableLED(kPort);
@@ -89,7 +90,7 @@ public class Led extends SubsystemBase {
     m_led.setData(m_buffer);
   }
 
-  private void turnOffTop() {
+  public void turnOffTop() {
     offPattern.applyTo(m_top);
   }
 
@@ -208,5 +209,10 @@ public class Led extends SubsystemBase {
     LEDPattern wonAutoSolidPattern = LEDPattern.solid(Color.kGreen);
     wonAutoSolidPattern.applyTo(m_wonAutoStart);
     wonAutoSolidPattern.applyTo(m_wonAutoEnd);
+  }
+
+  public void setNearBrownout() {
+    LEDPattern nearBrownoutSolidPattern = LEDPattern.solid(Color.kRed);
+    nearBrownoutSolidPattern.applyTo(m_top);
   }
 }
