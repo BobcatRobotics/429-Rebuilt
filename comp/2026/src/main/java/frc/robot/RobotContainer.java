@@ -228,27 +228,6 @@ public class RobotContainer {
 //     autoChooser.addOption(
 //         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
-
-        //end of shift rumble on both controllers
-        for (int i = 1; i <= Constants.LedConstants.SHIFT_START_IMMINENT_SECONDS; i++) {
-            double time = i;
-            Trigger shiftAboutToEnd =
-                new Trigger(() -> (led.rumbleTimer < time));
-            shiftAboutToEnd
-                .onTrue(
-                    Commands.parallel(
-                        Commands.runEnd(
-                            () -> driver.setRumble(RumbleType.kRightRumble, 1.0),
-                            () -> driver.setRumble(RumbleType.kBothRumble, 0.0)
-                        ).withTimeout(0.25),
-                        Commands.runEnd(
-                            () -> operator.setRumble(RumbleType.kRightRumble, 1.0),
-                            () -> operator.setRumble(RumbleType.kBothRumble, 0.0)
-                        ).withTimeout(0.25)
-                    )
-                );
-        }
-
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -489,7 +468,30 @@ public class RobotContainer {
 
         // set Climber position to 0
         operator.back().onTrue(Commands.runOnce(() -> climber.setClimberZero(), climber).ignoringDisable(true));
+    
+            //end of shift rumble on both controllers
+        for (int i = 1; i <= Constants.LedConstants.SHIFT_START_IMMINENT_SECONDS; i++) {
+            double time = i;
+            Trigger shiftAboutToEnd =
+                new Trigger(() -> (led.rumbleTimer < time));
+            shiftAboutToEnd
+                .onTrue(
+                    Commands.parallel(
+                        Commands.runEnd(
+                            () -> driver.setRumble(RumbleType.kRightRumble, 1.0),
+                            () -> driver.setRumble(RumbleType.kBothRumble, 0.0)
+                        ).withTimeout(0.25),
+                        Commands.runEnd(
+                            () -> operator.setRumble(RumbleType.kRightRumble, 1.0),
+                            () -> operator.setRumble(RumbleType.kBothRumble, 0.0)
+                        ).withTimeout(0.25)
+                    )
+                );
+        }
+    
     }
+
+    
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
