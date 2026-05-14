@@ -16,6 +16,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -127,6 +128,16 @@ if (Constants.currentMode == Constants.Mode.REAL) {
       ) - ShooterConstants.SHOOTING_DISTANCE_OFFSET);
 
     m_robotContainer.drive.isAlignedToHub();
+
+    double batteryVoltage = RobotController.getBatteryVoltage();
+
+    double brownoutVoltage = RobotController.getBrownoutVoltage();
+
+    if(brownoutVoltage + 1 >= batteryVoltage) {
+      m_robotContainer.led.setNearBrownout();
+    } else {
+      m_robotContainer.led.turnOffTop();
+    }
      
 
     robotState.setDistanceToPass(

@@ -3,6 +3,7 @@ package frc.robot.subsystems.led;
 import static edu.wpi.first.units.Units.Percent;
 import static edu.wpi.first.units.Units.Seconds;
 
+import java.net.PortUnreachableException;
 import java.util.Optional;
 
 import com.ctre.phoenix6.configs.LEDConfigs;
@@ -31,7 +32,7 @@ public class Led extends SubsystemBase {
   public double rumbleTimer = Double.MAX_VALUE;
 
 
-  private final LEDPattern offPattern = LEDPattern.solid(Color.kBlack);
+  public final LEDPattern offPattern = LEDPattern.solid(Color.kBlack);
 
   private final int wonAutoStartLastIndex = LedConstants.LED_START_BOTTOM + LedConstants.LED_WON_AUTO_COUNT;
   private final int wonAutoEndLastIndex = LedConstants.LED_END_BOTTOM -  LedConstants.LED_WON_AUTO_COUNT;
@@ -95,7 +96,7 @@ public class Led extends SubsystemBase {
     m_led.setData(m_buffer);
   }
 
-  private void turnOffTop() {
+  public void turnOffTop() {
     offPattern.applyTo(m_top);
   }
 
@@ -309,5 +310,10 @@ public class Led extends SubsystemBase {
         .atBrightness(Percent.of(LedConstants.LED_BRIGHTNESS_PERCENT));
     wonAutoSolidPattern.applyTo(m_wonAutoStart);
     wonAutoSolidPattern.applyTo(m_wonAutoEnd);
+  }
+
+  public void setNearBrownout() {
+    LEDPattern nearBrownoutSolidPattern = LEDPattern.solid(Color.kRed);
+    nearBrownoutSolidPattern.applyTo(m_top);
   }
 }
