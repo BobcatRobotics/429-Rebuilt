@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.537269230769232,
+        "y": 4.953628205128206
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 0.6286466905187846,
+        "y": 4.6777963625521775
+      },
+      "isLocked": false,
+      "linkedName": "mirrored_Depot Start 2"
+    },
+    {
+      "anchor": {
+        "x": 0.595384615384615,
+        "y": 0.6834543828264774
+      },
+      "prevControl": {
+        "x": 0.5304830053667257,
+        "y": 2.0139373881932032
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "mirrored_Corner after depot"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 69.77514056883196
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 2.0,
+    "rotation": -20.629879946126245
+  },
+  "useDefaultConstraints": false
+}
