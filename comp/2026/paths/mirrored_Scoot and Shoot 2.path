@@ -1,0 +1,70 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.8609660107334522,
+        "y": 4.069000000000001
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.8609660107334522,
+        "y": 4.319000000000001
+      },
+      "isLocked": false,
+      "linkedName": "mirrored_EndofScoot"
+    },
+    {
+      "anchor": {
+        "x": 1.8609660107334522,
+        "y": 5.859357781753133
+      },
+      "prevControl": {
+        "x": 1.6296805571030362,
+        "y": 5.7644523607331895
+      },
+      "nextControl": {
+        "x": 2.0922514643638683,
+        "y": 5.954263202773076
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.8669409660107332,
+        "y": 5.27524329159213
+      },
+      "prevControl": {
+        "x": 2.6754298552309885,
+        "y": 5.4359401940137655
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 1.0,
+    "maxAcceleration": 0.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 320.0
+  },
+  "reversed": false,
+  "folder": "mirrored_Akash Scoot and Shoot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": false
+}

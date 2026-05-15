@@ -3,40 +3,40 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.7875134168157425,
-        "y": 2.923559928443649
+        "x": 6.096305278174036,
+        "y": 3.9897146932952925
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.241824686940967,
-        "y": 3.4752236135957064
+        "x": 5.966918687589158,
+        "y": 5.244764621968616
       },
       "isLocked": false,
-      "linkedName": "Mikes Right Bump to NZ"
+      "linkedName": "End of left mid sweep"
     },
     {
       "anchor": {
-        "x": 5.746679487179488,
-        "y": 5.453641025641025
+        "x": 5.876348074179743,
+        "y": 5.529415121255349
       },
       "prevControl": {
-        "x": 6.509273404889686,
-        "y": 4.528793082886104
+        "x": 5.940763736819828,
+        "y": 5.287856386355038
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Mikes Left Bump after swipe"
+      "linkedName": "Final left sweep end"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
-      "name": "Slow Down",
-      "minWaypointRelativePos": 0.25476190476190463,
-      "maxWaypointRelativePos": 0.7476190476190471,
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.3404558404558341,
       "constraints": {
-        "maxVelocity": 1.5,
-        "maxAcceleration": 3.5,
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -47,22 +47,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.5,
-    "maxAcceleration": 3.5,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.5,
-    "rotation": -75.0
+    "velocity": 1.5,
+    "rotation": -47.20259816176577
   },
   "reversed": false,
-  "folder": "Mike's Auto Paths",
+  "folder": null,
   "idealStartingState": {
     "velocity": 1.5,
-    "rotation": -75.0
+    "rotation": -49.144623741104304
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

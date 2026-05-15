@@ -1,0 +1,102 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.576583184257603,
+        "y": 5.48617352415027
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.937817531305903,
+        "y": 6.443472271914134
+      },
+      "isLocked": false,
+      "linkedName": "mirrored_Right Bump After Swipe 2"
+    },
+    {
+      "anchor": {
+        "x": 2.4126296958855096,
+        "y": 4.626227191413239
+      },
+      "prevControl": {
+        "x": 2.6560107334525935,
+        "y": 5.210341681574241
+      },
+      "nextControl": {
+        "x": 2.126244005164043,
+        "y": 3.9389015336817206
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.48778175313059,
+        "y": 2.9225599284436496
+      },
+      "prevControl": {
+        "x": 2.1205724508050086,
+        "y": 3.571576028622541
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "mirrored_Depot Start 2"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "shoot on the move",
+      "minWaypointRelativePos": 0.2538699690402479,
+      "maxWaypointRelativePos": 1.85,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 4.65,
+        "y": 4.0
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 0.25,
+      "maxWaypointRelativePos": 1.85,
+      "name": "Point Towards Zone"
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "ShootOnMove",
+      "waypointRelativePos": 0.24767801857585164,
+      "endWaypointRelativePos": 1.85,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 2.5,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 2.0,
+    "rotation": 49.635463426902724
+  },
+  "reversed": false,
+  "folder": "mirrored_Center Wait",
+  "idealStartingState": {
+    "velocity": 2.5,
+    "rotation": 314.99999999999983
+  },
+  "useDefaultConstraints": true
+}

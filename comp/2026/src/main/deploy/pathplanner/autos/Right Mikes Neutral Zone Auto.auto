@@ -1,0 +1,163 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Climb down"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooting"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mirrored_Mike Rotate + Cross Left Bump to NZ"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Eject"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mirrored_Mike Swipe back of Hub Left to Right"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mirrored_Mike Cross Right Bump to AZ"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake stop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooting"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mirrored_Mike Rotate + Cross Right Bump to NZ"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Eject"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mirrored_Mike Swipe back of Hub Right to Left"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mirrored_Mike Left bump to AZ"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake stop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooting"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Climb"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": null,
+  "choreoAuto": false
+}

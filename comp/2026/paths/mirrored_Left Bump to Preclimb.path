@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.746679487179488,
-        "y": 5.453641025641025
+        "x": 5.009457917261056,
+        "y": 2.5654621968616267
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.4708476446034595,
-        "y": 5.680796660703636
+        "x": 3.5991440798858774,
+        "y": 2.513707560627674
       },
       "isLocked": false,
-      "linkedName": "Mikes Left Bump after swipe"
+      "linkedName": "mirrored_Left Bump Stopped"
     },
     {
       "anchor": {
-        "x": 5.009457917261056,
-        "y": 5.503537803138374
+        "x": 2.5586583184257603,
+        "y": 4.009661896243292
       },
       "prevControl": {
-        "x": 5.3988675773683905,
-        "y": 5.519763205642847
+        "x": 3.225496900670905,
+        "y": 3.776534572384456
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Left Bump Stopped"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.06648575305291633,
+      "rotationDegrees": 315.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -41,14 +46,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 2.5,
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Center Dump Auto",
+  "folder": "mirrored_Center Dump Auto",
   "idealStartingState": {
-    "velocity": 2.5,
-    "rotation": -75.0
+    "velocity": 0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

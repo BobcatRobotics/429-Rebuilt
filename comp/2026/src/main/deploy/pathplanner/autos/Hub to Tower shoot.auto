@@ -11,10 +11,40 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Hub to Tower"
+                  "pathName": "mirrored_Hub to shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Climb down"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Climber"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Climb"
           }
         }
       ]
