@@ -104,6 +104,12 @@ public class ClimberIOReal implements ClimberIO {
         climberMotor.setPosition(0);
     }
 
+    public void setClimberBlockerSoftLimit(boolean isBlockerInstalled) {
+        climberMotor.getConfigurator().apply(ClimberConfig.withSoftwareLimitSwitch(
+             new SoftwareLimitSwitchConfigs()
+             .withReverseSoftLimitThreshold(ClimbConstants.BLOCKER_INSTALLED_SOFT_LIMIT)));
+    }
+
     /**
      * Sets the output of the climber.
      * This is not PID based and will apply output to the motor.

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static frc.robot.Constants.ClimbConstants.blockerDeployedPosition;
+
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -32,6 +34,7 @@ import frc.robot.subsystems.drive.Drive;
  */
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
+  private boolean m_blockerInstalled;
 
   private final RobotContainer m_robotContainer;
 
@@ -128,6 +131,9 @@ if (Constants.currentMode == Constants.Mode.REAL) {
       ) - ShooterConstants.SHOOTING_DISTANCE_OFFSET);
 
     m_robotContainer.drive.isAlignedToHub();
+    
+    m_blockerInstalled = m_robotContainer.getBlockerInstalled();
+    m_robotContainer.climber.setClimberBlockerSoftLimit(m_blockerInstalled);
 
     double batteryVoltage = RobotController.getBatteryVoltage();
 
@@ -183,7 +189,6 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     if (m_autonomousCommand != null) {
       CommandScheduler.getInstance().schedule(m_autonomousCommand);
     }
-
   }
 
   /** This function is called periodically during autonomous. */

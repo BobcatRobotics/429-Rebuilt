@@ -100,6 +100,7 @@ public final class Constants {
 
     public static final double CLIMBER_PRECLIMB = -0.29;
     public static final double CLIMBER_CLIMBED = 0.23;
+    public static final double BLOCKER_INSTALLED_SOFT_LIMIT = -0.01;
     
     public static final double CLIMBER_STOP = 0;
 
