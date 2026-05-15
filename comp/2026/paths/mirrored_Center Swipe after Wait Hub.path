@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 5.9927960057061345,
-        "y": 3.912082738944366
+        "y": 4.156917261055635
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.967615384615385,
-        "y": 3.418705128205129
+        "x": 5.9927960057061345,
+        "y": 4.951961983774776
       },
       "isLocked": false,
-      "linkedName": "Center Hub Wait"
+      "linkedName": "mirrored_Center Hub Wait"
     },
     {
       "anchor": {
-        "x": 6.5141410256410275,
-        "y": 3.2442820512820516
+        "x": 6.6312343470483,
+        "y": 5.226567084078713
       },
       "prevControl": {
-        "x": 6.232892264959999,
-        "y": 3.2442820512820516
+        "x": 6.274275491949911,
+        "y": 5.226567084078713
       },
       "nextControl": {
-        "x": 6.7641410256410275,
-        "y": 3.2442820512820516
+        "x": 6.955742397137747,
+        "y": 5.226567084078713
       },
       "isLocked": false,
       "linkedName": null
@@ -33,41 +33,41 @@
     {
       "anchor": {
         "x": 7.150447227191413,
-        "y": 3.897084078711985
+        "y": 4.171915921288016
       },
       "prevControl": {
-        "x": 7.126676274817729,
-        "y": 3.6482167610038383
+        "x": 7.245429315289342,
+        "y": 5.026754714169373
       },
       "nextControl": {
-        "x": 7.1769487179487195,
-        "y": 4.174538461538462
+        "x": 7.069320214669052,
+        "y": 3.441772808586764
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.746679487179488,
-        "y": 5.453641025641025
+        "x": 5.7875134168157425,
+        "y": 2.8576583184257602
       },
       "prevControl": {
-        "x": 6.460597197376268,
-        "y": 5.226485390578411
+        "x": 6.5014311270125225,
+        "y": 3.084813953488374
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Mikes Left Bump after swipe"
+      "linkedName": "mirrored_Mikes Left Bump after swipe"
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 0.9701492537313425,
-      "rotationDegrees": -176.8296976093981
+      "rotationDegrees": 183.0808294252925
     },
     {
       "waypointRelativePos": 1.925373134328355,
-      "rotationDegrees": -90.66882702774622
+      "rotationDegrees": 90.0
     }
   ],
   "constraintZones": [],
@@ -83,10 +83,10 @@
   },
   "goalEndState": {
     "velocity": 2.5,
-    "rotation": -75.0
+    "rotation": 75.0
   },
   "reversed": false,
-  "folder": "Center Wait",
+  "folder": "mirrored_Center Wait",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

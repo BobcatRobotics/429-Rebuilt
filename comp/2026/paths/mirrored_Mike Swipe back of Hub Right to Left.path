@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 5.7875134168157425,
-        "y": 2.923559928443649
+        "y": 5.145440071556352
       },
       "prevControl": null,
       "nextControl": {
         "x": 6.241824686940967,
-        "y": 3.4752236135957064
+        "y": 4.593776386404294
       },
       "isLocked": false,
-      "linkedName": "Mikes Right Bump to NZ"
+      "linkedName": "mirrored_Mikes Right Bump to NZ"
     },
     {
       "anchor": {
-        "x": 5.746679487179488,
-        "y": 5.453641025641025
+        "x": 5.7875134168157425,
+        "y": 2.8576583184257602
       },
       "prevControl": {
-        "x": 6.509273404889686,
-        "y": 4.528793082886104
+        "x": 6.55010733452594,
+        "y": 3.7825062611806812
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Mikes Left Bump after swipe"
+      "linkedName": "mirrored_Mikes Left Bump after swipe"
     }
   ],
   "rotationTargets": [],
@@ -56,13 +56,13 @@
   },
   "goalEndState": {
     "velocity": 2.5,
-    "rotation": -75.0
+    "rotation": 75.0
   },
   "reversed": false,
-  "folder": "Mike's Auto Paths",
+  "folder": "mirrored_Mike's Auto Paths",
   "idealStartingState": {
     "velocity": 1.5,
-    "rotation": -75.0
+    "rotation": 75.0
   },
   "useDefaultConstraints": true
 }

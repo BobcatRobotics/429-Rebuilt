@@ -3,40 +3,40 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.7875134168157425,
-        "y": 2.923559928443649
+        "x": 5.998443649373882,
+        "y": 7.336869409660108
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.241824686940967,
-        "y": 3.4752236135957064
+        "x": 5.91731663685152,
+        "y": 5.925259391771019
       },
       "isLocked": false,
-      "linkedName": "Mikes Right Bump to NZ"
+      "linkedName": "mirrored_mirrored_Trench Wait"
     },
     {
       "anchor": {
-        "x": 5.746679487179488,
-        "y": 5.453641025641025
+        "x": 5.576583184257603,
+        "y": 2.582826475849731
       },
       "prevControl": {
-        "x": 6.509273404889686,
-        "y": 4.528793082886104
+        "x": 6.27427549194991,
+        "y": 3.150715563506261
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Mikes Left Bump after swipe"
+      "linkedName": "mirrored_mirrored_Right Bump After Swipe 2"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
-      "name": "Slow Down",
-      "minWaypointRelativePos": 0.25476190476190463,
-      "maxWaypointRelativePos": 0.7476190476190471,
+      "name": "Speed Up",
+      "minWaypointRelativePos": 0.44582043343653266,
+      "maxWaypointRelativePos": 0.894736842105262,
       "constraints": {
-        "maxVelocity": 1.5,
-        "maxAcceleration": 3.5,
+        "maxVelocity": 5.0,
+        "maxAcceleration": 4.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -56,13 +56,13 @@
   },
   "goalEndState": {
     "velocity": 2.5,
-    "rotation": -75.0
+    "rotation": 45.00000000000017
   },
   "reversed": false,
-  "folder": "Mike's Auto Paths",
+  "folder": "mirrored_mirrored_Center Wait",
   "idealStartingState": {
-    "velocity": 1.5,
-    "rotation": -75.0
+    "velocity": 0,
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }
