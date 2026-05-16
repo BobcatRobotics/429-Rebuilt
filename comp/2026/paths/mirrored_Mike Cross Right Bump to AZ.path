@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.803738819320215,
+        "y": 5.161665474060824
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.943792486583184,
+        "y": 5.583525939177104
+      },
+      "isLocked": false,
+      "linkedName": "mirrored_Mikes Right Bump Back to Zone"
+    },
+    {
+      "anchor": {
+        "x": 3.4835062611806795,
+        "y": 5.599751341681575
+      },
+      "prevControl": {
+        "x": 4.4894812164579605,
+        "y": 5.583525939177104
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.0,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 305.0
+  },
+  "reversed": false,
+  "folder": "mirrored_Mike's Auto Paths",
+  "idealStartingState": {
+    "velocity": 1.5,
+    "rotation": 285.0
+  },
+  "useDefaultConstraints": false
+}

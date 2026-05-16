@@ -5,52 +5,39 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left bump back up"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Climb down"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Eject"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 0.5
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Stop Shooting"
+            "name": "Climb down"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "End of back up left bump spin"
+            "pathName": "mirrored_Left Bump to Hub NZ"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Over left bump"
+            "name": "Stop Eject"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.5
           }
         },
         {
@@ -62,19 +49,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Over bump mid to pick up"
+            "pathName": "mirrored_Center Swipe after Wait Hub"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Left path through mid"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left mid sweep over bump"
+            "name": "Stop Climber"
           }
         },
         {
@@ -86,7 +67,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "End Over left bump"
+            "pathName": "mirrored_Mike Left bump to AZ"
           }
         },
         {
@@ -98,7 +79,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 4.0
+            "waitTime": 2.75
           }
         },
         {
@@ -116,7 +97,7 @@
       ]
     }
   },
-  "resetOdom": false,
-  "folder": null,
+  "resetOdom": true,
+  "folder": "Mike Center Wait Hub",
   "choreoAuto": false
 }

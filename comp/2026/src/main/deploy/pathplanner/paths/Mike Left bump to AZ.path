@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.7875134168157425,
-        "y": 5.211341681574241
+        "x": 5.746679487179488,
+        "y": 5.453641025641025
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.2033989266547405,
-        "y": 5.892808586762076
+        "x": 5.162564997018486,
+        "y": 6.13510793082886
       },
       "isLocked": false,
       "linkedName": "Mikes Left Bump after swipe"

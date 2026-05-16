@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.66756062767475,
+        "y": 4.00265335235378
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.4217261055634807,
+        "y": 4.688402282453637
+      },
+      "isLocked": false,
+      "linkedName": "End of Shoot"
+    },
+    {
+      "anchor": {
+        "x": 0.6879457917261056,
+        "y": 4.934236804564907
+      },
+      "prevControl": {
+        "x": 0.9115525894760845,
+        "y": 5.0460402034398975
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Depot Start of Intake"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -46.27303002005661
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": false
+}

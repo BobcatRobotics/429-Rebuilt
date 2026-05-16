@@ -8,7 +8,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.drive.Drive;
 
 public class RobotState {
@@ -84,13 +83,13 @@ public class RobotState {
     public Pose2d[] getTowerLocation(boolean isLeftSideTower){
         if(alliance == Alliance.Red && isLeftSideTower == true){
             return new Pose2d[]{
-              new Pose2d(14.5, 4.034536, new Rotation2d(Math.toRadians(180))), 
+              new Pose2d(14.1, 4.034536, new Rotation2d(Math.toRadians(180))), 
               new Pose2d(15.144, 4.034536, new Rotation2d(Math.toRadians(180)))
             };
         }
         if(alliance == Alliance.Red && isLeftSideTower == false){
             return new Pose2d[] {
-            new Pose2d(14.5, 4.593, new Rotation2d(Math.toRadians(180))),
+            new Pose2d(14.1, 4.593, new Rotation2d(Math.toRadians(180))),
             new Pose2d(15.144, 4.593, new Rotation2d(Math.toRadians(180)))
           };
         }

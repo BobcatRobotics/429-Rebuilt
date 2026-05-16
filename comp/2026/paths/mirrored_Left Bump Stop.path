@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.7875134168157425,
+        "y": 2.8576583184257602
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.511681574239714,
+        "y": 2.630502683363149
+      },
+      "isLocked": false,
+      "linkedName": "mirrored_Mikes Left Bump after swipe"
+    },
+    {
+      "anchor": {
+        "x": 5.009457917261056,
+        "y": 2.5654621968616267
+      },
+      "prevControl": {
+        "x": 5.3988675773683905,
+        "y": 2.549236794357154
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "mirrored_Left Bump Stopped"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.5,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "mirrored_Center Dump Auto",
+  "idealStartingState": {
+    "velocity": 2.5,
+    "rotation": 75.0
+  },
+  "useDefaultConstraints": true
+}

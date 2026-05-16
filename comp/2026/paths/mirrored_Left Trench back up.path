@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.6120827389443653,
+        "y": 0.637601997146934
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.5105481224310013,
+        "y": 0.8660548843019971
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.2368616262482157,
+        "y": 2.5784008559201155
+      },
+      "prevControl": {
+        "x": 3.33204907756179,
+        "y": 2.347231331301437
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "mirrored_End of left bump back up"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.5,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 41.18592516570943
+  },
+  "reversed": false,
+  "folder": "mirrored_default name",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

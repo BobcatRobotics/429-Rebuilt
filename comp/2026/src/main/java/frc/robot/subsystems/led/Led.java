@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.AddressableLEDBufferView;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LedConstants;
@@ -85,12 +86,15 @@ public class Led extends SubsystemBase {
         else 
             setSeekingAlign();
     }
-    else if (RobotState.getInstance().getIsBlockerDeployed())
-        setBlockerDeployed();
     else
         turnOffTop();
+    if (RobotState.getInstance().getIsBlockerDeployed())
+    {
+        setBlockerDeployed();
+    }
 
     handleAllianceShift();
+    setNearBrownout();
 
     // Periodically send the latest LED color data to the LED strip for it to display
     m_led.setData(m_buffer);
@@ -312,8 +316,10 @@ public class Led extends SubsystemBase {
     wonAutoSolidPattern.applyTo(m_wonAutoEnd);
   }
 
-  public void setNearBrownout() {
+  private void setNearBrownout() {
     LEDPattern nearBrownoutSolidPattern = LEDPattern.solid(Color.kRed);
-    nearBrownoutSolidPattern.applyTo(m_top);
+    if(RobotController.getBrownoutVoltage() + 1 >= RobotController.getBatteryVoltage()) {
+        nearBrownoutSolidPattern.applyTo(m_top);
+    }
   }
 }

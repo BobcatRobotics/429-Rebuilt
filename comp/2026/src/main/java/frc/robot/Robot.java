@@ -18,14 +18,12 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.subsystems.drive.Drive;
+
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -131,18 +129,7 @@ if (Constants.currentMode == Constants.Mode.REAL) {
       ) - ShooterConstants.SHOOTING_DISTANCE_OFFSET);
 
     m_robotContainer.drive.isAlignedToHub();
-
-    double batteryVoltage = RobotController.getBatteryVoltage();
-
-    double brownoutVoltage = RobotController.getBrownoutVoltage();
-
-    if(brownoutVoltage + 1 >= batteryVoltage) {
-      m_robotContainer.led.setNearBrownout();
-    } else {
-      m_robotContainer.led.turnOffTop();
-    }
      
-
     robotState.setDistanceToPass(
       Units.metersToInches(
         Math.sqrt(Math.pow(robotState.passLocation.getX()-m_robotContainer.drive.getPose().getX(), 2) +
@@ -163,7 +150,7 @@ if (Constants.currentMode == Constants.Mode.REAL) {
 
     // Handles setting and logging the passing location
     RobotState.getInstance()
-        .setPassingLocation(HubUtil.getMyPassingCoordinates(DriverStation.getAlliance().get(), m_robotContainer.drive)
+        .setPassingLocation(HubUtil.getMyPassingCoordinates(DriverStation.getAlliance().orElse(Alliance.Blue), m_robotContainer.drive)
             .toPose2d().getTranslation());
     Logger.recordOutput("PassingLocationX", Math.rint(Units.metersToInches(robotState.getPassingCoordinate().getX())));
     Logger.recordOutput("PassingLocationY", Math.rint(Units.metersToInches(robotState.getPassingCoordinate().getY())));
