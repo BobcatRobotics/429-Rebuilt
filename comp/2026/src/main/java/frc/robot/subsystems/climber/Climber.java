@@ -34,6 +34,10 @@ public class Climber extends SubsystemBase {
         io.setClimberZero();
     }
 
+    public void setClimberBlockerSoftLimit(boolean isBlockerInstalled){
+        io.setClimberBlockerSoftLimit(isBlockerInstalled);
+    }
+
     /**
      * Sets the output of the climber.
      * This is not PID based and will apply output to the motor.

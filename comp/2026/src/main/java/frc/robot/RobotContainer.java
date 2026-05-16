@@ -96,7 +96,7 @@ public class RobotContainer {
 
     // Subsystems
     private final Fuel fuel;
-    private final Climber climber;
+    public final Climber climber;
     public final Drive drive;
     private final AntiTipping antiTipping;
     private Vision vision;
@@ -109,6 +109,7 @@ public class RobotContainer {
     // Dashboard inputs
     private final SendableChooser<Command> autoChooser;
     private final SendableChooser<Boolean> climbLocationChooser;
+    private final SendableChooser<Boolean> blockerInstalledChooser;
     
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -183,7 +184,12 @@ public class RobotContainer {
         climbLocationChooser.setDefaultOption("left tower climb", true);
         climbLocationChooser.addOption("right tower climb", false);
 
+        blockerInstalledChooser = new SendableChooser<>();
+        blockerInstalledChooser.setDefaultOption("Blocker Not Installed", false);
+        blockerInstalledChooser.addOption("Blocker Installed", true);
+
         SmartDashboard.putData("Climb Location Chooser", climbLocationChooser);
+        SmartDashboard.putData("Blocker Deployed", blockerInstalledChooser);
 
         // Set up auto routines
 
@@ -282,7 +288,9 @@ public class RobotContainer {
             fuel.stop();
         }));
 
-        NamedCommands.registerCommand("Auto Climb", Commands.defer(() -> ClimberCommands.climbToLevel(drive, climber, climbLocationChooser.getSelected(), ClimbConstants.CLIMBER_CLIMBED_PITCH_L1), Set.of(drive)));
+        NamedCommands.registerCommand("Auto Climb", Commands.defer(() ->  blockerInstalledChooser.getSelected()
+            ? Commands.none()
+            : ClimberCommands.climbToLevel(drive, climber, climbLocationChooser.getSelected(), ClimbConstants.CLIMBER_CLIMBED_PITCH_L1), Set.of(drive)));
     }
     /**
      * Use this method to define your button->command mappings. Buttons can be
@@ -342,10 +350,14 @@ public class RobotContainer {
                     () -> new Rotation2d(RobotState.getInstance().passLocation.getX()-drive.getPose().getX(), RobotState.getInstance().passLocation.getY()-drive.getPose().getY())));
 
         //drive to tower and climb left side
-        driver.povLeft().onTrue(ClimberCommands.climbToLevel(drive, climber, true, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
+        driver.povLeft().onTrue(Commands.defer(() -> blockerInstalledChooser.getSelected()
+            ? Commands.none()
+            : ClimberCommands.climbToLevel(drive, climber, true, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2), Set.of(drive)));
         
         //drive to tower and climb right side
-        driver.povRight().onTrue(ClimberCommands.climbToLevel(drive, climber, false, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2));
+        driver.povRight().onTrue(Commands.defer(() -> blockerInstalledChooser.getSelected()
+            ? Commands.none()
+            : ClimberCommands.climbToLevel(drive, climber, false, ClimbConstants.CLIMBER_CLIMBED_PITCH_L2), Set.of(drive)));
 
         // for stopping all commands
         driver.y().onTrue(Commands.runOnce(() -> {
@@ -495,6 +507,10 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
+    }
+
+    public boolean getBlockerInstalled() {
+        return blockerInstalledChooser.getSelected();
     }
 
     public Pose2d getPose2D() {

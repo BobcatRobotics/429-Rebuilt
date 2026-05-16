@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static frc.robot.Constants.ClimbConstants.blockerDeployedPosition;
+
 import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -30,6 +32,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
  */
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
+  private boolean m_blockerInstalled;
 
   private final RobotContainer m_robotContainer;
 
@@ -155,7 +158,11 @@ if (Constants.currentMode == Constants.Mode.REAL) {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_blockerInstalled = m_robotContainer.getBlockerInstalled();
+    m_robotContainer.climber.setClimberBlockerSoftLimit(m_blockerInstalled);
+
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -170,6 +177,10 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     if (m_autonomousCommand != null) {
       CommandScheduler.getInstance().schedule(m_autonomousCommand);
     }
+
+        
+    m_blockerInstalled = m_robotContainer.getBlockerInstalled();
+    m_robotContainer.climber.setClimberBlockerSoftLimit(m_blockerInstalled);
 
   }
 
@@ -186,6 +197,11 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+        
+    m_blockerInstalled = m_robotContainer.getBlockerInstalled();
+    m_robotContainer.climber.setClimberBlockerSoftLimit(m_blockerInstalled);
+
     
 
     // boolean isRed = DriverStation.getAlliance().isPresent()

@@ -52,6 +52,10 @@ public interface ClimberIO {
     public default void setClimberZero(){
         
     }
+
+    public default void setClimberBlockerSoftLimit(boolean isBlockerInstalled){
+        
+    }
     /**
      * Sets the output of the climber.
      * This is not PID based and will apply output to the motor.
