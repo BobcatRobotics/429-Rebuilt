@@ -25,7 +25,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "mirrored_Left Bump to Hub NZ"
+            "pathName": null
           }
         },
         {
@@ -67,7 +67,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "mirrored_Mike Left bump to AZ"
+            "pathName": null
           }
         },
         {
@@ -98,6 +98,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Mike Center Wait Hub",
   "choreoAuto": false
 }

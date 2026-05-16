@@ -158,6 +158,6 @@
     }
   },
   "resetOdom": false,
-  "folder": null,
+  "folder": "Mikes Neutral Zone Auto (double)",
   "choreoAuto": false
 }

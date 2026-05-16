@@ -37,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "mirrored_Mike Rotate + Cross Left Bump to NZ"
+            "pathName": null
           }
         },
         {
@@ -55,13 +55,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "mirrored_Mike Swipe back of Hub Left to Right"
+            "pathName": null
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "mirrored_Mike Cross Right Bump to AZ"
+            "pathName": null
           }
         },
         {
@@ -97,7 +97,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "mirrored_Mike Rotate + Cross Right Bump to NZ"
+            "pathName": null
           }
         },
         {
@@ -115,13 +115,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "mirrored_Mike Swipe back of Hub Right to Left"
+            "pathName": null
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "mirrored_Mike Left bump to AZ"
+            "pathName": null
           }
         },
         {
@@ -158,6 +158,6 @@
     }
   },
   "resetOdom": false,
-  "folder": null,
+  "folder": "Mikes Neutral Zone Auto (double)",
   "choreoAuto": false
 }

@@ -12,7 +12,11 @@
     "Trench Depot Sweep",
     "Trench Outpost Sweep"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Depot Shoot and Climb",
+    "Mike Center Wait Hub",
+    "Mikes Neutral Zone Auto (double)"
+  ],
   "defaultMaxVel": 2.5,
   "defaultMaxAccel": 3.5,
   "defaultMaxAngVel": 540.0,
