@@ -92,8 +92,8 @@ public final class Constants {
     public static final double CLIMBER_AUTO_DOWN_PERCENT = -1;
 
     public static final double CLIMBER_PRECLIMB = -0.29;
-    public static final double CLIMBER_CLIMBED = 0.23;
-    public static final double BLOCKER_INSTALLED_SOFT_LIMIT = -0.01;
+    public static final double CLIMBER_CLIMBED = 0.242695;
+    public static final double BLOCKER_INSTALLED_SOFT_LIMIT = -0.07;
     
     public static final double CLIMBER_STOP = 0;
 
@@ -103,7 +103,7 @@ public final class Constants {
     public static final double kClimbMotorkP = 2.0;
     public static final double kClimbMotorkV = 0.11;
 
-    public static final double blockerDeployedPosition = 0.23;
+    public static final double blockerDeployedPosition = 0.242695;
   }
 
   public static final class IntakeConstants {

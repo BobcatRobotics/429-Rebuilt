@@ -50,10 +50,10 @@ public class ClimberIOReal implements ClimberIO {
         ClimberConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         ClimberConfig.CurrentLimits.StatorCurrentLimit = CLIMBER_MOTOR_CURRENT_LIMIT;
         ClimberConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        ClimberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = CLIMBER_CLIMBED;
-        ClimberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        ClimberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = CLIMBER_PRECLIMB;
-        ClimberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        // ClimberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = CLIMBER_CLIMBED;
+        // ClimberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        // ClimberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = CLIMBER_PRECLIMB;
+        // ClimberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
         ClimberConfig.Feedback.SensorToMechanismRatio = 900;
 
         climberMotor.getConfigurator().apply(ClimberConfig);
@@ -107,7 +107,11 @@ public class ClimberIOReal implements ClimberIO {
     public void setClimberBlockerSoftLimit(boolean isBlockerInstalled) {
         climberMotor.getConfigurator().apply(ClimberConfig.withSoftwareLimitSwitch(
              new SoftwareLimitSwitchConfigs()
-             .withReverseSoftLimitThreshold(ClimbConstants.BLOCKER_INSTALLED_SOFT_LIMIT)));
+             .withReverseSoftLimitThreshold(isBlockerInstalled ? ClimbConstants.BLOCKER_INSTALLED_SOFT_LIMIT
+             : ClimbConstants.CLIMBER_PRECLIMB)
+             .withReverseSoftLimitEnable(true)
+             .withForwardSoftLimitThreshold(CLIMBER_CLIMBED)
+             .withForwardSoftLimitEnable(true)));
     }
 
     /**

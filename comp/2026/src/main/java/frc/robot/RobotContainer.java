@@ -203,11 +203,11 @@ public class RobotContainer {
         // autoChooser.addOption("Drive back and Shoot with Climb Red Side", new SimpleAuto_Climb_Red(drive));
 
         autoChooser.setDefaultOption("Do Nothing", new PathPlannerAuto("Do Nothing"));
-        autoChooser.addOption("Hub to Tower Shoot", new PathPlannerAuto("Hub to Tower Shoot"));
+        autoChooser.addOption("Hub to Tower Shoot", new PathPlannerAuto("Hub to Tower shoot"));
         autoChooser.addOption("Right Neutral Zone Double Sweep and Climb", new PathPlannerAuto("Right Mikes Neutral Zone Auto"));
         autoChooser.addOption("Left Neutral Zone Double Sweep and Climb", new PathPlannerAuto("Left Mikes Neutral Zone Auto"));
-        autoChooser.addOption("Hub to Depot Shoot and Climb", new PathPlannerAuto("Hub to Depot Shoot and Climb"));
-        autoChooser.addOption("Left Bump to Depot Shoot and Climb", new PathPlannerAuto("Left Bump to Depot Shoot and Climb"));
+        autoChooser.addOption("Hub to Depot Shoot and Climb", new PathPlannerAuto("Hub to Depot shoot and climb"));
+        autoChooser.addOption("Left Bump to Depot Shoot and Climb", new PathPlannerAuto("Left Bump to Depot shoot and climb"));
         autoChooser.addOption("Right NZ Wait and Climb", new PathPlannerAuto("Right Mike Center Wait Hub"));
         autoChooser.addOption("Left NZ Wait and Climb", new PathPlannerAuto("Left Mike Center Wait Hub"));
 
@@ -387,6 +387,7 @@ public class RobotContainer {
         }).withTimeout(0.5).andThen(Commands.run(() -> {
             fuel.setShooterRightVelocity(RobotState.getInstance().getPassingVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
+            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }))));
 
         // stop passing after 0.5 seconds
