@@ -100,7 +100,7 @@ public class RobotContainer {
     public final Drive drive;
     private final AntiTipping antiTipping;
     private Vision vision;
-    public final Led led;
+    private final Led led;
 
     // Controller
     private final CommandXboxController driver = new CommandXboxController(0);

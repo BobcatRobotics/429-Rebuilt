@@ -3,13 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
-import java.security.PublicKey;
-
-import org.bobcatrobotics.GameSpecific.Rebuilt.HubUtil;
-
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
