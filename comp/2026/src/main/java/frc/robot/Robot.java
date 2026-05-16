@@ -131,9 +131,6 @@ if (Constants.currentMode == Constants.Mode.REAL) {
       ) - ShooterConstants.SHOOTING_DISTANCE_OFFSET);
 
     m_robotContainer.drive.isAlignedToHub();
-    
-    m_blockerInstalled = m_robotContainer.getBlockerInstalled();
-    m_robotContainer.climber.setClimberBlockerSoftLimit(m_blockerInstalled);
 
     double batteryVoltage = RobotController.getBatteryVoltage();
 
@@ -174,7 +171,11 @@ if (Constants.currentMode == Constants.Mode.REAL) {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_blockerInstalled = m_robotContainer.getBlockerInstalled();
+    m_robotContainer.climber.setClimberBlockerSoftLimit(m_blockerInstalled);
+
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -189,6 +190,11 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     if (m_autonomousCommand != null) {
       CommandScheduler.getInstance().schedule(m_autonomousCommand);
     }
+
+        
+    m_blockerInstalled = m_robotContainer.getBlockerInstalled();
+    m_robotContainer.climber.setClimberBlockerSoftLimit(m_blockerInstalled);
+
   }
 
   /** This function is called periodically during autonomous. */
@@ -204,6 +210,11 @@ if (Constants.currentMode == Constants.Mode.REAL) {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+        
+    m_blockerInstalled = m_robotContainer.getBlockerInstalled();
+    m_robotContainer.climber.setClimberBlockerSoftLimit(m_blockerInstalled);
+
     
 
     // boolean isRed = DriverStation.getAlliance().isPresent()
