@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.595384615384615,
-        "y": 7.385545617173523
+        "x": 7.105520684736091,
+        "y": 1.8926519258202577
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.779838998211091,
-        "y": 5.811681574239714
+        "x": 7.881840228245363,
+        "y": 2.6042781740370904
       },
       "isLocked": false,
-      "linkedName": "mirrored_mirrored_Corner after depot"
+      "linkedName": "mirrored_End of start mid"
     },
     {
       "anchor": {
-        "x": 2.3315026833631483,
-        "y": 4.64345259391771
+        "x": 6.096305278174036,
+        "y": 4.079285306704708
       },
       "prevControl": {
-        "x": 1.3315026833631483,
-        "y": 4.64345259391771
+        "x": 7.804208273894435,
+        "y": 4.648586305278174
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "mirrored_End of left mid sweep"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4578168732506991,
+      "rotationDegrees": 285.16305576787545
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -41,14 +46,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 341.565051177078
+    "velocity": 1.5,
+    "rotation": 49.144623741104304
   },
   "reversed": false,
-  "folder": "mirrored_mirrored_Center Wait",
+  "folder": "mirrored_default name",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 290.22485943116806
+    "velocity": 1.5,
+    "rotation": 218.36748538486154
   },
   "useDefaultConstraints": true
 }

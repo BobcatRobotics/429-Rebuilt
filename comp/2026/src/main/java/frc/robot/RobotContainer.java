@@ -100,7 +100,7 @@ public class RobotContainer {
     public final Drive drive;
     private final AntiTipping antiTipping;
     private Vision vision;
-    private final Led led;
+    public final Led led;
 
     // Controller
     private final CommandXboxController driver = new CommandXboxController(0);
@@ -196,21 +196,16 @@ public class RobotContainer {
         // autoChooser.addOption("Drive back and Shoot Blue Side", new Blue_Simple_Auto(drive));
         // autoChooser.addOption("Drive back and Shoot with Climb Red Side", new SimpleAuto_Climb_Red(drive));
 
-        //autoChooser.addOption("Hub to Tower Shoot", new PathPlannerAuto("Hub to Tower shoot"));
-        autoChooser.addOption("Hub to Depot shoot and climb", new PathPlannerAuto("Do Nothing"));
-        autoChooser.addOption("Hub to Depot shoot and climb", new PathPlannerAuto("Hub to Depot shoot and climb"));
-        autoChooser.addOption("Left Bump Shoot Mid Shoot", new PathPlannerAuto("Left Bump Shoot Mid Shoot"));
-        autoChooser.addOption("Left Bump to Depot shoot and climb", new PathPlannerAuto("Left Bump to Depot shoot and climb"));
-        autoChooser.addOption("Left Double Swipe Shoot", new PathPlannerAuto("Mikes Neutral Zone Auto"));
-        autoChooser.addOption("Left Double Swipe Dump", new PathPlannerAuto("Mikes Dump Auto"));
-        autoChooser.addOption("Trench Wait SOTM", new PathPlannerAuto("Mikes Center Wait Trench sotm"));
-        autoChooser.addOption("Center Wait", new PathPlannerAuto("Mike Center Wait Hub"));
-
-
+        autoChooser.setDefaultOption("Do Nothing", new PathPlannerAuto("Do Nothing"));
+        autoChooser.addOption("Hub to Tower Shoot", new PathPlannerAuto("Hub to Tower Shoot"));
+        autoChooser.addOption("Right Neutral Zone Double Sweep and Climb", new PathPlannerAuto("Right Mikes Neutral Zone Auto"));
+        autoChooser.addOption("Left Neutral Zone Double Sweep and Climb", new PathPlannerAuto("Left Mikes Neutral Zone Auto"));
+        autoChooser.addOption("Hub to Depot Shoot and Climb", new PathPlannerAuto("Hub to Depot Shoot and Climb"));
+        autoChooser.addOption("Left Bump to Depot Shoot and Climb", new PathPlannerAuto("Left Bump to Depot Shoot and Climb"));
+        autoChooser.addOption("Right NZ Wait and Climb", new PathPlannerAuto("Right Mike Center Wait Hub"));
+        autoChooser.addOption("Left NZ Wait and Climb", new PathPlannerAuto("Left Mike Center Wait Hub"));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
-
-        
 
             // Set up SysId routines
 //     autoChooser.addOption(

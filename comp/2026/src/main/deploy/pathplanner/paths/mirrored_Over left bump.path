@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.52151212553495,
-        "y": 4.0663466476462204
+        "x": 3.3403708987161194,
+        "y": 2.358443651925821
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.271998980914228,
-        "y": 4.0507520761074245
+        "x": 3.4903708987161197,
+        "y": 2.5584436519258205
       },
       "isLocked": false,
-      "linkedName": "mirrored_Hub"
+      "linkedName": "mirrored_End of left bump spin"
     },
     {
       "anchor": {
-        "x": 2.2465897435897455,
-        "y": 3.9303461538461537
+        "x": 5.953980028530669,
+        "y": 2.358443651925821
       },
       "prevControl": {
-        "x": 2.4965897435897455,
-        "y": 3.9303461538461537
+        "x": 5.695206847360911,
+        "y": 2.358443651925821
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "mirrored_Tower Climb Position"
+      "linkedName": "mirrored_End of over left bump"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 2.5,
+    "maxAcceleration": 3.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 1.5,
+    "rotation": 136.39718102729628
   },
   "reversed": false,
-  "folder": null,
+  "folder": "mirrored_default name",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 1.5,
+    "rotation": 141.581944655178
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

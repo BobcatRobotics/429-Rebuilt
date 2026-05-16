@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.537269230769232,
-        "y": 4.953628205128206
+        "x": 1.48778175313059,
+        "y": 2.9225599284436496
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6286466905187846,
-        "y": 4.6777963625521775
+        "x": 0.5791592128801426,
+        "y": 2.646728085867621
       },
       "isLocked": false,
       "linkedName": "mirrored_Depot Start 2"
@@ -45,10 +45,10 @@
     "rotation": 69.77514056883196
   },
   "reversed": false,
-  "folder": null,
+  "folder": "mirrored_Center Wait",
   "idealStartingState": {
     "velocity": 2.0,
-    "rotation": -20.629879946126245
+    "rotation": 49.635463426902724
   },
   "useDefaultConstraints": false
 }

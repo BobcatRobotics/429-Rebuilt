@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Constants.ShooterConstants;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -145,7 +147,7 @@ if (Constants.currentMode == Constants.Mode.REAL) {
 
     // Handles setting and logging the passing location
     RobotState.getInstance()
-        .setPassingLocation(HubUtil.getMyPassingCoordinates(DriverStation.getAlliance().get(), m_robotContainer.drive)
+        .setPassingLocation(HubUtil.getMyPassingCoordinates(DriverStation.getAlliance().orElse(Alliance.Blue), m_robotContainer.drive)
             .toPose2d().getTranslation());
     Logger.recordOutput("PassingLocationX", Math.rint(Units.metersToInches(robotState.getPassingCoordinate().getX())));
     Logger.recordOutput("PassingLocationY", Math.rint(Units.metersToInches(robotState.getPassingCoordinate().getY())));
