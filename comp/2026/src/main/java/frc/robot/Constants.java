@@ -68,9 +68,9 @@ public final class Constants {
 
     public static final double[] SHOOTER_SPEEDS = {64, 65, 70, 72.5, 75, 81, 84, 88, 91.5, 94, 97, 104};
 
-    public static final double[] PASSING_DISTANCES = {20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130};
+    public static final double[] PASSING_DISTANCES = {20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 350};
 
-    public static final double[] PASSING_SPEEDS = {64, 65, 70, 72.5, 75, 81, 84, 88, 91.5, 94, 97, 104};
+    public static final double[] PASSING_SPEEDS = {64, 65, 70, 72.5, 75, 81, 84, 88, 91.5, 94, 97, 104, 200};
 
   }
 
@@ -92,18 +92,19 @@ public final class Constants {
     public static final double CLIMBER_AUTO_DOWN_PERCENT = -1;
 
     public static final double CLIMBER_PRECLIMB = -0.29;
-    public static final double CLIMBER_CLIMBED = 0.242695;
-    public static final double BLOCKER_INSTALLED_SOFT_LIMIT = -0.07;
+    public static final double CLIMBER_CLIMBED = 0.242695; 
+    public static final double CLIMBER_CLIMBED_BLOCKER = 0.242695 + 0.035;
+    public static final double BLOCKER_INSTALLED_SOFT_LIMIT = -0.01;
     
     public static final double CLIMBER_STOP = 0;
 
-    public static final double AUTO_CLIMB_VELOCITY = 3; //3 at comp 2 at doosan
-    public static final double AUTO_CLIMB_ACCEL = 5; // 5 at comp 2 at doosan
+    public static final double AUTO_CLIMB_VELOCITY = 2; //3 at comp 2 at doosan
+    public static final double AUTO_CLIMB_ACCEL = 3; // 5 at comp 2 at doosan
 
     public static final double kClimbMotorkP = 2.0;
     public static final double kClimbMotorkV = 0.11;
 
-    public static final double blockerDeployedPosition = 0.242695;
+    public static final double blockerDeployedPosition = 0.242695 + 0.035;
   }
 
   public static final class IntakeConstants {

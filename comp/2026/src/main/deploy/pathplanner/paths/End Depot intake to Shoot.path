@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.8690870185438664,
-        "y": 7.198502139795871
+        "x": 1.1796148359500434,
+        "y": 7.069115549215582
       },
       "isLocked": false,
       "linkedName": "End of Intake Depot"
     },
     {
       "anchor": {
-        "x": 2.589928673323822,
-        "y": 4.300242510699002
+        "x": 1.826547788874437,
+        "y": 4.067346647646397
       },
       "prevControl": {
-        "x": 2.397873353424477,
-        "y": 4.4602886106151205
+        "x": 1.8653637660499007,
+        "y": 4.53313837375196
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": -6.911227119024688
+    "rotation": -1.5481576989779693
   },
   "reversed": false,
   "folder": null,

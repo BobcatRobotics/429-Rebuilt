@@ -210,6 +210,8 @@ public class RobotContainer {
         autoChooser.addOption("Left Bump to Depot Shoot and Climb", new PathPlannerAuto("Left Bump to Depot shoot and climb"));
         autoChooser.addOption("Right NZ Wait and Climb", new PathPlannerAuto("Right Mike Center Wait Hub"));
         autoChooser.addOption("Left NZ Wait and Climb", new PathPlannerAuto("Left Mike Center Wait Hub"));
+        autoChooser.addOption("right double", new PathPlannerAuto("Right Swipe"));
+
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -291,6 +293,15 @@ public class RobotContainer {
         NamedCommands.registerCommand("Auto Climb", Commands.defer(() ->  blockerInstalledChooser.getSelected()
             ? Commands.none()
             : ClimberCommands.climbToLevel(drive, climber, climbLocationChooser.getSelected(), ClimbConstants.CLIMBER_CLIMBED_PITCH_L1), Set.of(drive)));
+
+        NamedCommands.registerCommand("Cancel Commands", Commands.runOnce(() -> {
+                CommandScheduler.getInstance().cancelAll();
+                RobotState robotState = RobotState.getInstance();
+                robotState.setIsAligned(false);
+                robotState.setIsAutoAligning(false);
+                robotState.setIsAutoDriving(false);
+        })
+                .andThen(Commands.runOnce(() -> climber.stop())));
     }
     /**
      * Use this method to define your button->command mappings. Buttons can be
@@ -384,7 +395,6 @@ public class RobotContainer {
         }, fuel).withTimeout(ShooterConstants.SPIN_UP_SECONDS).andThen(Commands.run(() -> {
             fuel.setShooterRightVelocity(RobotState.getInstance().getPassingVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);
-            fuel.setIntakePower(IntakeConstants.INTAKE_PERCENT);
         }).withTimeout(0.5).andThen(Commands.run(() -> {
             fuel.setShooterRightVelocity(RobotState.getInstance().getPassingVelocity());
             fuel.setFeederRoller(ShooterConstants.FEEDER_EJECT_PERCENT);

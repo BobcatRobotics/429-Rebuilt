@@ -1,0 +1,138 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.52151212553495,
+        "y": 2.6182168330955777
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.521512125534951,
+        "y": 2.6182168330955777
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.051944444444445,
+        "y": 3.0313222222222227
+      },
+      "prevControl": {
+        "x": 6.052683269813133,
+        "y": 2.9928891001210194
+      },
+      "nextControl": {
+        "x": 8.065366666666668,
+        "y": 3.0702999999999996
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.051944444444445,
+        "y": 1.6573555555555548
+      },
+      "prevControl": {
+        "x": 8.328466666666667,
+        "y": 1.0434555555555551
+      },
+      "nextControl": {
+        "x": 5.855539063539715,
+        "y": 2.232726082250195
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.042781740370898,
+        "y": 2.6182168330955777
+      },
+      "prevControl": {
+        "x": 4.298178863528294,
+        "y": 2.6669390553178003
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "End of right double sweep"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.27,
+      "rotationDegrees": 45.0
+    },
+    {
+      "waypointRelativePos": 0.5489361702127661,
+      "rotationDegrees": 45.0
+    },
+    {
+      "waypointRelativePos": 0.6382978723404231,
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 1.4553191489361672,
+      "rotationDegrees": 125.00000000000001
+    },
+    {
+      "waypointRelativePos": 2.251063829787231,
+      "rotationDegrees": -45.0
+    },
+    {
+      "waypointRelativePos": 2.8595744680851016,
+      "rotationDegrees": -45.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.2164096916299563,
+      "maxWaypointRelativePos": 0.5534140969163013,
+      "constraints": {
+        "maxVelocity": 0.9,
+        "maxAcceleration": 1.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 2.4697136563876594,
+      "maxWaypointRelativePos": 2.727422907488988,
+      "constraints": {
+        "maxVelocity": 0.9,
+        "maxAcceleration": 3.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.5,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 41.496468355215534
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 51.95295746817398
+  },
+  "useDefaultConstraints": true
+}

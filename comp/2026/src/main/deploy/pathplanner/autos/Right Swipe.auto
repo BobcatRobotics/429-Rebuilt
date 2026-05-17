@@ -29,24 +29,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Left Bump to Hub NZ"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Climber"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.5
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Intake"
@@ -55,19 +37,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center Swipe after Wait Hub"
+            "pathName": "center sweep"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Intake stop"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Mike Left bump to AZ"
           }
         },
         {
@@ -79,7 +55,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.75
+            "waitTime": 2.0
           }
         },
         {
@@ -91,13 +67,61 @@
         {
           "type": "named",
           "data": {
-            "name": "Auto Climb"
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Second right bump sweep"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake stop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooting"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Back to NZ"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake stop"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Mike Center Wait Hub",
+  "folder": null,
   "choreoAuto": false
 }

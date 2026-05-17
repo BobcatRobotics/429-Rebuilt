@@ -110,7 +110,8 @@ public class ClimberIOReal implements ClimberIO {
              .withReverseSoftLimitThreshold(isBlockerInstalled ? ClimbConstants.BLOCKER_INSTALLED_SOFT_LIMIT
              : ClimbConstants.CLIMBER_PRECLIMB)
              .withReverseSoftLimitEnable(true)
-             .withForwardSoftLimitThreshold(CLIMBER_CLIMBED)
+             .withForwardSoftLimitThreshold(isBlockerInstalled ? ClimbConstants.CLIMBER_CLIMBED_BLOCKER
+             :CLIMBER_CLIMBED)
              .withForwardSoftLimitEnable(true)));
     }
 
